@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Family Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+</head>
+<body class="pb-20">
+    <!-- Header -->
+    <header class="bg-white p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="logo">
+            <a href="index.html" class="logo-text">
+                <span class="care-text">Care</span><span class="hive-text">Hive</span>
+            </a>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <div class="h-10 w-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+                    <span class="font-semibold">RF</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-green-500 rounded-full h-3 w-3 border-2 border-white"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4 space-y-6">
+        <!-- Wallet Card -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="font-semibold text-gray-800">Welcome, Reyes Family</h2>
+                <button class="text-teal-600 text-sm font-medium">
+                    View History
+                </button>
+            </div>
+            <div class="flex justify-between items-center bg-teal-50 p-3 rounded-lg mb-2">
+                <div>
+                    <p class="text-sm text-gray-500">Wallet Balance</p>
+                    <p class="text-xl font-bold text-teal-700">₱1,250.00</p>
+                </div>
+                <button class="bg-teal-600 text-white py-1 px-4 rounded-lg text-sm font-medium">
+                    Add Funds
+                </button>
+            </div>
+            <div class="flex justify-between items-center bg-blue-50 p-3 rounded-lg">
+                <div>
+                    <p class="text-sm text-gray-500">Interview Credits</p>
+                    <p class="text-xl font-bold text-blue-700">5 Credits</p>
+                </div>
+                <button class="bg-blue-600 text-white py-1 px-4 rounded-lg text-sm font-medium">
+                    Buy Credits
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative">
+            <i data-feather="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <input
+                type="text"
+                placeholder="Search for care providers..."
+                class="pl-10 pr-4 py-3 w-full bg-white rounded-lg shadow-md text-sm"
+            />
+        </div>
+
+        <!-- Quick Filters -->
+        <div class="flex space-x-2 overflow-x-auto pb-2">
+            <button class="flex items-center bg-teal-600 text-white px-3 py-2 rounded-full text-sm whitespace-nowrap">
+                <i data-feather="filter" class="w-3.5 h-3.5 mr-1"></i>
+                All Services
+            </button>
+            <button class="flex items-center bg-white text-gray-700 px-3 py-2 rounded-full text-sm whitespace-nowrap shadow-sm">
+                Child Care
+            </button>
+            <button class="flex items-center bg-white text-gray-700 px-3 py-2 rounded-full text-sm whitespace-nowrap shadow-sm">
+                Senior Care
+            </button>
+            <button class="flex items-center bg-white text-gray-700 px-3 py-2 rounded-full text-sm whitespace-nowrap shadow-sm">
+                Housekeeping
+            </button>
+            <button class="flex items-center bg-white text-gray-700 px-3 py-2 rounded-full text-sm whitespace-nowrap shadow-sm">
+                Tutoring
+            </button>
+            <button class="flex items-center bg-white text-gray-700 px-3 py-2 rounded-full text-sm whitespace-nowrap shadow-sm">
+                Pet Sitting
+            </button>
+        </div>
+
+        <!-- Featured Care Providers -->
+        <div>
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-lg font-semibold text-gray-800">Featured Care Providers</h2>
+                <button class="text-teal-600 text-sm font-medium flex items-center">
+                    View All
+                    <i data-feather="chevron-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="provider-card">
+                    <div class="provider-header">
+                        <div></div>
+                        <div>
+                            <i data-feather="heart" class="w-4 h-4 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="provider-avatar">MS</div>
+                    <div class="provider-info">
+                        <div class="provider-name">Maria Santos</div>
+                        <div class="provider-services">
+                            <span class="service-tag">Child Care</span>
+                            <span class="service-tag">Tutoring</span>
+                        </div>
+                        <div class="provider-rating">
+                            <div class="stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <span class="rating-value">4.8</span>
+                            <span class="rating-count">(27)</span>
+                        </div>
+                    </div>
+                    <div class="provider-actions">
+                        <button class="btn btn-primary">Request Interview</button>
+                    </div>
+                </div>
+                
+                <div class="provider-card">
+                    <div class="provider-header">
+                        <div></div>
+                        <div>
+                            <i data-feather="heart" class="w-4 h-4 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="provider-avatar">JR</div>
+                    <div class="provider-info">
+                        <div class="provider-name">Juan Reyes</div>
+                        <div class="provider-services">
+                            <span class="service-tag">Housekeeping</span>
+                            <span class="service-tag">Pet Sitting</span>
+                        </div>
+                        <div class="provider-rating">
+                            <div class="stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                            <span class="rating-count">(18)</span>
+                        </div>
+                    </div>
+                    <div class="provider-actions">
+                        <button class="btn btn-primary">Request Interview</button>
+                    </div>
+                </div>
+                
+                <div class="provider-card">
+                    <div class="provider-header">
+                        <div class="provider-badge">New</div>
+                        <div>
+                            <i data-feather="heart" class="w-4 h-4 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="provider-avatar">SL</div>
+                    <div class="provider-info">
+                        <div class="provider-name">Sofia Lopez</div>
+                        <div class="provider-services">
+                            <span class="service-tag">Child Care</span>
+                            <span class="service-tag">Tutoring</span>
+                        </div>
+                        <div class="provider-rating">
+                            <div class="stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <span class="rating-value">5.0</span>
+                            <span class="rating-count">(32)</span>
+                        </div>
+                    </div>
+                    <div class="provider-actions">
+                        <button class="btn btn-primary">Request Interview</button>
+                    </div>
+                </div>
+
+                <div class="provider-card">
+                    <div class="provider-header">
+                    </div>
+                    <div class="provider-avatar">DS</div>
+                    <div class="provider-info">
+                        <div class="provider-name">Diego Santos</div>
+                        <div class="provider-services">
+                            <span class="service-tag">Senior Care</span>
+                            <span class="service-tag">Housekeeping</span>
+                        </div>
+                        <div class="provider-rating">
+                            <div class="stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                            <span class="rating-count">(15)</span>
+                        </div>
+                    </div>
+                    <div class="provider-actions">
+                        <button class="btn btn-primary">Request Interview</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Bookings -->
+        <div>
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-lg font-semibold text-gray-800">Upcoming Bookings</h2>
+                <button class="text-teal-600 text-sm font-medium flex items-center">
+                    View All
+                    <i data-feather="chevron-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="space-y-3">
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <div class="booking-avatar">MS</div>
+                        <div class="booking-info">
+                            <div class="booking-name">Maria Santos</div>
+                            <div class="booking-service">Child Care</div>
+                        </div>
+                    </div>
+                    <div class="booking-detail">
+                        <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                        <span>Tue, Mar 25</span>
+                    </div>
+                    <div class="booking-detail">
+                        <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                        <span>09:00 AM - 01:00 PM</span>
+                    </div>
+                    <div class="booking-status">
+                        <span class="status-badge">Confirmed</span>
+                        <button class="booking-action">View Details</button>
+                    </div>
+                </div>
+
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <div class="booking-avatar">JR</div>
+                        <div class="booking-info">
+                            <div class="booking-name">Juan Reyes</div>
+                            <div class="booking-service">Housekeeping</div>
+                        </div>
+                    </div>
+                    <div class="booking-detail">
+                        <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                        <span>Fri, Mar 28</span>
+                    </div>
+                    <div class="booking-detail">
+                        <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                        <span>02:00 PM - 06:00 PM</span>
+                    </div>
+                    <div class="booking-status">
+                        <span class="status-badge">Confirmed</span>
+                        <button class="booking-action">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Action Button -->
+    <div class="action-button">
+        <i data-feather="plus" class="w-6 h-6"></i>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <i data-feather="home" class="w-5 h-5"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i data-feather="calendar" class="w-5 h-5"></i>
+            <span>Bookings</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i data-feather="message-square" class="w-5 h-5"></i>
+            <span>Messages</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i data-feather="user" class="w-5 h-5"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+        });
+    </script>
+</body>
+</html>
