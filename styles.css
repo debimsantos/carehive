@@ -810,10 +810,12 @@ footer {
 @media (max-width: 992px) {
     .hero, .about {
         flex-direction: column;
+        padding: 2rem;
     }
     
     .hero-content, .about-content {
         order: 1;
+        padding: 1rem 0;
     }
     
     .hero-image-container, .about-image-container {
@@ -869,9 +871,32 @@ footer {
         padding: 2rem;
     }
     
+    .hero h1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
     .blob-shape {
         width: 300px;
         height: 300px;
+    }
+    
+    .hero-buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .cta-button, .secondary-button {
+        min-height: 2.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .about-image-wrapper {
@@ -893,9 +918,102 @@ footer {
     }
 }
 
+
 @media (max-width: 576px) {
-    .benefits-grid {
-        grid-template-columns: 1fr;
+    header {
+        width: 100%;
+        padding: 0.5rem;
+        position: relative;
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-areas: 
+            "logo auth"
+            "nav nav";
+        align-items: center;
+        gap: 0.25rem;
+        height: auto;
+        max-height: none;
+        overflow: visible;
+    }
+    
+    .logo {
+        grid-area: logo;
+        margin: 0;
+        width: auto;
+        text-align: left;
+    }
+    
+    .logo-text {
+        font-size: 1.3rem;
+    }
+    
+    nav {
+        grid-area: nav;
+        width: 100%;
+        margin: 0.25rem 0 0 0;
+    }
+    
+    nav ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.35rem;
+        padding: 0;
+        margin: 0;
+    }
+    
+    nav a {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+    
+    .auth-buttons {
+        grid-area: auth;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin: 0;
+        width: auto;
+        gap: 0.35rem;
+    }
+    
+    .login-button, .signup-button {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.8rem;
+        width: auto;
+    }
+
+    .hero {
+        padding: 1.5rem 1rem 2.5rem;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .hero p {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .cta-button, .secondary-button {
+        width: 100%;
+        padding: 0.7rem 1rem;
+        height: auto;
+        min-height: 2.8rem;
+    }
+    
+    .blob-shape {
+        width: 250px;
+        height: 250px;
     }
 }
 
@@ -1105,3 +1223,528 @@ body {
     justify-content: center;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
+
+/* Global responsive typography adjustments */
+@media (max-width: 768px) {
+    body {
+      font-size: 15px;
+    }
+    
+    h1 {
+      font-size: 2.2rem;
+    }
+    
+    h2 {
+      font-size: 1.8rem;
+    }
+    
+    h3 {
+      font-size: 1.4rem;
+    }
+    
+    section {
+      padding: 2.5rem 1.5rem;
+    }
+    
+    .section-header h2 {
+      font-size: 2rem;
+    }
+    
+    .section-header p {
+      font-size: 0.95rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    body {
+      font-size: 14px;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+    }
+    
+    h3 {
+      font-size: 1.2rem;
+    }
+    
+    section {
+      padding: 2rem 1rem;
+    }
+    
+    .section-header h2 {
+      font-size: 1.6rem;
+    }
+    
+    .section-header h3 {
+      font-size: 1.3rem;
+    }
+  }
+  
+  /* Services Section Optimizations */
+  @media (max-width: 768px) {
+    .services {
+      padding: 3rem 1.5rem;
+    }
+    
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+    }
+    
+    .service-card {
+      padding: 1.5rem;
+    }
+    
+    .service-icon {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 1rem;
+    }
+    
+    .service-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .service-card p {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .services {
+      padding: 2.5rem 1rem;
+    }
+    
+    .services-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .service-card {
+      padding: 1.2rem;
+    }
+  }
+  
+  /* About Section Optimizations */
+  @media (max-width: 768px) {
+    .about {
+      padding: 3rem 1.5rem;
+      gap: 2rem;
+    }
+    
+    .about h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    
+    .about p {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+    
+    .advantage-list li {
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .about {
+      padding: 2.5rem 1rem;
+      gap: 1.5rem;
+    }
+    
+    .about-image-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .about-image-wrapper {
+      width: 280px;
+      height: 280px;
+    }
+    
+    .about h2 {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    
+    .about p {
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    
+    .advantage-list {
+      padding-left: 0.5rem;
+    }
+    
+    .advantage-list li {
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Testimonials Section Optimizations */
+  @media (max-width: 768px) {
+    .testimonials {
+      padding: 3rem 1.5rem;
+    }
+    
+    .testimonial-cards {
+      gap: 1.2rem;
+      padding-bottom: 1.5rem;
+    }
+    
+    .testimonial-card {
+      min-width: 280px;
+      padding: 1.5rem;
+    }
+    
+    .testimonial-avatar {
+      width: 50px;
+      height: 50px;
+    }
+    
+    .testimonial-author h4 {
+      font-size: 1.1rem;
+    }
+    
+    .quote {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .testimonials {
+      padding: 2.5rem 1rem;
+    }
+    
+    .testimonial-card {
+      min-width: 260px;
+      padding: 1.2rem;
+    }
+    
+    .testimonial-avatar {
+      width: 45px;
+      height: 45px;
+    }
+    
+    .testimonial-author h4 {
+      font-size: 1rem;
+    }
+    
+    .testimonial-author span {
+      font-size: 0.8rem;
+    }
+    
+    .quote {
+      font-size: 0.85rem;
+    }
+  }
+  
+  /* CTA Section Optimizations */
+  @media (max-width: 768px) {
+    .cta-section {
+      padding: 3rem 1.5rem;
+    }
+    
+    .cta-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    
+    .cta-section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .cta-buttons {
+      gap: 0.8rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .cta-section {
+      padding: 2.5rem 1rem;
+    }
+    
+    .cta-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+    
+    .cta-section h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1.2rem;
+    }
+    
+    .cta-buttons {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .cta-section .cta-button,
+    .cta-section .secondary-button {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  /* Footer Optimizations */
+  @media (max-width: 768px) {
+    footer {
+      padding: 3rem 1.5rem 2rem;
+    }
+    
+    .footer-logo {
+      margin-bottom: 0.75rem;
+    }
+    
+    .footer-about p {
+      margin-bottom: 1rem;
+    }
+    
+    .footer-links h4 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-links li {
+      margin-bottom: 0.6rem;
+    }
+    
+    .footer-links a {
+      font-size: 0.9rem;
+    }
+    
+    .footer-bottom {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+    }
+    
+    .footer-bottom p {
+      font-size: 0.85rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    footer {
+      padding: 2.5rem 1rem 1.5rem;
+    }
+    
+    .footer-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .footer-about {
+      text-align: center;
+    }
+    
+    .social-icons {
+      justify-content: center;
+    }
+    
+    .footer-links {
+      text-align: center;
+    }
+    
+    .footer-links h4 {
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+    }
+    
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-bottom {
+      margin-top: 1.5rem;
+      padding-top: 1.2rem;
+    }
+  }
+  
+  /* Provider Cards Optimizations */
+  @media (max-width: 576px) {
+    .provider-card {
+      padding: 0.8rem;
+    }
+    
+    .provider-avatar {
+      height: 3.5rem;
+      width: 3.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .provider-badge {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.4rem;
+    }
+    
+    .provider-name {
+      font-size: 0.95rem;
+    }
+    
+    .service-tag {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.4rem;
+    }
+    
+    .btn {
+      padding: 0.5rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  }
+  
+  /* Booking Cards Optimizations */
+  @media (max-width: 576px) {
+    .booking-card {
+      padding: 0.8rem;
+    }
+    
+    .booking-avatar {
+      height: 2.2rem;
+      width: 2.2rem;
+    }
+    
+    .booking-name {
+      font-size: 0.95rem;
+    }
+    
+    .booking-service {
+      font-size: 0.7rem;
+    }
+    
+    .booking-detail {
+      font-size: 0.8rem;
+    }
+    
+    .status-badge {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.4rem;
+    }
+    
+    .booking-action {
+      font-size: 0.8rem;
+    }
+  }
+  
+  /* Bottom Navigation Optimizations */
+  @media (max-width: 576px) {
+    .bottom-nav {
+      padding: 0.4rem 0;
+    }
+    
+    .nav-item {
+      padding: 0.4rem 0.8rem;
+    }
+    
+    .nav-item span {
+      font-size: 0.7rem;
+    }
+    
+    .action-button {
+      height: 3rem;
+      width: 3rem;
+      bottom: 4.5rem;
+    }
+  }
+  
+  /* Additional Mobile Optimizations */
+  @media (max-width: 576px) {
+    /* Fix for provider-cta-section */
+    .provider-cta-section {
+      padding: 2rem 1rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .provider-cta-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .provider-cta-section p {
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Fix for who-can-apply section */
+    .who-can-apply {
+      padding: 2rem 0;
+    }
+    
+    .who-can-apply-inner {
+      padding: 0 1rem;
+    }
+    
+    .who-can-apply-intro {
+      margin-bottom: 1.5rem;
+    }
+    
+    .who-can-apply-content {
+      gap: 2rem;
+    }
+    
+    .role-icon {
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+    }
+    
+    .roles-list h4 {
+      font-size: 1rem;
+    }
+    
+    .roles-list p {
+      font-size: 0.85rem;
+    }
+    
+    /* Fix for steps */
+    .step {
+      padding: 1.5rem;
+    }
+    
+    .step::before {
+      width: 30px;
+      height: 30px;
+      left: -15px;
+    }
+    
+    .step::after {
+      left: -11px;
+      top: 1.8rem;
+      font-size: 0.9rem;
+    }
+    
+    .step h3 {
+      margin-left: 1rem;
+      font-size: 1.1rem;
+    }
+    
+    .step p {
+      margin-left: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    /* Benefits grid adjustment */
+    .benefits-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .benefit-card {
+      padding: 1.2rem;
+    }
+    
+    .benefit-card h3 {
+      font-size: 1.1rem;
+    }
+  }
