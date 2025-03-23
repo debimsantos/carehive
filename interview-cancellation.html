@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Cancel Interview</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <style>
+         .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6b7280;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+        }
+        
+        .nav-item.active {
+            color: #0d9488;
+        }
+        
+        .nav-item span {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .radio-option {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .radio-option:hover {
+            border-color: #d1d5db;
+            background-color: #f9fafb;
+        }
+        
+        .radio-option.selected {
+            border-color: #0d9488;
+            background-color: #f0fdfa;
+        }
+    </style>
+</head>
+<body class="pb-20">
+    <!-- Header -->
+    <header class="bg-white p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="flex items-center">
+            <a href="javascript:history.back()" class="mr-2">
+                <i data-feather="arrow-left" class="w-6 h-6 text-gray-500"></i>
+            </a>
+            <div class="logo">
+                <a href="index.html" class="logo-text">
+                    <span class="care-text">Care</span><span class="hive-text">Hive</span>
+                </a>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <div class="h-10 w-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+                    <span class="font-semibold">RF</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-green-500 rounded-full h-3 w-3 border-2 border-white"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4 space-y-6 max-w-3xl mx-auto">
+        <div class="flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">Cancel Interview</h1>
+        </div>
+
+        <!-- Provider Info -->
+        <div class="provider-card">
+            <div class="provider-avatar">MS</div>
+            <div class="provider-info">
+                <div class="provider-name">Maria Santos</div>
+                <div class="provider-services">
+                    <span class="service-tag">Child Care</span>
+                    <span class="service-tag">Tutoring</span>
+                </div>
+                <div class="provider-rating">
+                    <div class="stars">
+                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <span class="rating-value">4.8</span>
+                    <span class="rating-count">(27 reviews)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interview Details -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h2 class="font-semibold text-gray-800 mb-4">Interview Details</h2>
+            
+            <div class="space-y-3">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Date</span>
+                    <span class="font-medium">Tuesday, Mar 25, 2025</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Time</span>
+                    <span class="font-medium">10:00 AM - 10:30 AM</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Interview Type</span>
+                    <span class="font-medium">Video Call</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Status</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        Pending Confirmation
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cancellation Reason -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h2 class="font-semibold text-gray-800 mb-4">Cancellation Reason</h2>
+            
+            <p class="text-sm text-gray-500 mb-4">Please help us understand why you're canceling this interview. This information helps us improve our services.</p>
+            
+            <div class="space-y-2">
+                <div class="radio-option selected" data-value="schedule-conflict">
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="reason-1" name="cancellation-reason" type="radio" checked class="h-4 w-4 text-teal-600 border-gray-300 focus:ring-teal-500">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="reason-1" class="font-medium text-gray-700">Schedule conflict</label>
+                            <p class="text-gray-500">I need to cancel due to a schedule conflict</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="radio-option" data-value="found-provider">
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="reason-2" name="cancellation-reason" type="radio" class="h-4 w-4 text-teal-600 border-gray-300 focus:ring-teal-500">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="reason-2" class="font-medium text-gray-700">Found another care provider</label>
+                            <p class="text-gray-500">I've already found a care provider who meets my needs</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="radio-option" data-value="change-requirements">
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="reason-3" name="cancellation-reason" type="radio" class="h-4 w-4 text-teal-600 border-gray-300 focus:ring-teal-500">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="reason-3" class="font-medium text-gray-700">Change in requirements</label>
+                            <p class="text-gray-500">My care requirements have changed</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="radio-option" data-value="other">
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="reason-4" name="cancellation-reason" type="radio" class="h-4 w-4 text-teal-600 border-gray-300 focus:ring-teal-500">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="reason-4" class="font-medium text-gray-700">Other reason</label>
+                            <p class="text-gray-500">I have another reason for canceling</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4" id="other-reason-container" style="display: none;">
+                <label for="other-reason" class="block text-sm font-medium text-gray-700 mb-1">Please specify your reason</label>
+                <textarea id="other-reason" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" placeholder="Please provide more details about why you're canceling..."></textarea>
+            </div>
+        </div>
+
+        <!-- Refund Policy Info -->
+        <div class="bg-blue-50 rounded-lg p-4">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <i data-feather="info" class="h-5 w-5 text-blue-500"></i>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-blue-800">Credit Refund Policy</h3>
+                    <div class="mt-2 text-xs text-blue-600">
+                        <p class="mb-1"><strong>Automatic refund:</strong> You will receive an automatic credit refund since you're canceling more than 2 hours before the scheduled interview time.</p>
+                        <p><strong>Refund status:</strong> 1 credit will be returned to your account immediately after cancellation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Box -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-semibold text-gray-800">Cancellation Summary</h3>
+            </div>
+            
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Interview with</span>
+                    <span class="font-medium">Maria Santos</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Scheduled for</span>
+                    <span class="font-medium">Tuesday, Mar 25, 2025 at 10:00 AM</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Credit refund</span>
+                    <span class="font-medium text-green-600">1 Credit will be refunded</span>
+                </div>
+            </div>
+            
+            <div class="h-px bg-gray-200 my-4"></div>
+            
+            <div class="flex items-start mb-4">
+                <input id="terms" name="terms" type="checkbox" class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded mt-1">
+                <label for="terms" class="ml-2 block text-xs text-gray-500">
+                    I understand that by canceling this interview, the time slot will be released and the care provider will be notified.
+                </label>
+            </div>
+            
+            <div class="flex space-x-3">
+                <button class="flex-1 bg-gray-100 text-gray-700 py-3 px-4 rounded-lg text-sm font-medium hover:bg-gray-200">
+                    Back
+                </button>
+                <button class="flex-1 bg-red-600 text-white py-3 px-4 rounded-lg text-sm font-medium hover:bg-red-700 flex justify-center items-center">
+                    <i data-feather="x-circle" class="w-4 h-4 mr-2"></i>
+                    Confirm Cancellation
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item">
+            <i data-feather="home" class="w-5 h-5"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <i data-feather="calendar" class="w-5 h-5"></i>
+            <span>Bookings</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i data-feather="message-square" class="w-5 h-5"></i>
+            <span>Messages</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i data-feather="user" class="w-5 h-5"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            // Radio option selection
+            const radioOptions = document.querySelectorAll('.radio-option');
+            const otherReasonContainer = document.getElementById('other-reason-container');
+            
+            radioOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Update radio button
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    
+                    // Update visual selection
+                    radioOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    // Show/hide other reason textarea
+                    if (this.dataset.value === 'other') {
+                        otherReasonContainer.style.display = 'block';
+                    } else {
+                        otherReasonContainer.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Add event listener to the checkbox
+            const termsCheckbox = document.getElementById('terms');
+            const confirmButton = document.querySelector('button.bg-red-600');
+            
+            termsCheckbox.addEventListener('change', function() {
+                confirmButton.disabled = !this.checked;
+                if (this.checked) {
+                    confirmButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    confirmButton.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            });
+            
+            // Initialize button state
+            confirmButton.disabled = !termsCheckbox.checked;
+            if (termsCheckbox.checked) {
+                confirmButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                confirmButton.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        });
+    </script>
+</body>
+</html>

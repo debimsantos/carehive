@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Reschedule Interview</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <style>
+
+        .time-slot {
+            display: inline-block;
+            padding: 0.5rem 0.75rem;
+            margin: 0.25rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .time-slot:hover {
+            border-color: #0d9488;
+            background-color: #f0fdfa;
+        }
+        
+        .time-slot.selected {
+            background-color: #0d9488;
+            color: white;
+            border-color: #0d9488;
+        }
+        
+        .time-slot.unavailable {
+            background-color: #f3f4f6;
+            color: #9ca3af;
+            cursor: not-allowed;
+            border-color: #e5e7eb;
+        }
+        
+        .time-slot.current {
+            border: 2px dashed #d97706;
+            background-color: #fff7ed;
+            position: relative;
+        }
+        
+        .time-slot.current::after {
+            content: "Current";
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #d97706;
+            color: white;
+            font-size: 10px;
+            padding: 1px 4px;
+            border-radius: 2px;
+        }
+        
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6b7280;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+        }
+        
+        .nav-item.active {
+            color: #0d9488;
+        }
+        
+        .nav-item span {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body class="pb-20">
+    <!-- Header -->
+    <header class="bg-white p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="flex items-center">
+            <a href="javascript:history.back()" class="mr-2">
+                <i data-feather="arrow-left" class="w-6 h-6 text-gray-500"></i>
+            </a>
+            <div class="logo">
+                <a href="index.html" class="logo-text">
+                    <span class="care-text">Care</span><span class="hive-text">Hive</span>
+                </a>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <div class="h-10 w-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+                    <span class="font-semibold">RF</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-green-500 rounded-full h-3 w-3 border-2 border-white"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4 space-y-6 max-w-3xl mx-auto">
+        <div class="flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">Reschedule Interview</h1>
+        </div>
+
+        <!-- Provider Info -->
+        <div class="provider-card">
+            <div class="provider-avatar">MS</div>
+            <div class="provider-info">
+                <div class="provider-name">Maria Santos</div>
+                <div class="provider-services">
+                    <span class="service-tag">Child Care</span>
+                    <span class="service-tag">Tutoring</span>
+                </div>
+                <div class="provider-rating">
+                    <div class="stars">
+                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <span class="rating-value">4.8</span>
+                    <span class="rating-count">(27 reviews)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Interview Details -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h2 class="font-semibold text-gray-800 mb-4">Current Interview</h2>
+            
+            <div class="space-y-3">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Date</span>
+                    <span class="font-medium">Tuesday, Mar 25, 2025</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Time</span>
+                    <span class="font-medium">10:00 AM - 10:30 AM</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Interview Type</span>
+                    <span class="font-medium">Video Call</span>
+                </div>
+            </div>
+            
+            <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i data-feather="info" class="h-5 w-5 text-amber-500"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-amber-800">You're rescheduling this interview</h3>
+                        <div class="mt-1 text-xs text-amber-700">
+                            <p>Your credit will remain applied to this interview when you reschedule.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reschedule Details -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h2 class="font-semibold text-gray-800 mb-4">New Interview Details</h2>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Select Date</label>
+                <div class="relative">
+                    <div class="flex items-center">
+                        <input type="date" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" min="2025-03-23" max="2025-04-23" value="2025-03-27">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Select Time</label>
+                
+                <div class="text-xs font-medium text-gray-500 mb-2">Morning</div>
+                <div class="flex flex-wrap">
+                    <div class="time-slot unavailable">08:00 AM</div>
+                    <div class="time-slot current">10:00 AM</div>
+                    <div class="time-slot selected">11:00 AM</div>
+                </div>
+                
+                <div class="text-xs font-medium text-gray-500 mb-2 mt-3">Afternoon</div>
+                <div class="flex flex-wrap">
+                    <div class="time-slot">01:00 PM</div>
+                    <div class="time-slot">02:00 PM</div>
+                    <div class="time-slot unavailable">03:00 PM</div>
+                    <div class="time-slot">04:00 PM</div>
+                </div>
+                
+                <div class="text-xs font-medium text-gray-500 mb-2 mt-3">Evening</div>
+                <div class="flex flex-wrap">
+                    <div class="time-slot">05:00 PM</div>
+                    <div class="time-slot">06:00 PM</div>
+                    <div class="time-slot unavailable">07:00 PM</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rescheduling Policy -->
+        <div class="bg-blue-50 rounded-lg p-4">
+            <div class="flex items-start">
+                <i data-feather="info" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
+                <div>
+                    <h3 class="text-sm font-medium text-blue-800">Rescheduling Policy</h3>
+                    <p class="text-xs text-blue-600 mt-1">You can reschedule this interview without penalty up to 2 hours before the scheduled time. Your interview credit will remain applied to the rescheduled interview.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Box -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-semibold text-gray-800">Rescheduling Summary</h3>
+            </div>
+            
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Care Provider</span>
+                    <span class="font-medium">Maria Santos</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">New Date</span>
+                    <span class="font-medium">Thursday, Mar 27, 2025</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">New Time</span>
+                    <span class="font-medium">11:00 AM - 11:30 AM</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Interview Type</span>
+                    <span class="font-medium">Video Call</span>
+                </div>
+            </div>
+            
+            <div class="h-px bg-gray-200 my-4"></div>
+            
+            <div class="flex items-start mb-4">
+                <input id="terms" name="terms" type="checkbox" class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded mt-1">
+                <label for="terms" class="ml-2 block text-xs text-gray-500">
+                    I understand that rescheduling this interview will cancel my previous time slot and create a new booking at the selected time.
+                </label>
+            </div>
+            
+            <div class="flex space-x-3">
+                <button class="flex-1 bg-gray-100 text-gray-700 py-3 px-4 rounded-lg text-sm font-medium hover:bg-gray-200">
+                    Cancel
+                </button>
+                <button class="flex-1 bg-teal-600 text-white py-3 px-4 rounded-lg text-sm font-medium hover:bg-teal-700 flex justify-center items-center">
+                    <i data-feather="refresh-cw" class="w-4 h-4 mr-2"></i>
+                    Confirm Reschedule
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item">
+            <i data-feather="home" class="w-5 h-5"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item active">
+            <i data-feather="calendar" class="w-5 h-5"></i>
+            <span>Bookings</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i data-feather="message-square" class="w-5 h-5"></i>
+            <span>Messages</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i data-feather="user" class="w-5 h-5"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            // Add event listeners to time slots
+            const timeSlots = document.querySelectorAll('.time-slot:not(.unavailable):not(.current)');
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', function() {
+                    // Remove selected class from all time slots
+                    timeSlots.forEach(s => s.classList.remove('selected'));
+                    // Add selected class to clicked time slot
+                    this.classList.add('selected');
+                    
+                    // Update the summary
+                    const selectedTime = this.textContent;
+                    const summaryTimeElement = document.querySelector('.space-y-2 .font-medium:nth-of-type(3)');
+                    
+                    // Calculate end time (30 minutes later)
+                    let endTime = "";
+                    if (selectedTime.includes('AM')) {
+                        const hourStr = selectedTime.split(':')[0];
+                        const hour = parseInt(hourStr);
+                        
+                        if (hour === 11) {
+                            endTime = `11:30 AM`;
+                        } else if (hour === 12) {
+                            endTime = `12:30 PM`;
+                        } else {
+                            endTime = `${hour}:30 AM`;
+                        }
+                    } else if (selectedTime.includes('PM')) {
+                        const hourStr = selectedTime.split(':')[0];
+                        const hour = parseInt(hourStr);
+                        
+                        if (hour === 12) {
+                            endTime = `12:30 PM`;
+                        } else {
+                            endTime = `${hour}:30 PM`;
+                        }
+                    }
+                    
+                    summaryTimeElement.textContent = `${selectedTime} - ${endTime}`;
+                });
+            });
+            
+            // Add event listener to date input
+            const dateInput = document.querySelector('input[type="date"]');
+            dateInput.addEventListener('change', function() {
+                const date = new Date(this.value);
+                const options = { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' };
+                const formattedDate = date.toLocaleDateString('en-US', options);
+                
+                // Update the summary
+                const summaryDateElement = document.querySelector('.space-y-2 .font-medium:nth-of-type(2)');
+                summaryDateElement.textContent = formattedDate;
+            });
+        });
+    </script>
+</body>
+</html>
