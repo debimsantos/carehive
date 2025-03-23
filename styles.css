@@ -40,6 +40,12 @@ header {
 .logo-text {
     font-size: 1.8rem;
     font-weight: 600;
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Ensures it takes the default text color */
+}
+
+.logo-text:hover {
+    text-decoration: none; /* Ensures no underline on hover */
 }
 
 .care-text {
@@ -345,6 +351,27 @@ nav a.active {
 
 .about p {
     margin-bottom: 1.5rem;
+}
+
+.advantage-list {
+    margin-bottom: 2rem;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.advantage-list li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.6;
+}
+
+.advantage-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #00a896;
+    font-weight: bold;
 }
 
 /* Testimonials Section */

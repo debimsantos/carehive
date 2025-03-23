@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Care Provider Signup</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .signup-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .signup-header h1 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .signup-header h1 span {
+            color: #00a896;
+        }
+        
+        .signup-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .progress-indicator::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            background-color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .progress-step.active {
+            border-color: #00a896;
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .progress-step.completed {
+            border-color: #00a896;
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .progress-step-label {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .progress-step.active .progress-step-label {
+            color: #00a896;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #00a896;
+            box-shadow: 0 0 0 2px rgba(0, 168, 150, 0.2);
+        }
+        
+        .input-hint {
+            display: block;
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        .photo-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .photo-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            border: 1px dashed #ddd;
+            overflow: hidden;
+        }
+        
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        
+        .photo-preview svg {
+            margin-bottom: 0.5rem;
+        }
+        
+        .photo-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .photo-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .photo-btn-camera {
+            background-color: #00a896;
+            color: white;
+            border: none;
+        }
+        
+        .photo-btn-camera:hover {
+            background-color: #008080;
+        }
+        
+        .photo-btn-upload {
+            background-color: white;
+            color: #00a896;
+            border: 1px solid #00a896;
+        }
+        
+        .photo-btn-upload:hover {
+            background-color: #f0f9f8;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .gender-options {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .gender-option {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .gender-option:hover {
+            border-color: #00a896;
+        }
+        
+        .gender-option.selected {
+            border-color: #00a896;
+            background-color: rgba(0, 168, 150, 0.1);
+            color: #00a896;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #008080;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #00a896;
+            border: 1px solid #00a896;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f0f9f8;
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .error-message {
+            color: #e53935;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        #preview-image {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (using object tag for HTML includes) -->
+    <object type="text/html" data="header.html" style="width:100%; height:100px; border:none;"></object>
+    
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>Tell Us About <span>Yourself</span></h1>
+            <p>This information will appear on your profile and help families find the right match</p>
+        </div>
+        
+        <div class="progress-indicator">
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Account</div>
+            </div>
+            <div class="progress-step active">
+                <span>2</span>
+                <div class="progress-step-label">Personal</div>
+            </div>
+            <div class="progress-step">
+                <span>3</span>
+                <div class="progress-step-label">Address</div>
+            </div>
+            <div class="progress-step">
+                <span>4</span>
+                <div class="progress-step-label">Skills</div>
+            </div>
+            <div class="progress-step">
+                <span>5</span>
+                <div class="progress-step-label">Verify</div>
+            </div>
+        </div>
+        
+        <form id="provider-personal-form" action="provider-signup-step3.html" method="GET">
+            <!-- Hidden fields to pass data from previous step -->
+            <input type="hidden" id="email" name="email" value="">
+            <input type="hidden" id="password" name="password" value="">
+            
+            <div class="photo-upload">
+                <div class="photo-preview" id="photo-preview">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span id="upload-text">Add Photo</span>
+                    <img id="preview-image" src="#" alt="Preview">
+                </div>
+                <div class="photo-buttons">
+                    <button type="button" class="photo-btn photo-btn-camera" id="camera-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        Take Photo
+                    </button>
+                    <button type="button" class="photo-btn photo-btn-upload" id="upload-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Upload Photo
+                    </button>
+                </div>
+                <input type="file" id="photo-input" accept="image/*" style="display: none;">
+                <input type="hidden" id="profile-photo" name="profile-photo">
+                <span class="input-hint">Upload a clear photo of your face</span>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="first-name" class="form-label">First Name</label>
+                        <input type="text" id="first-name" name="first-name" class="form-input" placeholder="Enter your first name" required>
+                        <div class="error-message" id="first-name-error">First name is required</div>
+                    </div>
+                </div>
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="last-name" class="form-label">Last Name</label>
+                        <input type="text" id="last-name" name="last-name" class="form-input" placeholder="Enter your last name" required>
+                        <div class="error-message" id="last-name-error">Last name is required</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="contact-number" class="form-label">Contact Number</label>
+                <input type="tel" id="contact-number" name="contact-number" class="form-input" placeholder="Enter your mobile number (e.g., 09123456789)" required>
+                <div class="error-message" id="contact-number-error">Please enter a valid Philippine mobile number</div>
+                <span class="input-hint">Use a number that families can reach you on</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="birth-date" class="form-label">Date of Birth</label>
+                <input type="date" id="birth-date" name="birth-date" class="form-input" required>
+                <div class="error-message" id="birth-date-error">You must be at least 18 years old</div>
+                <span class="input-hint">You must be at least 18 years old to register</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Gender</label>
+                <div class="gender-options">
+                    <div class="gender-option" data-value="male">Male</div>
+                    <div class="gender-option" data-value="female">Female</div>
+                    <div class="gender-option" data-value="other">Other</div>
+                </div>
+                <input type="hidden" id="gender" name="gender" required>
+                <div class="error-message" id="gender-error">Please select your gender</div>
+            </div>
+            
+            <div class="form-footer">
+                <a href="provider-signup-step1.html" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-primary">Continue</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="logo footer-logo">
+                    <span class="logo-text"><span class="care-text">Care</span><span class="hive-text">Hive</span></span>
+                </div>
+                <p>
+                    Connecting compassionate caregivers with those who need them most. We're committed to enhancing quality of life through personalized, in-home care services.
+                </p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Find a Caregiver</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Personal Care</a></li>
+                    <li><a href="#">Companion Care</a></li>
+                    <li><a href="#">Specialized Care</a></li>
+                    <li><a href="#">Respite Care</a></li>
+                    <li><a href="#">Memory Care</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><a href="#">123 Anywhere St, Any City</a></li>
+                    <li><a href="#">(123) 456-7890</a></li>
+                    <li><a href="#">info@carehive.ph</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 CareHive. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Get URL parameters from previous step
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email') || '';
+        const password = urlParams.get('password') || '';
+        
+        // Set hidden form fields
+        document.getElementById('email').value = email;
+        document.getElementById('password').value = password;
+        
+        // Photo upload functionality
+        const photoPreview = document.getElementById('photo-preview');
+        const previewImage = document.getElementById('preview-image');
+        const uploadText = document.getElementById('upload-text');
+        const photoInput = document.getElementById('photo-input');
+        const profilePhotoInput = document.getElementById('profile-photo');
+        const uploadBtn = document.getElementById('upload-btn');
+        const cameraBtn = document.getElementById('camera-btn');
+        
+        // Handle photo upload
+        uploadBtn.addEventListener('click', function() {
+            photoInput.click();
+        });
+        
+        // Handle camera photo (in a real app, this would access the device camera)
+        cameraBtn.addEventListener('click', function() {
+            alert('In a real app, this would open your camera. For now, please use the upload option.');
+            photoInput.click();
+        });
+        
+        photoInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    uploadText.style.display = 'none';
+                    photoPreview.querySelector('svg').style.display = 'none';
+                    
+                    // Store the image data for form submission
+                    profilePhotoInput.value = e.target.result;
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Gender selection
+        const genderOptions = document.querySelectorAll('.gender-option');
+        const genderInput = document.getElementById('gender');
+        
+        genderOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                genderOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Set the hidden input value
+                genderInput.value = this.getAttribute('data-value');
+                
+                // Clear any error
+                document.getElementById('gender-error').style.display = 'none';
+            });
+        });
+        
+        // Form validation
+        const form = document.getElementById('provider-personal-form');
+        
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // First name validation
+            const firstName = document.getElementById('first-name').value;
+            if (!firstName.trim()) {
+                document.getElementById('first-name-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('first-name-error').style.display = 'none';
+            }
+            
+            // Last name validation
+            const lastName = document.getElementById('last-name').value;
+            if (!lastName.trim()) {
+                document.getElementById('last-name-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('last-name-error').style.display = 'none';
+            }
+            
+            // Contact number validation (Philippine format)
+            const contactNumber = document.getElementById('contact-number').value;
+            const phonePattern = /^(09|\+639)\d{9}$/;
+            if (!phonePattern.test(contactNumber)) {
+                document.getElementById('contact-number-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('contact-number-error').style.display = 'none';
+            }
+            
+            // Birth date validation (18+ years old)
+            const birthDate = new Date(document.getElementById('birth-date').value);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            if (!document.getElementById('birth-date').value || age < 18) {
+                document.getElementById('birth-date-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('birth-date-error').style.display = 'none';
+            }
+            
+            // Gender validation
+            if (!genderInput.value) {
+                document.getElementById('gender-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('gender-error').style.display = 'none';
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

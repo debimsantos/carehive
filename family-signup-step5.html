@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Family Signup</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .signup-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .signup-header h1 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .signup-header h1 span {
+            color: #00a896;
+        }
+        
+        .signup-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .progress-indicator::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .progress-indicator::after {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;  /* Step 5 of 5 = 100% */
+            height: 2px;
+            background-color: #00a896;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            background-color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .progress-step.active {
+            border-color: #00a896;
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .progress-step.completed {
+            border-color: #00a896;
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .progress-step.completed::after {
+            content: "✓";
+        }
+        
+        .progress-step-label {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .progress-step.active .progress-step-label {
+            color: #00a896;
+            font-weight: 600;
+        }
+        
+        .document-card {
+            margin-bottom: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .document-header {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            background-color: #f9f9f9;
+        }
+        
+        .document-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        
+        .document-description {
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        .required-badge {
+            display: inline-block;
+            margin-left: 0.5rem;
+            padding: 0.125rem 0.5rem;
+            background-color: #f0f9f8;
+            color: #00a896;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .document-upload-area {
+            padding: 1rem;
+        }
+        
+        .upload-placeholder {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-placeholder:hover {
+            border-color: #00a896;
+            background-color: #f0f9f8;
+        }
+        
+        .upload-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            color: #00a896;
+        }
+        
+        .upload-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-subtitle {
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        .upload-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .upload-button {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem 1rem;
+            background-color: #f0f9f8;
+            color: #00a896;
+            border: 1px solid #00a896;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-button:hover {
+            background-color: #e0f2f1;
+        }
+        
+        .document-preview {
+            display: none; /* Initially hidden */
+            margin-top: 1rem;
+        }
+        
+        .document-preview.visible {
+            display: block;
+        }
+        
+        .preview-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .preview-title {
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .remove-document {
+            color: #e53935;
+            background: none;
+            border: none;
+            font-size: 0.875rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .document-upload-input {
+            display: none;
+        }
+        
+        .security-note {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            background-color: #f0f9f8;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #00a896;
+        }
+        
+        .security-icon {
+            flex-shrink: 0;
+            margin-right: 1rem;
+            color: #00a896;
+        }
+        
+        .security-text {
+            flex: 1;
+            font-size: 0.875rem;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .security-text strong {
+            color: #333;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #008080;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #00a896;
+            border: 1px solid #00a896;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f0f9f8;
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .error-message {
+            color: #e53935;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        /* Additional styles for verification pending screen */
+        .success-animation {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            color: #00a896;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (using object tag for HTML includes) -->
+    <object type="text/html" data="header.html" style="width:100%; height:100px; border:none;"></object>
+    
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>Verify Your <span>Identity</span></h1>
+            <p>Upload your documents to verify your account</p>
+        </div>
+        
+        <div class="progress-indicator">
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Account</div>
+            </div>
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Personal</div>
+            </div>
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Address</div>
+            </div>
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Household</div>
+            </div>
+            <div class="progress-step active">
+                <span>5</span>
+                <div class="progress-step-label">Verify</div>
+            </div>
+        </div>
+        
+        <form id="verification-form" action="family-signup-complete.html" method="GET">
+            <div class="document-card">
+                <div class="document-header">
+                    <h3 class="document-title">Government-issued ID <span class="required-badge">Required</span></h3>
+                    <p class="document-description">SSS, Driver's License, Passport, or any valid government ID</p>
+                </div>
+                
+                <div class="document-upload-area">
+                    <div class="upload-placeholder" id="gov-id-placeholder">
+                        <div class="upload-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                                <circle cx="9" cy="10" r="2"></circle>
+                                <path d="M15 8h.01"></path>
+                                <path d="M17 8h.01"></path>
+                                <path d="M15 12h.01"></path>
+                                <path d="M17 12h.01"></path>
+                                <path d="M7 16h10"></path>
+                            </svg>
+                        </div>
+                        <h4 class="upload-title">Upload ID</h4>
+                        <p class="upload-subtitle">Click to browse files or drag and drop</p>
+                        
+                        <div class="upload-actions">
+                            <label for="gov-id-camera" class="upload-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                                    <circle cx="12" cy="13" r="3"></circle>
+                                </svg>
+                                Camera
+                            </label>
+                            
+                            <label for="gov-id-upload" class="upload-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                Browse
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <input type="file" id="gov-id-camera" class="document-upload-input" accept="image/*" capture="user">
+                    <input type="file" id="gov-id-upload" class="document-upload-input" accept="image/*">
+                    
+                    <div class="document-preview" id="gov-id-preview">
+                        <div class="preview-header">
+                            <div class="preview-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00a896" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                Document uploaded
+                            </div>
+                            <button type="button" class="remove-document" id="gov-id-remove">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                                Remove
+                            </button>
+                        </div>
+                        <img id="gov-id-image" class="preview-image" src="#" alt="Government ID preview">
+                    </div>
+                    
+                    <div class="error-message" id="gov-id-error">Please upload a government ID</div>
+                </div>
+            </div>
+            
+            <div class="document-card">
+                <div class="document-header">
+                    <h3 class="document-title">Proof of Residence <span class="required-badge">Required</span></h3>
+                    <p class="document-description">Utility bill, lease contract, or any document showing your address</p>
+                </div>
+                
+                <div class="document-upload-area">
+                    <div class="upload-placeholder" id="residence-placeholder">
+                        <div class="upload-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <h4 class="upload-title">Upload Proof of Residence</h4>
+                        <p class="upload-subtitle">Click to browse files or drag and drop</p>
+                        
+                        <div class="upload-actions">
+                            <label for="residence-camera" class="upload-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                                    <circle cx="12" cy="13" r="3"></circle>
+                                </svg>
+                                Camera
+                            </label>
+                            
+                            <label for="residence-upload" class="upload-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                Browse
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <input type="file" id="residence-camera" class="document-upload-input" accept="image/*" capture="user">
+                    <input type="file" id="residence-upload" class="document-upload-input" accept="image/*">
+                    
+                    <div class="document-preview" id="residence-preview">
+                        <div class="preview-header">
+                            <div class="preview-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00a896" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                Document uploaded
+                            </div>
+                            <button type="button" class="remove-document" id="residence-remove">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                                Remove
+                            </button>
+                        </div>
+                        <img id="residence-image" class="preview-image" src="#" alt="Proof of Residence preview">
+                    </div>
+                    
+                    <div class="error-message" id="residence-error">Please upload proof of residence</div>
+                </div>
+            </div>
+            
+            <div class="security-note">
+                <div class="security-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <div class="security-text">
+                    <p><strong>Your documents are secure with us.</strong> We use bank-level encryption to protect your personal information. These documents are only used for identity verification and are strictly confidential.</p>
+                    <p>After verifying your identity, our admin team will review your documents and approve your account, typically within 24-48 hours.</p>
+                </div>
+            </div>
+            
+            <div class="form-footer">
+                <a href="family-signup-step4.html" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-primary" id="submit-button" a href="family_signup_success.html">Complete Registration</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="logo footer-logo">
+                    <span class="logo-text"><span class="care-text">Care</span><span class="hive-text">Hive</span></span>
+                </div>
+                <p>
+                    Connecting compassionate caregivers with those who need them most. We're committed to enhancing quality of life through personalized, in-home care services.
+                </p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Find a Caregiver</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Personal Care</a></li>
+                    <li><a href="#">Companion Care</a></li>
+                    <li><a href="#">Specialized Care</a></li>
+                    <li><a href="#">Respite Care</a></li>
+                    <li><a href="#">Memory Care</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><a href="#">123 Anywhere St, Any City</a></li>
+                    <li><a href="#">(123) 456-7890</a></li>
+                    <li><a href="#">info@carehive.com</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 CareHive. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Government ID document upload handling
+        const govIdCamera = document.getElementById('gov-id-camera');
+        const govIdUpload = document.getElementById('gov-id-upload');
+        const govIdPlaceholder = document.getElementById('gov-id-placeholder');
+        const govIdPreview = document.getElementById('gov-id-preview');
+        const govIdImage = document.getElementById('gov-id-image');
+        const govIdRemove = document.getElementById('gov-id-remove');
+        const govIdError = document.getElementById('gov-id-error');
+        
+        // Handle file selection for Government ID
+        function handleGovIdUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    govIdImage.src = e.target.result;
+                    govIdPlaceholder.style.display = 'none';
+                    govIdPreview.classList.add('visible');
+                    govIdError.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        govIdCamera.addEventListener('change', handleGovIdUpload);
+        govIdUpload.addEventListener('change', handleGovIdUpload);
+        
+        // Handle removal of Government ID
+        govIdRemove.addEventListener('click', function() {
+            govIdImage.src = '#';
+            govIdPlaceholder.style.display = 'block';
+            govIdPreview.classList.remove('visible');
+            govIdCamera.value = '';
+            govIdUpload.value = '';
+        });
+        
+        // Proof of Residence document upload handling
+        const residenceCamera = document.getElementById('residence-camera');
+        const residenceUpload = document.getElementById('residence-upload');
+        const residencePlaceholder = document.getElementById('residence-placeholder');
+        const residencePreview = document.getElementById('residence-preview');
+        const residenceImage = document.getElementById('residence-image');
+        const residenceRemove = document.getElementById('residence-remove');
+        const residenceError = document.getElementById('residence-error');
+        
+        // Handle file selection for Proof of Residence
+        function handleResidenceUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    residenceImage.src = e.target.result;
+                    residencePlaceholder.style.display = 'none';
+                    residencePreview.classList.add('visible');
+                    residenceError.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        residenceCamera.addEventListener('change', handleResidenceUpload);
+        residenceUpload.addEventListener('change', handleResidenceUpload);
+        
+        // Handle removal of Proof of Residence
+        residenceRemove.addEventListener('click', function() {
+            residenceImage.src = '#';
+            residencePlaceholder.style.display = 'block';
+            residencePreview.classList.remove('visible');
+            residenceCamera.value = '';
+            residenceUpload.value = '';
+        });
+        
+        // Form validation
+        const form = document.getElementById('verification-form');
+        const submitButton = document.getElementById('submit-button');
+        
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Validate Government ID
+            const hasGovId = govIdCamera.files.length > 0 || govIdUpload.files.length > 0;
+            if (!hasGovId) {
+                govIdError.style.display = 'block';
+                isValid = false;
+            } else {
+                govIdError.style.display = 'none';
+            }
+            
+            // Validate Proof of Residence
+            const hasResidence = residenceCamera.files.length > 0 || residenceUpload.files.length > 0;
+            if (!hasResidence) {
+                residenceError.style.display = 'block';
+                isValid = false;
+            } else {
+                residenceError.style.display = 'none';
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+            } else {
+                // Show loading state when submitting
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+                
+                // In a real app, you would upload files to the server here
+                // For demo purposes, we'll just simulate a delay
+                
+                // After successful submission, redirect to the completion page
+                // The form action will handle this in a real implementation
+            }
+        });
+        
+        // Drag and drop functionality for document upload
+        function setupDragAndDrop(dropArea, fileInput) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.classList.add('highlight');
+            }
+            
+            function unhighlight() {
+                dropArea.classList.remove('highlight');
+            }
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                fileInput.files = files;
+                
+                // Trigger change event manually
+                const event = new Event('change');
+                fileInput.dispatchEvent(event);
+            }
+        }
+        
+        // Setup drag and drop for both document upload areas
+        setupDragAndDrop(govIdPlaceholder, govIdUpload);
+        setupDragAndDrop(residencePlaceholder, residenceUpload);
+    </script>
+</body>
+</html>

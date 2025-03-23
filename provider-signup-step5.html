@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Care Provider Signup</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .signup-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .signup-header h1 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .signup-header h1 span {
+            color: #00a896;
+        }
+        
+        .signup-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .progress-indicator::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            background-color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .progress-step.active {
+            border-color: #00a896;
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .progress-step.completed {
+            border-color: #00a896;
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .progress-step-label {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .progress-step.active .progress-step-label {
+            color: #00a896;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .document-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .document-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .document-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        
+        .document-description {
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        .required-badge {
+            background-color: #e53935;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .optional-badge {
+            background-color: #757575;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .upload-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .upload-area:hover {
+            border-color: #00a896;
+            background-color: rgba(0, 168, 150, 0.05);
+        }
+        
+        .upload-icon {
+            margin-bottom: 1rem;
+        }
+        
+        .upload-text {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-hint {
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .upload-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .upload-btn {
+            background-color: #f0f0f0;
+            color: #333;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .preview-container {
+            width: 100%;
+            margin-top: 1rem;
+            display: none; /* Hidden by default */
+        }
+        
+        .document-preview {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        .preview-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0.5rem;
+        }
+        
+        .preview-action-btn {
+            background: none;
+            border: none;
+            padding: 0.25rem;
+            font-size: 0.875rem;
+            color: #e53935;
+            cursor: pointer;
+        }
+        
+        .preview-action-btn:hover {
+            text-decoration: underline;
+        }
+        
+        .verification-note {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .verification-note svg {
+            flex-shrink: 0;
+            margin-right: 1rem;
+            margin-top: 0.25rem;
+        }
+        
+        .verification-note-content h3 {
+            font-size: 1.125rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .verification-note-content p {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .verification-note-content ul {
+            margin: 0;
+            padding-left: 1.5rem;
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        .verification-note-content li {
+            margin-bottom: 0.25rem;
+        }
+        
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .terms-checkbox input {
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .terms-checkbox label {
+            font-size: 0.875rem;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        .terms-checkbox a {
+            color: #00a896;
+            text-decoration: none;
+        }
+        
+        .terms-checkbox a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            color: #e53935;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #008080;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #00a896;
+            border: 1px solid #00a896;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f0f9f8;
+        }
+        
+        /* Hide file inputs */
+        .file-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (using object tag for HTML includes) -->
+    <object type="text/html" data="header.html" style="width:100%; height:100px; border:none;"></object>
+    
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>Verify Your <span>Identity</span></h1>
+            <p>Upload documents to complete your registration and ensure platform safety</p>
+        </div>
+        
+        <div class="progress-indicator">
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Account</div>
+            </div>
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Personal</div>
+            </div>
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Address</div>
+            </div>
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Skills</div>
+            </div>
+            <div class="progress-step active">
+                <span>5</span>
+                <div class="progress-step-label">Verify</div>
+            </div>
+        </div>
+        
+        <form id="provider-verification-form" action="verification-pending.html" method="GET">
+            <!-- Hidden fields to pass data from previous steps -->
+            <input type="hidden" id="email" name="email" value="">
+            <input type="hidden" id="password" name="password" value="">
+            <input type="hidden" id="first-name" name="first-name" value="">
+            <input type="hidden" id="last-name" name="last-name" value="">
+            <input type="hidden" id="contact-number" name="contact-number" value="">
+            <input type="hidden" id="birth-date" name="birth-date" value="">
+            <input type="hidden" id="gender" name="gender" value="">
+            <input type="hidden" id="profile-photo" name="profile-photo" value="">
+            <input type="hidden" id="street-address" name="street-address" value="">
+            <input type="hidden" id="city" name="city" value="">
+            <input type="hidden" id="province" name="province" value="">
+            <input type="hidden" id="zip-code" name="zip-code" value="">
+            <input type="hidden" id="landmark" name="landmark" value="">
+            <!-- Additional skills data hidden fields would go here -->
+            
+            <div class="document-card">
+                <div class="document-header">
+                    <div>
+                        <h3 class="document-title">Government-issued ID</h3>
+                        <p class="document-description">SSS, Driver's License, Passport, or any valid government ID</p>
+                    </div>
+                    <span class="required-badge">Required</span>
+                </div>
+                
+                <div class="upload-area" id="govt-id-upload-area">
+                    <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <p class="upload-text">Drag & drop your ID here or click to browse</p>
+                    <p class="upload-hint">Acceptable formats: JPG, PNG, PDF (max 5MB)</p>
+                    
+                    <div class="upload-actions">
+                        <button type="button" class="upload-btn" id="govt-id-camera-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                <circle cx="12" cy="13" r="4"></circle>
+                            </svg>
+                            Camera
+                        </button>
+                        <button type="button" class="upload-btn" id="govt-id-browse-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            Browse
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="preview-container" id="govt-id-preview">
+                    <img src="#" alt="Government ID preview" class="document-preview" id="govt-id-preview-img">
+                    <div class="preview-actions">
+                        <button type="button" class="preview-action-btn" id="govt-id-remove-btn">Remove</button>
+                    </div>
+                </div>
+                
+                <input type="file" id="govt-id-input" class="file-input" accept="image/*,application/pdf">
+                <input type="hidden" id="govt-id-data" name="govt-id-data">
+                <div class="error-message" id="govt-id-error">Please upload your government ID</div>
+            </div>
+            
+            <div class="document-card">
+                <div class="document-header">
+                    <div>
+                        <h3 class="document-title">NBI Clearance</h3>
+                        <p class="document-description">National Bureau of Investigation background check clearance</p>
+                    </div>
+                    <span class="required-badge">Required</span>
+                </div>
+                
+                <div class="upload-area" id="nbi-upload-area">
+                    <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <p class="upload-text">Drag & drop your NBI clearance here or click to browse</p>
+                    <p class="upload-hint">Acceptable formats: JPG, PNG, PDF (max 5MB)</p>
+                    
+                    <div class="upload-actions">
+                        <button type="button" class="upload-btn" id="nbi-camera-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                <circle cx="12" cy="13" r="4"></circle>
+                            </svg>
+                            Camera
+                        </button>
+                        <button type="button" class="upload-btn" id="nbi-browse-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            Browse
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="preview-container" id="nbi-preview">
+                    <img src="#" alt="NBI Clearance preview" class="document-preview" id="nbi-preview-img">
+                    <div class="preview-actions">
+                        <button type="button" class="preview-action-btn" id="nbi-remove-btn">Remove</button>
+                    </div>
+                </div>
+                
+                <input type="file" id="nbi-input" class="file-input" accept="image/*,application/pdf">
+                <input type="hidden" id="nbi-data" name="nbi-data">
+                <div class="error-message" id="nbi-error">Please upload your NBI clearance</div>
+            </div>
+            
+            <div class="document-card">
+                <div class="document-header">
+                    <div>
+                        <h3 class="document-title">Certification or Diploma</h3>
+                        <p class="document-description">Training certificates, diplomas, or professional credentials</p>
+                    </div>
+                    <span class="optional-badge">Optional</span>
+                </div>
+                
+                <div class="upload-area" id="cert-upload-area">
+                    <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <p class="upload-text">Drag & drop your certificates here or click to browse</p>
+                    <p class="upload-hint">Acceptable formats: JPG, PNG, PDF (max 5MB)</p>
+                    
+                    <div class="upload-actions">
+                        <button type="button" class="upload-btn" id="cert-camera-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                <circle cx="12" cy="13" r="4"></circle>
+                            </svg>
+                            Camera
+                        </button>
+                        <button type="button" class="upload-btn" id="cert-browse-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            Browse
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="preview-container" id="cert-preview">
+                    <img src="#" alt="Certificate preview" class="document-preview" id="cert-preview-img">
+                    <div class="preview-actions">
+                        <button type="button" class="preview-action-btn" id="cert-remove-btn">Remove</button>
+                    </div>
+                </div>
+                
+                <input type="file" id="cert-input" class="file-input" accept="image/*,application/pdf" multiple>
+                <input type="hidden" id="cert-data" name="cert-data">
+            </div>
+            
+            <div class="verification-note">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00a896" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <div class="verification-note-content">
+                    <h3>Important Information</h3>
+                    <p>We take your privacy seriously. All your documents will be:</p>
+                    <ul>
+                        <li>Securely stored with industry-standard encryption</li>
+                        <li>Verified by our trusted verification team</li>
+                        <li>Used only for verification purposes and never shared with clients</li>
+                        <li>Processed typically within 1-3 business days</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="terms-checkbox">
+                <input type="checkbox" id="terms-agree" name="terms-agree">
+                <label for="terms-agree">
+                    I confirm that all documents provided are authentic and valid. I authorize CareHive to verify my identity and background. I have read and agree to the <a href="terms.html" target="_blank">Terms of Service</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>.
+                </label>
+            </div>
+            <div class="error-message" id="terms-error">You must agree to the terms to continue</div>
+            
+            <div class="form-footer">
+                <button type="button" class="btn btn-secondary" id="back-btn">Back</button>
+                <button type="submit" class="btn btn-primary" id="submit-btn">Submit Documents</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        // Document preview functionality
+        function setupDocumentUpload(inputId, previewId, uploadAreaId, previewImgId, removeButtonId, errorId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            const uploadArea = document.getElementById(uploadAreaId);
+            const previewImg = document.getElementById(previewImgId);
+            const removeBtn = document.getElementById(removeButtonId);
+            const errorMsg = errorId ? document.getElementById(errorId) : null;
+            
+            // Setup browse button
+            document.getElementById(inputId.replace('-input', '-browse-btn')).addEventListener('click', () => {
+                input.click();
+            });
+            
+            // Setup camera button
+            document.getElementById(inputId.replace('-input', '-camera-btn')).addEventListener('click', () => {
+                // We'd typically handle camera capture here
+                // But for simplicity, we'll just open the file input
+                input.setAttribute('capture', 'environment');
+                input.click();
+            });
+            
+            // File input change handler
+            input.addEventListener('change', (e) => {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = (e) => {
+                        // Handle file preview
+                        if (input.files[0].type.includes('pdf')) {
+                            previewImg.src = 'icons/pdf-icon.png'; // Placeholder for PDF files
+                        } else {
+                            previewImg.src = e.target.result;
+                        }
+                        
+                        uploadArea.style.display = 'none';
+                        preview.style.display = 'block';
+                        
+                        if (errorMsg) {
+                            errorMsg.style.display = 'none';
+                        }
+                    };
+                    
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+            
+            // Remove button handler
+            removeBtn.addEventListener('click', () => {
+                input.value = '';
+                previewImg.src = '#';
+                preview.style.display = 'none';
+                uploadArea.style.display = 'flex';
+            });
+            
+            // Drag and drop functionality
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#00a896';
+                uploadArea.style.backgroundColor = 'rgba(0, 168, 150, 0.05)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = '#ddd';
+                uploadArea.style.backgroundColor = 'transparent';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#ddd';
+                uploadArea.style.backgroundColor = 'transparent';
+                
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    input.files = e.dataTransfer.files;
+                    
+                    const event = new Event('change');
+                    input.dispatchEvent(event);
+                }
+            });
+        }
+        
+        // Setup all document upload areas
+        document.addEventListener('DOMContentLoaded', () => {
+            setupDocumentUpload('govt-id-input', 'govt-id-preview', 'govt-id-upload-area', 'govt-id-preview-img', 'govt-id-remove-btn', 'govt-id-error');
+            setupDocumentUpload('nbi-input', 'nbi-preview', 'nbi-upload-area', 'nbi-preview-img', 'nbi-remove-btn', 'nbi-error');
+            setupDocumentUpload('cert-input', 'cert-preview', 'cert-upload-area', 'cert-preview-img', 'cert-remove-btn');
+            
+            // Form validation
+            const form = document.getElementById('provider-verification-form');
+            const termsAgree = document.getElementById('terms-agree');
+            const termsError = document.getElementById('terms-error');
+            const govtIdInput = document.getElementById('govt-id-input');
+            const govtIdError = document.getElementById('govt-id-error');
+            const nbiInput = document.getElementById('nbi-input');
+            const nbiError = document.getElementById('nbi-error');
+            
+            form.addEventListener('submit', (e) => {
+                let isValid = true;
+                
+                // Validate terms agreement
+                if (!termsAgree.checked) {
+                    termsError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    termsError.style.display = 'none';
+                }
+                
+                // Validate government ID
+                if (!govtIdInput.files || govtIdInput.files.length === 0) {
+                    govtIdError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    govtIdError.style.display = 'none';
+                }
+                
+                // Validate NBI clearance
+                if (!nbiInput.files || nbiInput.files.length === 0) {
+                    nbiError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    nbiError.style.display = 'none';
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    // Scroll to the first error
+                    const firstError = document.querySelector('.error-message[style="display: block"]');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+            
+            // Back button functionality
+            document.getElementById('back-btn').addEventListener('click', () => {
+                window.location.href = 'provider-skills.html'; // Go back to previous step
+            });
+            
+            // Prefill hidden fields from URL parameters (this would be used when navigating from previous steps)
+            const urlParams = new URLSearchParams(window.location.search);
+            for (const [key, value] of urlParams) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.value = value;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

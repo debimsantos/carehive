@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Family Signup</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .signup-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .signup-header h1 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .signup-header h1 span {
+            color: #00a896;
+        }
+        
+        .signup-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .progress-indicator::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .progress-indicator::after {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 75%;  /* Step 4 of 5 = 75% */
+            height: 2px;
+            background-color: #00a896;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            background-color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .progress-step.active {
+            border-color: #00a896;
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .progress-step.completed {
+            border-color: #00a896;
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .progress-step.completed::after {
+            content: "✓";
+        }
+        
+        .progress-step-label {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .progress-step.active .progress-step-label {
+            color: #00a896;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #00a896;
+            box-shadow: 0 0 0 2px rgba(0, 168, 150, 0.2);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: white;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: #00a896;
+            box-shadow: 0 0 0 2px rgba(0, 168, 150, 0.2);
+        }
+        
+        .input-hint {
+            display: block;
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        .counter-input {
+            display: flex;
+            align-items: center;
+        }
+        
+        .counter-value {
+            width: 60px;
+            text-align: center;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 0.5rem;
+        }
+        
+        .counter-button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background-color: #f0f0f0;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .counter-button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .counter-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 168, 150, 0.2);
+        }
+        
+        .counter-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .toggle-label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+        }
+        
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #00a896;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(22px);
+        }
+        
+        .child-list {
+            margin-top: 1rem;
+        }
+        
+        .child-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        
+        .child-number {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .child-age {
+            flex: 1;
+        }
+        
+        .child-gender {
+            flex: 1;
+        }
+        
+        .remove-child {
+            color: #e53935;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .add-child-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #f0f9f8;
+            color: #00a896;
+            border: 1px dashed #00a896;
+            border-radius: 4px;
+            padding: 0.75rem;
+            width: 100%;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .add-child-button:hover {
+            background-color: #e0f2f1;
+        }
+        
+        .needs-description, .pets-description {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .needs-description.active, .pets-description.active {
+            display: block;
+        }
+        
+        .textarea-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #008080;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #00a896;
+            border: 1px solid #00a896;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f0f9f8;
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .error-message {
+            color: #e53935;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (using object tag for HTML includes) -->
+    <object type="text/html" data="header.html" style="width:100%; height:100px; border:none;"></object>
+    
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>Your <span>Household</span> Information</h1>
+            <p>Tell us about your family to find the right care</p>
+        </div>
+        
+        <div class="progress-indicator">
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Account</div>
+            </div>
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Personal</div>
+            </div>
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Address</div>
+            </div>
+            <div class="progress-step active">
+                <span>4</span>
+                <div class="progress-step-label">Household</div>
+            </div>
+            <div class="progress-step">
+                <span>5</span>
+                <div class="progress-step-label">Verify</div>
+            </div>
+        </div>
+        
+        <form id="household-form" action="family-signup-step5.html" method="GET">
+            <div class="form-group">
+                <label for="members-count" class="form-label">Number of Family Members</label>
+                <div class="counter-input">
+                    <button type="button" class="counter-button" id="decrease-members" disabled>-</button>
+                    <input type="number" id="members-count" name="members-count" class="counter-value" value="1" min="1" max="20" readonly>
+                    <button type="button" class="counter-button" id="increase-members">+</button>
+                </div>
+                <span class="input-hint">Include all people living in your household</span>
+            </div>
+            
+            <div class="form-group">
+                <div class="toggle-switch">
+                    <span class="toggle-label">Do you have children?</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="has-children" name="has-children">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div id="children-container" style="display: none;">
+                    <div class="child-list" id="child-list">
+                        <!-- Child items will be added here dynamically -->
+                    </div>
+                    
+                    <button type="button" class="add-child-button" id="add-child-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00a896" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                        Add Child
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="toggle-switch">
+                    <span class="toggle-label">Does anyone have special needs?</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="has-special-needs" name="has-special-needs">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div id="special-needs-description" class="needs-description">
+                    <textarea 
+                        id="special-needs-text" 
+                        name="special-needs-text" 
+                        class="form-input" 
+                        rows="3" 
+                        placeholder="Please describe the special needs or requirements"
+                        maxlength="500"
+                    ></textarea>
+                    <div class="textarea-counter">
+                        <span>Please be specific about any accommodations required</span>
+                        <span id="special-needs-counter">0/500</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="toggle-switch">
+                    <span class="toggle-label">Do you have pets?</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="has-pets" name="has-pets">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div id="pets-description" class="pets-description">
+                    <textarea 
+                        id="pets-text" 
+                        name="pets-text" 
+                        class="form-input" 
+                        rows="2" 
+                        placeholder="Please describe your pets (type and number)"
+                        maxlength="200"
+                    ></textarea>
+                    <div class="textarea-counter">
+                        <span>E.g., 2 dogs (medium-sized), 1 cat</span>
+                        <span id="pets-counter">0/200</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-footer">
+                <a href="family-signup-step3.html" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-primary" a href="family_signup5.html">Continue</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="logo footer-logo">
+                    <span class="logo-text"><span class="care-text">Care</span><span class="hive-text">Hive</span></span>
+                </div>
+                <p>
+                    Connecting compassionate caregivers with those who need them most. We're committed to enhancing quality of life through personalized, in-home care services.
+                </p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Find a Caregiver</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Personal Care</a></li>
+                    <li><a href="#">Companion Care</a></li>
+                    <li><a href="#">Specialized Care</a></li>
+                    <li><a href="#">Respite Care</a></li>
+                    <li><a href="#">Memory Care</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><a href="#">123 Anywhere St, Any City</a></li>
+                    <li><a href="#">(123) 456-7890</a></li>
+                    <li><a href="#">info@carehive.com</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 CareHive. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Family members counter
+        const decreaseMembersBtn = document.getElementById('decrease-members');
+        const increaseMembersBtn = document.getElementById('increase-members');
+        const membersCountInput = document.getElementById('members-count');
+        
+        decreaseMembersBtn.addEventListener('click', function() {
+            let currentValue = parseInt(membersCountInput.value);
+            if (currentValue > 1) {
+                membersCountInput.value = currentValue - 1;
+                
+                if (membersCountInput.value <= 1) {
+                    decreaseMembersBtn.disabled = true;
+                }
+            }
+        });
+        
+        increaseMembersBtn.addEventListener('click', function() {
+            let currentValue = parseInt(membersCountInput.value);
+            membersCountInput.value = currentValue + 1;
+            
+            if (membersCountInput.value > 1) {
+                decreaseMembersBtn.disabled = false;
+            }
+        });
+        
+        // Children toggle and management
+        const hasChildrenCheckbox = document.getElementById('has-children');
+        const childrenContainer = document.getElementById('children-container');
+        const childList = document.getElementById('child-list');
+        const addChildButton = document.getElementById('add-child-button');
+        
+        let childCount = 0;
+        
+        hasChildrenCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                childrenContainer.style.display = 'block';
+                
+                // Add first child if none exists
+                if (childCount === 0) {
+                    addChild();
+                }
+            } else {
+                childrenContainer.style.display = 'none';
+                // Clear children when unchecked
+                childList.innerHTML = '';
+                childCount = 0;
+            }
+        });
+        
+        addChildButton.addEventListener('click', addChild);
+        
+        function addChild() {
+            childCount++;
+            
+            const childItem = document.createElement('div');
+            childItem.className = 'child-item';
+            childItem.dataset.childId = childCount;
+            
+            childItem.innerHTML = `
+                <span class="child-number">Child ${childCount}</span>
+                
+                <div class="child-age">
+                    <input type="number" name="child-age-${childCount}" class="form-input" placeholder="Age" min="0" max="18" required>
+                </div>
+                
+                <div class="child-gender">
+                    <select name="child-gender-${childCount}" class="form-select" required>
+                        <option value="" disabled selected>Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <button type="button" class="remove-child" data-child-id="${childCount}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                    Remove
+                </button>
+            `;
+            
+            childList.appendChild(childItem);
+            
+            // Add event listener for the remove button
+            const removeButton = childItem.querySelector('.remove-child');
+            removeButton.addEventListener('click', function() {
+                const childId = this.dataset.childId;
+                const childElement = document.querySelector(`.child-item[data-child-id="${childId}"]`);
+                
+                childElement.remove();
+                
+                // Update child numbers
+                const remainingChildren = childList.querySelectorAll('.child-item');
+                if (remainingChildren.length === 0) {
+                    hasChildrenCheckbox.checked = false;
+                    childrenContainer.style.display = 'none';
+                    childCount = 0;
+                }
+            });
+        }
+        
+        // Special needs toggle
+        const hasSpecialNeedsCheckbox = document.getElementById('has-special-needs');
+        const specialNeedsDescription = document.getElementById('special-needs-description');
+        const specialNeedsText = document.getElementById('special-needs-text');
+        const specialNeedsCounter = document.getElementById('special-needs-counter');
+        
+        hasSpecialNeedsCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                specialNeedsDescription.classList.add('active');
+            } else {
+                specialNeedsDescription.classList.remove('active');
+                specialNeedsText.value = '';
+                updateCounter(specialNeedsText, specialNeedsCounter, 500);
+            }
+        });
+        
+        specialNeedsText.addEventListener('input', function() {
+            updateCounter(this, specialNeedsCounter, 500);
+        });
+        
+        // Pets toggle
+        const hasPetsCheckbox = document.getElementById('has-pets');
+        const petsDescription = document.getElementById('pets-description');
+        const petsText = document.getElementById('pets-text');
+        const petsCounter = document.getElementById('pets-counter');
+        
+        hasPetsCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                petsDescription.classList.add('active');
+            } else {
+                petsDescription.classList.remove('active');
+                petsText.value = '';
+                updateCounter(petsText, petsCounter, 200);
+            }
+        });
+        
+        petsText.addEventListener('input', function() {
+            updateCounter(this, petsCounter, 200);
+        });
+        
+        // Helper function to update character counter
+        function updateCounter(textarea, counter, maxLength) {
+            const currentLength = textarea.value.length;
+            counter.textContent = `${currentLength}/${maxLength}`;
+            
+            if (currentLength >= maxLength) {
+                counter.style.color = '#e53935';
+            } else {
+                counter.style.color = '#666';
+            }
+        }
+        
+        // Form validation
+        const form = document.getElementById('household-form');
+        
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Validate children if has-children is checked
+            if (hasChildrenCheckbox.checked) {
+                const childrenInputs = childList.querySelectorAll('input, select');
+                childrenInputs.forEach(input => {
+                    if (!input.value) {
+                        input.style.borderColor = '#e53935';
+                        isValid = false;
+                    } else {
+                        input.style.borderColor = '#ddd';
+                    }
+                });
+            }
+            
+            // Validate special needs description if has-special-needs is checked
+            if (hasSpecialNeedsCheckbox.checked && !specialNeedsText.value.trim()) {
+                specialNeedsText.style.borderColor = '#e53935';
+                isValid = false;
+            } else {
+                specialNeedsText.style.borderColor = '#ddd';
+            }
+            
+            // Validate pets description if has-pets is checked
+            if (hasPetsCheckbox.checked && !petsText.value.trim()) {
+                petsText.style.borderColor = '#e53935';
+                isValid = false;
+            } else {
+                petsText.style.borderColor = '#ddd';
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

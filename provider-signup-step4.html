@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Care Provider Signup</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .signup-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .signup-header h1 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .signup-header h1 span {
+            color: #00a896;
+        }
+        
+        .signup-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .progress-indicator::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            background-color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .progress-step.active {
+            border-color: #00a896;
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .progress-step.completed {
+            border-color: #00a896;
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .progress-step-label {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .progress-step.active .progress-step-label {
+            color: #00a896;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #00a896;
+            box-shadow: 0 0 0 2px rgba(0, 168, 150, 0.2);
+        }
+        
+        .input-hint {
+            display: block;
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-checkbox {
+            display: none;
+        }
+        
+        .service-label {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .service-label:hover {
+            border-color: #00a896;
+        }
+        
+        .service-checkbox:checked + .service-label {
+            border-color: #00a896;
+            background-color: rgba(0, 168, 150, 0.1);
+        }
+        
+        .service-checkbox:checked + .service-label .custom-checkbox {
+            background-color: #00a896;
+            border-color: #00a896;
+        }
+        
+        .service-checkbox:checked + .service-label .custom-checkbox::after {
+            opacity: 1;
+        }
+        
+        .custom-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #aaa;
+            border-radius: 3px;
+            margin-right: 0.75rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .custom-checkbox::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 6px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .language-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .language-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .language-checkbox {
+            margin-right: 0.5rem;
+        }
+        
+        .proficiency-select {
+            margin-left: auto;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+        
+        .experience-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        textarea.form-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .availability-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .availability-option {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .availability-checkbox {
+            display: none;
+        }
+        
+        .availability-label {
+            display: block;
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .availability-label:hover {
+            border-color: #00a896;
+        }
+        
+        .availability-checkbox:checked + .availability-label {
+            border-color: #00a896;
+            background-color: rgba(0, 168, 150, 0.1);
+            color: #00a896;
+            font-weight: 600;
+        }
+        
+        .skills-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .skill-tag {
+            background-color: rgba(0, 168, 150, 0.1);
+            color: #00a896;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .remove-tag {
+            width: 16px;
+            height: 16px;
+            margin-left: 0.5rem;
+            background-color: #00a896;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        
+        .skill-input-container {
+            position: relative;
+            margin-top: 0.5rem;
+        }
+        
+        .skill-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+        }
+        
+        .suggestion-item {
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+        }
+        
+        .suggestion-item:hover {
+            background-color: #f0f9f8;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #008080;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #00a896;
+            border: 1px solid #00a896;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f0f9f8;
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .error-message {
+            color: #e53935;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        @media (max-width: 576px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (using object tag for HTML includes) -->
+    <object type="text/html" data="header.html" style="width:100%; height:100px; border:none;"></object>
+    
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>Your <span>Skills</span> & Experience</h1>
+            <p>Share your expertise to match with the right families</p>
+        </div>
+        
+        <div class="progress-indicator">
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Account</div>
+            </div>
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Personal</div>
+            </div>
+            <div class="progress-step completed">
+                <span>✓</span>
+                <div class="progress-step-label">Address</div>
+            </div>
+            <div class="progress-step active">
+                <span>4</span>
+                <div class="progress-step-label">Skills</div>
+            </div>
+            <div class="progress-step">
+                <span>5</span>
+                <div class="progress-step-label">Verify</div>
+            </div>
+        </div>
+        
+        <form id="provider-skills-form" action="provider-signup-step5.html" method="GET">
+            <!-- Hidden fields to pass data from previous steps -->
+            <input type="hidden" id="email" name="email" value="">
+            <input type="hidden" id="password" name="password" value="">
+            <input type="hidden" id="first-name" name="first-name" value="">
+            <input type="hidden" id="last-name" name="last-name" value="">
+            <input type="hidden" id="contact-number" name="contact-number" value="">
+            <input type="hidden" id="birth-date" name="birth-date" value="">
+            <input type="hidden" id="gender" name="gender" value="">
+            <input type="hidden" id="profile-photo" name="profile-photo" value="">
+            <input type="hidden" id="street-address" name="street-address" value="">
+            <input type="hidden" id="city" name="city" value="">
+            <input type="hidden" id="province" name="province" value="">
+            <input type="hidden" id="zip-code" name="zip-code" value="">
+            <input type="hidden" id="landmark" name="landmark" value="">
+            
+            <div class="form-group">
+                <label class="form-label">Services You Provide</label>
+                <span class="input-hint">Select all that apply</span>
+                <div class="services-grid">
+                    <div>
+                        <input type="checkbox" id="service-childcare" name="services[]" value="Child Care" class="service-checkbox">
+                        <label for="service-childcare" class="service-label">
+                            <div class="custom-checkbox"></div>
+                            <span>Child Care</span>
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="service-senior" name="services[]" value="Senior Care" class="service-checkbox">
+                        <label for="service-senior" class="service-label">
+                            <div class="custom-checkbox"></div>
+                            <span>Senior Care</span>
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="service-housekeeping" name="services[]" value="Housekeeping" class="service-checkbox">
+                        <label for="service-housekeeping" class="service-label">
+                            <div class="custom-checkbox"></div>
+                            <span>Housekeeping</span>
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="service-tutoring" name="services[]" value="Tutoring" class="service-checkbox">
+                        <label for="service-tutoring" class="service-label">
+                            <div class="custom-checkbox"></div>
+                            <span>Tutoring</span>
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="service-pet" name="services[]" value="Pet Sitting" class="service-checkbox">
+                        <label for="service-pet" class="service-label">
+                            <div class="custom-checkbox"></div>
+                            <span>Pet Sitting</span>
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="service-cooking" name="services[]" value="Cooking/Meal Prep" class="service-checkbox">
+                        <label for="service-cooking" class="service-label">
+                            <div class="custom-checkbox"></div>
+                            <span>Cooking/Meal Prep</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="error-message" id="services-error">Please select at least one service</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="experience" class="form-label">Years of Experience</label>
+                <select id="experience" name="experience" class="form-input" required>
+                    <option value="" disabled selected>Select your experience level</option>
+                    <option value="0-1">Less than 1 year</option>
+                    <option value="1-2">1-2 years</option>
+                    <option value="3-5">3-5 years</option>
+                    <option value="5-10">5-10 years</option>
+                    <option value="10+">More than 10 years</option>
+                </select>
+                <div class="error-message" id="experience-error">Please select your experience level</div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Languages</label>
+                <div class="language-container">
+                    <div class="language-item">
+                        <input type="checkbox" id="language-filipino" name="languages[]" value="Filipino" class="language-checkbox" checked disabled>
+                        <label for="language-filipino">Filipino</label>
+                        <select name="filipino-level" class="proficiency-select">
+                            <option value="native" selected>Native</option>
+                            <option value="fluent">Fluent</option>
+                            <option value="conversational">Conversational</option>
+                            <option value="basic">Basic</option>
+                        </select>
+                    </div>
+                    <div class="language-item">
+                        <input type="checkbox" id="language-english" name="languages[]" value="English" class="language-checkbox">
+                        <label for="language-english">English</label>
+                        <select name="english-level" class="proficiency-select">
+                            <option value="native">Native</option>
+                            <option value="fluent" selected>Fluent</option>
+                            <option value="conversational">Conversational</option>
+                            <option value="basic">Basic</option>
+                        </select>
+                    </div>
+                    <div class="language-item">
+                        <input type="checkbox" id="language-chinese" name="languages[]" value="Chinese" class="language-checkbox">
+                        <label for="language-chinese">Chinese</label>
+                        <select name="chinese-level" class="proficiency-select">
+                            <option value="native">Native</option>
+                            <option value="fluent">Fluent</option>
+                            <option value="conversational">Conversational</option>
+                            <option value="basic" selected>Basic</option>
+                        </select>
+                    </div>
+                    <div class="language-item">
+                        <input type="checkbox" id="language-spanish" name="languages[]" value="Spanish" class="language-checkbox">
+                        <label for="language-spanish">Spanish</label>
+                        <select name="spanish-level" class="proficiency-select">
+                            <option value="native">Native</option>
+                            <option value="fluent">Fluent</option>
+                            <option value="conversational">Conversational</option>
+                            <option value="basic" selected>Basic</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Availability</label>
+                <div class="availability-options">
+                    <div class="availability-option">
+                        <input type="checkbox" id="availability-full" name="availability[]" value="Full-time" class="availability-checkbox">
+                        <label for="availability-full" class="availability-label">Full-time</label>
+                    </div>
+                    <div class="availability-option">
+                        <input type="checkbox" id="availability-part" name="availability[]" value="Part-time" class="availability-checkbox">
+                        <label for="availability-part" class="availability-label">Part-time</label>
+                    </div>
+                    <div class="availability-option">
+                        <input type="checkbox" id="availability-weekend" name="availability[]" value="Weekends" class="availability-checkbox">
+                        <label for="availability-weekend" class="availability-label">Weekends</label>
+                    </div>
+                    <div class="availability-option">
+                        <input type="checkbox" id="availability-evening" name="availability[]" value="Evenings" class="availability-checkbox">
+                        <label for="availability-evening" class="availability-label">Evenings</label>
+                    </div>
+                </div>
+                <div class="error-message" id="availability-error">Please select at least one availability option</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="skills-list" class="form-label">Special Skills</label>
+                <div class="tags-container" id="skills-tags">
+                    <!-- Tags will be added here dynamically -->
+                </div>
+                <div class="skill-input-container">
+                    <input type="text" id="skill-input" class="form-input" placeholder="Type a skill and press Enter (e.g., First Aid, Cooking, Music)">
+                    <div class="skill-suggestions" id="skill-suggestions">
+                        <!-- Suggestions will appear here -->
+                    </div>
+                </div>
+                <input type="hidden" id="skills-list" name="skills" value="">
+                <span class="input-hint">Add skills that make you stand out</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="bio" class="form-label">About Me</label>
+                <textarea id="bio" name="bio" class="form-input" placeholder="Tell families about yourself, your experience, and why you're a great caregiver..."></textarea>
+                <span class="input-hint">Minimum 50 characters</span>
+                <div class="error-message" id="bio-error">Please write at least 50 characters</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="hourly-rate" class="form-label">Hourly Rate (PHP)</label>
+                <div class="form-row">
+                    <div class="form-col">
+                        <input type="number" id="hourly-rate" name="hourly-rate" class="form-input" placeholder="Enter your hourly rate" min="50" required>
+                        <div class="error-message" id="hourly-rate-error">Please enter a valid hourly rate (minimum ₱50)</div>
+                    </div>
+                </div>
+                <span class="input-hint">Recommended rate: ₱65-150 based on experience and services</span>
+            </div>
+            
+            <div class="form-footer">
+                <a href="provider-signup-step3.html" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-primary">Continue</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="logo footer-logo">
+                    <span class="logo-text"><span class="care-text">Care</span><span class="hive-text">Hive</span></span>
+                </div>
+                <p>
+                    Connecting compassionate caregivers with those who need them most. We're committed to enhancing quality of life through personalized, in-home care services.
+                </p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Find a Caregiver</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Personal Care</a></li>
+                    <li><a href="#">Companion Care</a></li>
+                    <li><a href="#">Specialized Care</a></li>
+                    <li><a href="#">Respite Care</a></li>
+                    <li><a href="#">Memory Care</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><a href="#">123 Anywhere St, Any City</a></li>
+                    <li><a href="#">(123) 456-7890</a></li>
+                    <li><a href="#">info@carehive.ph</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 CareHive. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Get URL parameters from previous steps
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Set hidden form fields from previous steps
+        document.getElementById('email').value = urlParams.get('email') || '';
+        document.getElementById('password').value = urlParams.get('password') || '';
+        document.getElementById('first-name').value = urlParams.get('first-name') || '';
+        document.getElementById('last-name').value = urlParams.get('last-name') || '';
+        document.getElementById('contact-number').value = urlParams.get('contact-number') || '';
+        document.getElementById('birth-date').value = urlParams.get('birth-date') || '';
+        document.getElementById('gender').value = urlParams.get('gender') || '';
+        document.getElementById('profile-photo').value = urlParams.get('profile-photo') || '';
+        document.getElementById('street-address').value = urlParams.get('street-address') || '';
+        document.getElementById('city').value = urlParams.get('city') || '';
+        document.getElementById('province').value = urlParams.get('province') || '';
+        document.getElementById('zip-code').value = urlParams.get('zip-code') || '';
+        document.getElementById('landmark').value = urlParams.get('landmark') || '';
+        
+        // Skills management
+        const skillInput = document.getElementById('skill-input');
+        const skillsTagsContainer = document.getElementById('skills-tags');
+        const skillsListInput = document.getElementById('skills-list');
+        const skillSuggestions = document.getElementById('skill-suggestions');
+        
+        // Sample skill suggestions
+        const suggestedSkills = [
+            'First Aid', 'CPR Certified', 'Cooking', 'Driving', 'Swimming', 
+            'Music', 'Art', 'Teaching', 'Special Needs Care', 'Dementia Care', 
+            'Medication Management', 'Mobility Assistance', 'Infant Care',
+            'Tutoring', 'Cleaning', 'Computer Skills', 'Gardening'
+        ];
+        
+        // Current skills
+        let skills = [];
+        
+        // Show skill suggestions
+        skillInput.addEventListener('input', function () {
+    const inputValue = this.value.trim().toLowerCase();
+
+    if (inputValue.length < 2) {
+        skillSuggestions.style.display = 'none';
+        return;
+    }
+
+        // Clear previous suggestions
+        skillSuggestions.innerHTML = '';
+
+        const matchedSuggestions = suggestedSkills.filter(skill =>
+            skill.toLowerCase().includes(inputValue) && !skills.includes(skill)
+        );
+
+        if (matchedSuggestions.length > 0) {
+            matchedSuggestions.forEach(suggestion => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.textContent = suggestion;
+
+                item.addEventListener('click', function () {
+                    addSkill(suggestion);
+                    skillInput.value = '';
+                    skillSuggestions.style.display = 'none';
+                });
+
+                skillSuggestions.appendChild(item);
+            });
+
+            skillSuggestions.style.display = 'block';
+        } else {
+            skillSuggestions.style.display = 'none';
+        }
+    });
+
+        
+        // Add skill on Enter
+        skillInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const skill = this.value.trim();
+                if (skill && !skills.includes(skill)) {
+                    addSkill(skill);
+                    this.value = '';
+                    skillSuggestions.style.display = 'none';
+                }
+            }
+        });
+        
+        // Click outside to close suggestions
+        document.addEventListener('click', function(e) {
+            if (!skillInput.contains(e.target) && !skillSuggestions.contains(e.target)) {
+                skillSuggestions.style.display = 'none';
+            }
+        });
+        
+        // Add skill function
+        function addSkill(skill) {
+            if (skills.includes(skill)) return;
+            
+            skills.push(skill);
+            updateSkillsList();
+            
+            const tagElement = document.createElement('div');
+            tagElement.className = 'skill-tag';
+            tagElement.innerHTML = `
+                ${skill}
+                <span class="remove-tag" data-skill="${skill}">×</span>
+            `;
+            
+            tagElement.querySelector('.remove-tag').addEventListener('click', function() {
+                const skillToRemove = this.getAttribute('data-skill');
+                skills = skills.filter(s => s !== skillToRemove);
+                updateSkillsList();
+                tagElement.remove();
+            });
+            
+            skillsTagsContainer.appendChild(tagElement);
+        }
+        
+        // Update hidden input with skills
+        function updateSkillsList() {
+            skillsListInput.value = skills.join(',');
+        }
+        
+        // Language checkboxes
+        const languageCheckboxes = document.querySelectorAll('.language-checkbox');
+        
+        languageCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const proficiencySelect = this.parentElement.querySelector('select');
+                proficiencySelect.disabled = !this.checked;
+            });
+        });
+        
+        // Initialize proficiency selects based on checkbox state
+        languageCheckboxes.forEach(checkbox => {
+            const proficiencySelect = checkbox.parentElement.querySelector('select');
+            proficiencySelect.disabled = !checkbox.checked;
+        });
+        
+        // Form validation
+        const form = document.getElementById('provider-skills-form');
+        
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Check if at least one service is selected
+            const servicesSelected = document.querySelectorAll('input[name="services[]"]:checked').length > 0;
+            if (!servicesSelected) {
+                document.getElementById('services-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('services-error').style.display = 'none';
+            }
+            
+            // Check experience
+            if (!document.getElementById('experience').value) {
+                document.getElementById('experience-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('experience-error').style.display = 'none';
+            }
+            
+            // Check availability
+            const availabilitySelected = document.querySelectorAll('input[name="availability[]"]:checked').length > 0;
+            if (!availabilitySelected) {
+                document.getElementById('availability-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('availability-error').style.display = 'none';
+            }
+            
+            // Check bio
+            const bio = document.getElementById('bio').value;
+            if (bio.length < 50) {
+                document.getElementById('bio-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('bio-error').style.display = 'none';
+            }
+            
+            // Check hourly rate
+            const hourlyRate = document.getElementById('hourly-rate').value;
+            if (!hourlyRate || hourlyRate < 50) {
+                document.getElementById('hourly-rate-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('hourly-rate-error').style.display = 'none';
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+                
+                // Scroll to the first error
+                const firstError = document.querySelector('.error-message[style="display: block"]');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+        
+        // Add some default skills if provided in URL params
+        const urlSkills = urlParams.get('skills');
+        if (urlSkills) {
+            urlSkills.split(',').forEach(skill => {
+                if (skill.trim()) {
+                    addSkill(skill.trim());
+                }
+            });
+        }
+    </script>
+</body>
+</html>
