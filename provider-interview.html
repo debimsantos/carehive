@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Interview Requests</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .interviews-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        
+        .interviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .interviews-header h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .filter-tab.active {
+            color: var(--primary);
+        }
+        
+        .filter-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .interview-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+        }
+        
+        .interview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .interview-family {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0 0 0.25rem 0;
+        }
+        
+        .interview-service {
+            color: #666;
+            margin: 0;
+        }
+        
+        .interview-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .status-scheduled {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-completed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .interview-details {
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 0;
+            margin-bottom: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .detail-item p {
+            margin: 0;
+        }
+        
+        .detail-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .detail-value {
+            font-weight: 500;
+        }
+        
+        .interview-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .action-button {
+            flex: 1;
+            min-width: 120px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .action-button svg {
+            margin-right: 0.5rem;
+        }
+        
+        .action-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .secondary-action {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .secondary-action:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .danger-action {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #ef4444;
+        }
+        
+        .danger-action:hover {
+            background-color: #fecaca;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            display: none;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .close-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .empty-state {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            color: #666;
+        }
+        
+        .empty-state img {
+            width: 100px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .empty-state p {
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .interview-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .interview-actions {
+                flex-direction: column;
+            }
+            
+            .action-button {
+                width: 100%;
+            }
+            
+            .modal {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (using object tag for HTML includes) -->
+    <object type="text/html" data="header.html" style="width:100%; height:100px; border:none;"></object>
+    
+    <div class="interviews-container">
+        <div class="interviews-header">
+            <h1>Interview Requests</h1>
+            <div>
+                <span id="current-date"></span>
+            </div>
+        </div>
+        
+        <div class="filter-tabs">
+            <div class="filter-tab active">Pending</div>
+            <div class="filter-tab">Scheduled</div>
+            <div class="filter-tab">Completed</div>
+        </div>
+        
+        <div class="interview-card">
+            <div class="interview-header">
+                <div>
+                    <h3 class="interview-family">Garcia Family</h3>
+                    <p class="interview-service">Child Care, Tutoring</p>
+                </div>
+                <span class="interview-status status-pending">Pending</span>
+            </div>
+            
+            <div class="interview-details">
+                <div class="detail-item">
+                    <p class="detail-label">Requested Date</p>
+                    <p class="detail-value">March 24, 2025</p>
+                </div>
+                <div class="detail-item">
+                    <p class="detail-label">Requested Time</p>
+                    <p class="detail-value">10:00 AM</p>
+                </div>
+                <div class="detail-item">
+                    <p class="detail-label">Location</p>
+                    <p class="detail-value">Makati City</p>
+                </div>
+                <div class="detail-item">
+                    <p class="detail-label">Request Date</p>
+                    <p class="detail-value">March 20, 2025</p>
+                </div>
+            </div>
+            
+            <div class="interview-actions">
+                <button class="action-button" id="accept-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Accept
+                </button>
+                <button class="action-button secondary-action" id="reschedule-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Suggest Time
+                </button>
+                <button class="action-button danger-action">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                    Decline
+                </button>
+            </div>
+        </div>
+        
+        <div class="interview-card">
+            <div class="interview-header">
+                <div>
+                    <h3 class="interview-family">Torres Family</h3>
+                    <p class="interview-service">Senior Care</p>
+                </div>
+                <span class="interview-status status-scheduled">Scheduled</span>
+            </div>
+            
+            <div class="interview-details">
+                <div class="detail-item">
+                    <p class="detail-label">Interview Date</p>
+                    <p class="detail-value">March 25, 2025</p>
+                </div>
+                <div class="detail-item">
+                    <p class="detail-label">Interview Time</p>
+                    <p class="detail-value">2:30 PM</p>
+                </div>
+                <div class="detail-item">
+                    <p class="detail-label">Location</p>
+                    <p class="detail-value">Quezon City</p>
+                </div>
+                <div class="detail-item">
+                    <p class="detail-label">Status</p>
+                    <p class="detail-value">Confirmed</p>
+                </div>
+            </div>
+            
+            <div class="interview-actions">
+                <button class="action-button secondary-action">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    Message
+                </button>
+                <button class="action-button danger-action">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                    Cancel
+                </button>
+            </div>
+        </div>
+        
+        <div class="interview-card">
+            <div class="interview-header">
+                <div>
+                    <h3 class="interview-family">Mendoza Family</h3>
+                    <p class="interview-service">Child Care</p>
+                </div>
+                <span class="interview-status status-completed">Completed</span>
+            </div>
+            
+            <div class="interview-details">
+                <div class="detail-item">
+                    <p class="detail-label">Interview Date</p>
+                    <p class="detail-value">March 15, 2025</p>
+                </div>
+                <div class="detail-item">
+                    <p class="detail-label">Interview Time</p>
+                    <p class="detail-value">11:00 AM</p>
+                </div>
+                <div class="detail-item">
+                    <p class="detail-label">Location</p>
+                    <p class="detail-value">Pasig City</p>
+                </div>
+                <div class="detail-item">
+                    <p class="detail-label">Result</p>
+                    <p class="detail-value">Job Offer Received</p>
+                </div>
+            </div>
+            
+            <div class="interview-actions">
+                <button class="action-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    View Job Offer
+                </button>
+                <button class="action-button secondary-action">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    Message
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div class="modal-overlay" id="reschedule-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Suggest Alternative Time</h3>
+                <button class="close-button">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="form-group">
+                    <label for="alt-date">Suggested Date</label>
+                    <input type="date" id="alt-date">
+                </div>
+                <div class="form-group">
+                    <label for="alt-time">Suggested Time</label>
+                    <input type="time" id="alt-time">
+                </div>
+                <div class="form-group">
+                    <label for="alt-message">Message (Optional)</label>
+                    <textarea id="alt-message" placeholder="Explain why you need to reschedule..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button class="action-button secondary-action close-modal">Cancel</button>
+                    <button class="action-button">Send Suggestion</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="logo footer-logo">
+                    <span class="logo-text"><span class="care-text">Care</span><span class="hive-text">Hive</span></span>
+                </div>
+                <p>
+                    Connecting compassionate caregivers with those who need them most. We're committed to enhancing quality of life through personalized, in-home care services.
+                </p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Find a Caregiver</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Child Care</a></li>
+                    <li><a href="#">Pet Sitting</a></li>
+                    <li><a href="#">Senior Care</a></li>
+                    <li><a href="#">Housekeeping</a></li>
+                    <li><a href="#">Tutoring</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><a href="#">123 Anywhere St, Any City</a></li>
+                    <li><a href="#">(123) 456-7890</a></li>
+                    <li><a href="#">info@carehive.com</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 CareHive. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Display current date
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
+        
+        // Tab switching functionality
+        const tabs = document.querySelectorAll('.filter-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                // In a real application, this would filter the interviews
+            });
+        });
+        
+        // Modal functionality
+        const rescheduleBtn = document.getElementById('reschedule-btn');
+        const rescheduleModal = document.getElementById('reschedule-modal');
+        const closeButtons = document.querySelectorAll('.close-button, .close-modal');
+        
+        rescheduleBtn.addEventListener('click', () => {
+            rescheduleModal.style.display = 'flex';
+        });
+        
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                rescheduleModal.style.display = 'none';
+            });
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === rescheduleModal) {
+                rescheduleModal.style.display = 'none';
+            }
+        });
+        
+        // Set default date and time for reschedule modal
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        const dateInput = document.getElementById('alt-date');
+        const formattedDate = tomorrow.toISOString().split('T')[0];
+        dateInput.value = formattedDate;
+        
+        const timeInput = document.getElementById('alt-time');
+        timeInput.value = '10:00';
+    </script>
+</body>
+</html>

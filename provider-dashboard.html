@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Provider Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .dashboard-header h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        .welcome-banner {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .welcome-text h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+        }
+        
+        .welcome-text p {
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        .welcome-stats {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 1rem;
+            min-width: 200px;
+        }
+        
+        .welcome-stats div {
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome-stats span {
+            display: block;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+        
+        .dashboard-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-header h3 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .card-header a {
+            color: var(--accent);
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+        
+        .empty-state {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            color: #666;
+        }
+        
+        .empty-state img {
+            width: 100px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .empty-state p {
+            margin-bottom: 1rem;
+        }
+        
+        .update-availability {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .update-availability p {
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .status-toggle {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--accent);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .booking-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .booking-item {
+            border-bottom: 1px solid #eee;
+            padding: 1rem 0;
+        }
+        
+        .booking-item:last-child {
+            border-bottom: none;
+        }
+        
+        .booking-family {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .booking-service {
+            color: #666;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .booking-time {
+            display: flex;
+            align-items: center;
+            color: #333;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .booking-time svg {
+            margin-right: 0.5rem;
+        }
+        
+        .booking-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .action-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .secondary-action {
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+        
+        .secondary-action:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .earnings-summary {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .earnings-card {
+            flex: 1;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .earnings-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: block;
+        }
+        
+        .earnings-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .notification {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .notification:last-child {
+            border-bottom: none;
+        }
+        
+        .notification-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-text {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .notification-time {
+            color: #666;
+            font-size: 0.8rem;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .welcome-stats {
+                margin-top: 1rem;
+                width: 100%;
+            }
+            
+            .earnings-summary {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (using object tag for HTML includes) -->
+    <object type="text/html" data="header.html" style="width:100%; height:100px; border:none;"></object>
+    
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Provider Dashboard</h1>
+            <div>
+                <span id="current-date"></span>
+            </div>
+        </div>
+        
+        <div class="welcome-banner">
+            <div class="welcome-text">
+                <h2>Welcome back, Maria!</h2>
+                <p>Here's your activity summary and upcoming bookings.</p>
+            </div>
+            <div class="welcome-stats">
+                <div>
+                    <span class="stat-value">₱4,250</span>
+                    <span class="stat-label">Available Balance</span>
+                </div>
+                <div>
+                    <span class="stat-value">4.9</span>
+                    <span class="stat-label">Average Rating</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-grid">
+            <div class="main-content">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Upcoming Bookings</h3>
+                        <a href="bookings.html">View All</a>
+                    </div>
+                    
+                    <ul class="booking-list">
+                        <li class="booking-item">
+                            <span class="booking-family">Reyes Family</span>
+                            <span class="booking-service">Child Care</span>
+                            <div class="booking-time">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                Tomorrow, 9:00 AM - 1:00 PM
+                            </div>
+                            <div class="booking-actions">
+                                <button class="action-button">Start Shift</button>
+                                <button class="action-button secondary-action">Message</button>
+                            </div>
+                        </li>
+                        <li class="booking-item">
+                            <span class="booking-family">Santos Family</span>
+                            <span class="booking-service">Senior Care</span>
+                            <div class="booking-time">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                March 25, 2:00 PM - 6:00 PM
+                            </div>
+                            <div class="booking-actions">
+                                <button class="action-button secondary-action">Message</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Pending Interview Requests</h3>
+                        <a href="interviews.html">View All</a>
+                    </div>
+                    
+                    <ul class="booking-list">
+                        <li class="booking-item">
+                            <span class="booking-family">Garcia Family</span>
+                            <span class="booking-service">Child Care, Tutoring</span>
+                            <div class="booking-time">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                Requested for March 24, 10:00 AM
+                            </div>
+                            <div class="booking-actions">
+                                <button class="action-button">Accept</button>
+                                <button class="action-button secondary-action">Suggest Time</button>
+                                <button class="action-button secondary-action">Decline</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Earnings Summary</h3>
+                        <a href="earnings.html">View Details</a>
+                    </div>
+                    
+                    <div class="earnings-summary">
+                        <div class="earnings-card">
+                            <span class="earnings-value">₱5,600</span>
+                            <span class="earnings-label">This Month</span>
+                        </div>
+                        <div class="earnings-card">
+                            <span class="earnings-value">₱23,450</span>
+                            <span class="earnings-label">Total Earnings</span>
+                        </div>
+                        <div class="earnings-card">
+                            <span class="earnings-value">8</span>
+                            <span class="earnings-label">Completed Jobs</span>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-actions" style="text-align: center; margin-top: 1rem;">
+                        <button class="action-button">Withdraw Funds</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="dashboard-card">
+                    <div class="update-availability">
+                        <p><strong>Work Availability</strong></p>
+                        <div class="status-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            Available for new bookings
+                        </div>
+                    </div>
+                    
+                    <div class="card-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem;">
+                        <a href="availability.html" style="text-decoration: none;">
+                            <div style="background-color: #f3f4f6; padding: 0.75rem; border-radius: 8px; text-align: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 0.5rem; display: block; color: var(--primary);">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span style="font-size: 0.8rem; color: #111827;">Update Schedule</span>
+                            </div>
+                        </a>
+                        <a href="profile.html" style="text-decoration: none;">
+                            <div style="background-color: #f3f4f6; padding: 0.75rem; border-radius: 8px; text-align: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 0.5rem; display: block; color: var(--primary);">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <span style="font-size: 0.8rem; color: #111827;">Edit Profile</span>
+                            </div>
+                        </a>
+                        <a href="messages.html" style="text-decoration: none;">
+                            <div style="background-color: #f3f4f6; padding: 0.75rem; border-radius: 8px; text-align: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 0.5rem; display: block; color: var(--primary);">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                <span style="font-size: 0.8rem; color: #111827;">Messages</span>
+                            </div>
+                        </a>
+                        <a href="earnings.html" style="text-decoration: none;">
+                            <div style="background-color: #f3f4f6; padding: 0.75rem; border-radius: 8px; text-align: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 0.5rem; display: block; color: var(--primary);">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                                <span style="font-size: 0.8rem; color: #111827;">View Earnings</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Recent Notifications</h3>
+                        <a href="notifications.html">View All</a>
+                    </div>
+                    
+                    <div class="notification">
+                        <div class="notification-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <div class="notification-content">
+                            <p class="notification-text">Your document verification has been completed!</p>
+                            <span class="notification-time">Today, 10:30 AM</span>
+                        </div>
+                    </div>
+                    
+                    <div class="notification">
+                        <div class="notification-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+                                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                <line x1="4" y1="22" x2="4" y2="15"></line>
+                            </svg>
+                        </div>
+                        <div class="notification-content">
+                            <p class="notification-text">You've received a 5-star rating from the Reyes family!</p>
+                            <span class="notification-time">Yesterday, 5:45 PM</span>
+                        </div>
+                    </div>
+                    
+                    <div class="notification">
+                        <div class="notification-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="notification-content">
+                            <p class="notification-text">New booking request from Santos family</p>
+                            <span class="notification-time">Mar 18, 2:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="logo footer-logo">
+                    <span class="logo-text"><span class="care-text">Care</span><span class="hive-text">Hive</span></span>
+                </div>
+                <p>
+                    Connecting compassionate caregivers with those who need them most. We're committed to enhancing quality of life through personalized, in-home care services.
+                </p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Find a Caregiver</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Child Care</a></li>
+                    <li><a href="#">Pet Sitting</a></li>
+                    <li><a href="#">Senior Care</a></li>
+                    <li><a href="#">Housekeeping</a></li>
+                    <li><a href="#">Tutoring</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><a href="#">123 Anywhere St, Any City</a></li>
+                    <li><a href="#">(123) 456-7890</a></li>
+                    <li><a href="#">info@carehive.com</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 CareHive. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Display current date
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
+    </script>
+</body>
+</html>
