@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Provider Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+</head>
+<body class="pb-20">
+    <!-- Header -->
+    <header class="bg-white p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="logo">
+            <a href="index.html" class="logo-text">
+                <span class="care-text">Care</span><span class="hive-text">Hive</span>
+            </a>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <div class="h-10 w-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+                    <span class="font-semibold">MD</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-green-500 rounded-full h-3 w-3 border-2 border-white"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+   
+
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2">
+        <a href="provider-dashboard.html" class="nav-item active flex flex-col items-center text-primary px-3 py-1">
+            <i data-feather="home" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Home</span>
+        </a>
+        <a href="provider-booking.html" class="nav-item flex flex-col items-center text-gray-500 px-3 py-1">
+            <i data-feather="calendar" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Bookings</span>
+        </a>
+        <a href="messages.html" class="nav-item flex flex-col items-center text-gray-500 px-3 py-1">
+            <i data-feather="message-square" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Messages</span>
+        </a>
+        <a href="provider-profile.html" class="nav-item flex flex-col items-center text-gray-500 px-3 py-1">
+            <i data-feather="user" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Profile</span>
+        </a>
+    </nav>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            // Toggle availability functionality
+            const toggle = document.getElementById('availability-toggle');
+            const toggleThumb = document.getElementById('toggle-thumb');
+            let isAvailable = true;
+            
+            toggle.addEventListener('click', function() {
+                isAvailable = !isAvailable;
+                
+                if (isAvailable) {
+                    toggle.querySelector('label').classList.add('bg-teal-600');
+                    toggle.querySelector('label').classList.remove('bg-gray-300');
+                    toggleThumb.style.transform = 'translateX(24px)';
+                } else {
+                    toggle.querySelector('label').classList.remove('bg-teal-600');
+                    toggle.querySelector('label').classList.add('bg-gray-300');
+                    toggleThumb.style.transform = 'translateX(0px)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
