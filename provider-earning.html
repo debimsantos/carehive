@@ -3,631 +3,485 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CareHive - Earnings & Wallet</title>
+    <title>CareHive - Provider Earnings</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
     <style>
-        .earnings-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1.5rem;
+        .nav-item.active {
+            color: #0D9488;
         }
-        
-        .earnings-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .earnings-header h1 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin: 0;
-        }
-        
-        .earnings-overview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .earnings-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        .wallet-card {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .earnings-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin: 0.5rem 0;
-        }
-        
-        .earnings-label {
-            color: #666;
-            margin: 0;
-        }
-        
-        .wallet-card .earnings-label {
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .earnings-growth {
-            display: flex;
-            align-items: center;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .growth-positive {
-            color: #047857;
-        }
-        
-        .growth-negative {
-            color: #b91c1c;
-        }
-        
-        .wallet-card .growth-positive {
-            color: #d1fae5;
-        }
-        
-        .wallet-actions {
-            display: flex;
-            margin-top: 1rem;
-            gap: 0.5rem;
-        }
-        
-        .wallet-action {
-            background-color: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 8px;
-            padding: 0.75rem;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s;
-        }
-        
-        .wallet-action:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .wallet-action svg {
-            margin-right: 0.5rem;
-        }
-        
-        .filter-tabs {
-            display: flex;
-            border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 1.5rem;
-        }
-        
-        .filter-tab {
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-            position: relative;
-        }
-        
-        .filter-tab.active {
-            color: var(--primary);
-        }
-        
-        .filter-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--primary);
-        }
-        
-        .transaction-list {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-        }
-        
-        .transaction-header {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            background-color: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .transaction-header p {
-            margin: 0;
-            font-weight: 500;
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-        
-        .transaction-item {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-            align-items: center;
-        }
-        
-        .transaction-item:last-child {
-            border-bottom: none;
-        }
-        
-        .transaction-item p {
-            margin: 0;
-        }
-        
-        .transaction-icon {
-            display: flex;
-            align-items: center;
-        }
-        
-        .icon-wrapper {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 0.75rem;
-        }
-        
-        .income-icon {
-            background-color: #d1fae5;
-            color: #047857;
-        }
-        
-        .withdrawal-icon {
-            background-color: #fee2e2;
-            color: #b91c1c;
-        }
-        
-        .transaction-details {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .transaction-name {
-            font-weight: 500;
-        }
-        
-        .transaction-date {
-            font-size: 0.85rem;
-            color: #6b7280;
-        }
-        
-        .transaction-amount {
-            font-weight: 600;
-        }
-        
-        .income-amount {
-            color: #047857;
-        }
-        
-        .withdrawal-amount {
-            color: #b91c1c;
-        }
-        
-        .transaction-status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            width: fit-content;
-        }
-        
-        .status-completed {
-            background-color: #d1fae5;
-            color: #047857;
-        }
-        
-        .status-pending {
-            background-color: #fee2e2;
-            color: #b91c1c;
-        }
-        
-        .status-processing {
-            background-color: #dbeafe;
-            color: #1e40af;
-        }
-        
-        .withdrawal-form {
-            background-color: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            margin-top: 2rem;
-        }
-        
-        .withdrawal-form h2 {
-            margin-top: 0;
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        
-        .withdrawal-button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .withdrawal-button:hover {
-            background-color: var(--primary-dark);
-        }
-        
-        @media (max-width: 768px) {
-            .transaction-header {
-                display: none;
-            }
-            
-            .transaction-item {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-            
-            .transaction-amount {
-                text-align: left;
-            }
+        .section-tabs .active {
+            color: #0D9488;
+            border-bottom: 2px solid #0D9488;
         }
     </style>
 </head>
-<body>
-    <!-- Header (using object tag for HTML includes) -->
-    <object type="text/html" data="header.html" style="width:100%; height:100px; border:none;"></object>
-    
-    <div class="earnings-container">
-        <div class="earnings-header">
-            <h1>Earnings & Wallet</h1>
-            <div>
-                <span id="current-date"></span>
+<body class="pb-20 bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="logo">
+            <a href="index.html" class="logo-text">
+                <span class="care-text">Care</span><span class="hive-text">Hive</span>
+            </a>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <div class="h-10 w-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+                    <span class="font-semibold">MD</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-green-500 rounded-full h-3 w-3 border-2 border-white"></span>
             </div>
         </div>
-        
-        <div class="earnings-overview">
-            <div class="earnings-card wallet-card">
-                <p class="earnings-label">Available Balance</p>
-                <h2 class="earnings-value">₱4,250</h2>
-                <div class="wallet-actions">
-                    <button class="wallet-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                        Withdraw
-                    </button>
-                    <button class="wallet-action">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                        </svg>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4 space-y-6">
+        <!-- Page Title and Earnings Overview -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h1 class="text-xl font-bold text-gray-800 mb-4">My Earnings</h1>
+            
+            <!-- Earnings Summary Cards -->
+            <div class="grid grid-cols-3 gap-3 mb-4">
+                <div class="bg-teal-50 rounded-lg p-3 text-center">
+                    <p class="text-sm text-gray-600">This Week</p>
+                    <p class="text-lg font-bold text-teal-700">₱3,250</p>
+                </div>
+                <div class="bg-teal-50 rounded-lg p-3 text-center">
+                    <p class="text-sm text-gray-600">This Month</p>
+                    <p class="text-lg font-bold text-teal-700">₱12,450</p>
+                </div>
+                <div class="bg-teal-50 rounded-lg p-3 text-center">
+                    <p class="text-sm text-gray-600">Total</p>
+                    <p class="text-lg font-bold text-teal-700">₱56,780</p>
+                </div>
+            </div>
+            
+            <!-- Wallet Balance -->
+            <div class="bg-gradient-to-r from-teal-500 to-teal-700 rounded-lg p-4 mb-4 text-white">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center">
+                        <i data-feather="credit-card" class="w-5 h-5 mr-2"></i>
+                        <span class="font-medium">Wallet Balance</span>
+                    </div>
+                    <button class="text-xs bg-white bg-opacity-20 py-1 px-2 rounded-full">
                         History
                     </button>
                 </div>
-            </div>
-            
-            <div class="earnings-card">
-                <p class="earnings-label">This Month</p>
-                <h2 class="earnings-value">₱5,600</h2>
-                <div class="earnings-growth growth-positive">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="18 15 12 9 6 15"></polyline>
-                    </svg>
-                    12.5% from last month
-                </div>
-            </div>
-            
-            <div class="earnings-card">
-                <p class="earnings-label">Total Earnings</p>
-                <h2 class="earnings-value">₱23,450</h2>
-                <div class="earnings-growth growth-positive">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="18 15 12 9 6 15"></polyline>
-                    </svg>
-                    8 completed jobs
+                <p class="text-2xl font-bold mb-1">₱4,250.00</p>
+                <p class="text-xs text-teal-100">Available for withdrawal</p>
+                
+                <div class="mt-4">
+                    <button class="bg-white text-teal-700 py-2 w-full rounded-lg text-sm font-medium hover:bg-teal-50 transition">
+                        Withdraw Funds
+                    </button>
                 </div>
             </div>
         </div>
         
-        <div class="filter-tabs">
-            <div class="filter-tab active">All Transactions</div>
-            <div class="filter-tab">Income</div>
-            <div class="filter-tab">Withdrawals</div>
-        </div>
-        
-        <div class="transaction-list">
-            <div class="transaction-header">
-                <p>Transaction</p>
-                <p>Details</p>
-                <p>Amount</p>
-                <p>Status</p>
-            </div>
-            
-            <div class="transaction-item">
-                <div class="transaction-icon">
-                    <div class="icon-wrapper income-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="18 15 12 9 6 15"></polyline>
-                        </svg>
-                    </div>
-                    <div class="transaction-details">
-                        <span class="transaction-name">Booking Payment</span>
-                        <span class="transaction-date">Mar 18, 2025</span>
-                    </div>
-                </div>
-                
-                <div>
-                    <p>Lim Family</p>
-                    <p class="transaction-date">Child Care, Tutoring</p>
-                </div>
-                
-                <div class="transaction-amount income-amount">+₱800</div>
-                
-                <div>
-                    <span class="transaction-status status-completed">Completed</span>
-                </div>
-            </div>
-            
-            <div class="transaction-item">
-                <div class="transaction-icon">
-                    <div class="icon-wrapper withdrawal-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                    <div class="transaction-details">
-                        <span class="transaction-name">Withdrawal</span>
-                        <span class="transaction-date">Mar 15, 2025</span>
-                    </div>
-                </div>
-                
-                <div>
-                    <p>GCash Account</p>
-                    <p class="transaction-date">**** 1234</p>
-                </div>
-                
-                <div class="transaction-amount withdrawal-amount">-₱2,500</div>
-                
-                <div>
-                    <span class="transaction-status status-completed">Completed</span>
-                </div>
-            </div>
-            
-            <div class="transaction-item">
-                <div class="transaction-icon">
-                    <div class="icon-wrapper income-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="18 15 12 9 6 15"></polyline>
-                        </svg>
-                    </div>
-                    <div class="transaction-details">
-                        <span class="transaction-name">Booking Payment</span>
-                        <span class="transaction-date">Mar 12, 2025</span>
-                    </div>
-                </div>
-                
-                <div>
-                    <p>Reyes Family</p>
-                    <p class="transaction-date">Child Care</p>
-                </div>
-                
-                <div class="transaction-amount income-amount">+₱650</div>
-                
-                <div>
-                    <span class="transaction-status status-completed">Completed</span>
-                </div>
-            </div>
-            
-            <div class="transaction-item">
-                <div class="transaction-icon">
-                    <div class="icon-wrapper income-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="18 15 12 9 6 15"></polyline>
-                        </svg>
-                    </div>
-                    <div class="transaction-details">
-                        <span class="transaction-name">Booking Payment</span>
-                        <span class="transaction-date">Mar 10, 2025</span>
-                    </div>
-                </div>
-                
-                <div>
-                    <p>Santos Family</p>
-                    <p class="transaction-date">Senior Care</p>
-                </div>
-                
-                <div class="transaction-amount income-amount">+₱750</div>
-                
-                <div>
-                    <span class="transaction-status status-completed">Completed</span>
-                </div>
-            </div>
-            
-            <div class="transaction-item">
-                <div class="transaction-icon">
-                    <div class="icon-wrapper withdrawal-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                    <div class="transaction-details">
-                        <span class="transaction-name">Withdrawal</span>
-                        <span class="transaction-date">Mar 5, 2025</span>
-                    </div>
-                </div>
-                
-                <div>
-                    <p>Bank Account</p>
-                    <p class="transaction-date">BDO **** 5678</p>
-                </div>
-                
-                <div class="transaction-amount withdrawal-amount">-₱3,000</div>
-                
-                <div>
-                    <span class="transaction-status status-completed">Completed</span>
-                </div>
+        <!-- Section Tabs -->
+        <div class="section-tabs bg-white rounded-lg shadow-md">
+            <div class="flex">
+                <button class="active flex-1 py-3 text-sm font-medium">Transactions</button>
+                <button class="flex-1 py-3 text-sm font-medium text-gray-500">Payment Methods</button>
+                <button class="flex-1 py-3 text-sm font-medium text-gray-500">Tax Info</button>
             </div>
         </div>
         
-        <div class="withdrawal-form">
-            <h2>Withdraw Funds</h2>
-            
-            <div class="form-group">
-                <label for="withdrawal-amount">Amount to Withdraw (₱)</label>
-                <input type="number" id="withdrawal-amount" placeholder="Enter amount" min="500" max="4250">
-            </div>
-            
-            <div class="form-group">
-                <label for="withdrawal-method">Withdrawal Method</label>
-                <select id="withdrawal-method">
-                    <option value="gcash">GCash</option>
-                    <option value="bank">Bank Transfer</option>
+        <!-- Transactions Section -->
+        <div id="transactions-section" class="bg-white rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-gray-800">Recent Transactions</h3>
+                <select class="border border-gray-300 rounded-md text-xs p-1">
+                    <option value="all" selected>All Transactions</option>
+                    <option value="earnings">Earnings</option>
+                    <option value="withdrawals">Withdrawals</option>
+                    <option value="fees">Service Fees</option>
                 </select>
             </div>
             
-            <div class="form-group">
-                <label for="account-number">Account Number</label>
-                <input type="text" id="account-number" placeholder="Enter account number">
+            <div class="space-y-3">
+                <!-- Booking Earning -->
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="bg-green-100 text-green-800 p-2 rounded-full mr-3">
+                            <i data-feather="plus" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">Reyes Family</p>
+                            <p class="text-xs text-gray-500">Mar 20, 2025 • Child Care</p>
+                        </div>
+                    </div>
+                    <div class="font-medium text-green-600">+₱650</div>
+                </div>
+                
+                <!-- Withdrawal -->
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 text-blue-800 p-2 rounded-full mr-3">
+                            <i data-feather="arrow-down" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">Withdrawal to BDO</p>
+                            <p class="text-xs text-gray-500">Mar 19, 2025 • Completed</p>
+                        </div>
+                    </div>
+                    <div class="font-medium text-blue-600">-₱2,000</div>
+                </div>
+                
+                <!-- Service Fee -->
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="bg-gray-100 text-gray-800 p-2 rounded-full mr-3">
+                            <i data-feather="percent" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">Service Fee</p>
+                            <p class="text-xs text-gray-500">Mar 20, 2025 • 10% of ₱650</p>
+                        </div>
+                    </div>
+                    <div class="font-medium text-gray-600">-₱65</div>
+                </div>
+                
+                <!-- Booking Earning -->
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="bg-green-100 text-green-800 p-2 rounded-full mr-3">
+                            <i data-feather="plus" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">Lim Family</p>
+                            <p class="text-xs text-gray-500">Mar 18, 2025 • Senior Care</p>
+                        </div>
+                    </div>
+                    <div class="font-medium text-green-600">+₱780</div>
+                </div>
+                
+                <!-- Booking Earning -->
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="bg-green-100 text-green-800 p-2 rounded-full mr-3">
+                            <i data-feather="plus" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">Santos Family</p>
+                            <p class="text-xs text-gray-500">Mar 15, 2025 • Child Care</p>
+                        </div>
+                    </div>
+                    <div class="font-medium text-green-600">+₱520</div>
+                </div>
             </div>
             
-            <div class="form-group">
-                <label for="account-name">Account Name</label>
-                <input type="text" id="account-name" placeholder="Enter account name">
-            </div>
-            
-            <button class="withdrawal-button">Request Withdrawal</button>
+            <button class="text-teal-600 text-sm font-medium w-full mt-4 py-2 border border-teal-600 rounded-lg hover:bg-teal-50 transition">
+                View All Transactions
+            </button>
         </div>
-    </div>
-    
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-about">
-                <div class="logo footer-logo">
-                    <span class="logo-text"><span class="care-text">Care</span><span class="hive-text">Hive</span></span>
-                </div>
-                <p>
-                    Connecting compassionate caregivers with those who need them most. We're committed to enhancing quality of life through personalized, in-home care services.
-                </p>
-                <div class="social-icons">
-                    <a href="#" class="social-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                            <rect x="2" y="9" width="4" height="12"></rect>
-                            <circle cx="4" cy="4" r="2"></circle>
-                        </svg>
-                    </a>
+        
+        <!-- Payment Methods Section (Hidden by default) -->
+        <div id="payment-methods-section" class="hidden bg-white rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-gray-800">Payment Methods</h3>
+                <div class="text-xs text-gray-500">
+                    Last updated: Feb 28, 2025
                 </div>
             </div>
             
-            <div class="footer-links">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Find a Caregiver</a></li>
-                    <li><a href="#">Testimonials</a></li>
-                </ul>
+            <!-- Security Note -->
+            <div class="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-4">
+                <div class="flex items-start">
+                    <i data-feather="shield" class="w-5 h-5 text-blue-600 mr-2"></i>
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">Payment Security</p>
+                        <p class="text-xs text-gray-600">
+                            For your security, bank details cannot be changed directly through the app. 
+                            To update your payment information, please contact our support team.
+                        </p>
+                    </div>
+                </div>
             </div>
             
-            <div class="footer-links">
-                <h4>Services</h4>
-                <ul>
-                    <li><a href="#">Child Care</a></li>
-                    <li><a href="#">Pet Sitting</a></li>
-                    <li><a href="#">Senior Care</a></li>
-                    <li><a href="#">Housekeeping</a></li>
-                    <li><a href="#">Tutoring</a></li>
-                </ul>
+            <!-- Primary Payment Method -->
+            <div class="border border-gray-200 rounded-lg p-4 mb-4">
+                <div class="flex justify-between items-start mb-3">
+                    <div class="flex items-center">
+                        <div class="bg-blue-100 text-blue-800 p-2 rounded-full mr-3">
+                            <i data-feather="credit-card" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">BDO Savings Account</p>
+                            <p class="text-xs text-gray-500">Primary</p>
+                        </div>
+                    </div>
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded-full">Verified</span>
+                </div>
+                
+                <div class="space-y-2 pl-10">
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs text-gray-500">Account Name</p>
+                        <p class="text-sm font-medium text-gray-800">MARIA DELA CRUZ</p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs text-gray-500">Account Number</p>
+                        <p class="text-sm font-medium text-gray-800">XXXX XXXX XX5678</p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs text-gray-500">Branch</p>
+                        <p class="text-sm font-medium text-gray-800">Makati - Ayala Ave.</p>
+                    </div>
+                </div>
+                
+                <button class="mt-4 bg-blue-50 text-blue-700 py-2 px-3 rounded-lg text-xs font-medium flex items-center mx-auto">
+                    <i data-feather="headphones" class="w-4 h-4 mr-1"></i>
+                    Contact Support to Update
+                </button>
             </div>
             
-            <div class="footer-links">
-                <h4>Contact Us</h4>
-                <ul>
-                    <li><a href="#">123 Anywhere St, Any City</a></li>
-                    <li><a href="#">(123) 456-7890</a></li>
-                    <li><a href="#">info@carehive.com</a></li>
-                    <li><a href="#">Support</a></li>
-                </ul>
+            <!-- Other Payment Methods -->
+            <div class="border border-gray-200 rounded-lg p-4">
+                <div class="flex justify-between items-start mb-3">
+                    <div class="flex items-center">
+                        <div class="bg-green-100 text-green-800 p-2 rounded-full mr-3">
+                            <i data-feather="smartphone" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">GCash</p>
+                            <p class="text-xs text-gray-500">Alternative Method</p>
+                        </div>
+                    </div>
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded-full">Verified</span>
+                </div>
+                
+                <div class="space-y-2 pl-10">
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs text-gray-500">Account Name</p>
+                        <p class="text-sm font-medium text-gray-800">MARIA DELA CRUZ</p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs text-gray-500">Mobile Number</p>
+                        <p class="text-sm font-medium text-gray-800">+63 919 XXX 5432</p>
+                    </div>
+                </div>
+                
+                <button class="mt-4 bg-blue-50 text-blue-700 py-2 px-3 rounded-lg text-xs font-medium flex items-center mx-auto">
+                    <i data-feather="headphones" class="w-4 h-4 mr-1"></i>
+                    Contact Support to Update
+                </button>
             </div>
         </div>
         
-        <div class="footer-bottom">
-            <p>&copy; 2025 CareHive. All rights reserved.</p>
+        <!-- Tax Info Section (Hidden by default) -->
+        <div id="tax-info-section" class="hidden bg-white rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-gray-800">Tax Information</h3>
+                <div class="text-xs text-gray-500">
+                    Last updated: Feb 28, 2025
+                </div>
+            </div>
+            
+            <!-- Tax Info Card -->
+            <div class="border border-gray-200 rounded-lg p-4 mb-4">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center">
+                        <div class="bg-purple-100 text-purple-800 p-2 rounded-full mr-3">
+                            <i data-feather="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">Tax Details</p>
+                            <p class="text-xs text-gray-500">For annual reporting</p>
+                        </div>
+                    </div>
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded-full">Complete</span>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs text-gray-500">TIN Number</p>
+                        <p class="text-sm font-medium text-gray-800">123-456-789-000</p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs text-gray-500">Tax Status</p>
+                        <p class="text-sm font-medium text-gray-800">Individual/Self-employed</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Earnings Summary -->
+            <div class="border border-gray-200 rounded-lg p-4">
+                <h4 class="text-sm font-medium text-gray-800 mb-3">2025 Earnings Summary (Year-to-date)</h4>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs text-gray-500">Gross Earnings</p>
+                        <p class="text-sm font-medium text-gray-800">₱42,300.00</p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs text-gray-500">Service Fees Paid</p>
+                        <p class="text-sm font-medium text-gray-800">₱4,230.00</p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs text-gray-500">Net Earnings</p>
+                        <p class="text-sm font-medium text-gray-800">₱38,070.00</p>
+                    </div>
+                    
+                    <div class="border-t border-gray-100 pt-3">
+                        <button class="w-full bg-purple-50 text-purple-700 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center">
+                            <i data-feather="download" class="w-4 h-4 mr-1"></i>
+                            Download Tax Statement
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-yellow-50 border border-yellow-100 rounded-lg p-3 mt-4">
+                <div class="flex items-start">
+                    <i data-feather="info" class="w-5 h-5 text-yellow-600 mr-2"></i>
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">Tax Reminder</p>
+                        <p class="text-xs text-gray-600">
+                            Please remember that as an independent contractor, you are responsible for filing and paying your own taxes. 
+                            CareHive provides annual earnings statements that you can use for your tax filings.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
-    
+        
+        <!-- Withdrawal Modal (Hidden by default) -->
+        <div id="withdrawal-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                </div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white p-5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-medium text-gray-900">Withdraw Funds</h3>
+                            <button id="close-modal" class="text-gray-400 hover:text-gray-500">
+                                <i data-feather="x" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-500 mb-2">Available Balance</p>
+                            <p class="text-2xl font-bold text-gray-800">₱4,250.00</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Withdrawal Amount</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500">₱</span>
+                                </div>
+                                <input type="number" name="amount" id="amount" class="pl-7 block w-full border-gray-300 rounded-md shadow-sm py-2 text-sm" placeholder="0.00" min="500" max="4250">
+                            </div>
+                            <p class="mt-1 text-xs text-gray-500">Minimum withdrawal: ₱500.00</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="payment-method" class="block text-sm font-medium text-gray-700 mb-1">Withdrawal Method</label>
+                            <select id="payment-method" class="block w-full border-gray-300 rounded-md shadow-sm py-2 text-sm">
+                                <option value="bdo">BDO Savings Account (Primary)</option>
+                                <option value="gcash">GCash (Alternative)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-3 rounded-md mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <p class="text-sm text-gray-500">Selected Account</p>
+                                <p class="text-sm font-medium text-gray-800">BDO - XXXX XXXX XX5678</p>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm text-gray-500">Expected Processing Time</p>
+                                <p class="text-sm font-medium text-gray-800">1-2 Business Days</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end space-x-3">
+                            <button id="cancel-withdrawal" class="py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                Cancel
+                            </button>
+                            <button class="py-2 px-4 bg-teal-600 text-white rounded-md text-sm font-medium hover:bg-teal-700">
+                                Confirm Withdrawal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2">
+        <a href="provider-dashboard.html" class="nav-item flex flex-col items-center text-gray-500 px-3 py-1">
+            <i data-feather="home" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Home</span>
+        </a>
+        <a href="provider-booking.html" class="nav-item active flex flex-col items-center text-primary px-3 py-1">
+            <i data-feather="calendar" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Bookings</span>
+        </a>
+        <a href="messages.html" class="nav-item flex flex-col items-center text-gray-500 px-3 py-1">
+            <i data-feather="message-square" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Messages</span>
+        </a>
+        <a href="provider-profile.html" class="nav-item flex flex-col items-center text-gray-500 px-3 py-1">
+            <i data-feather="user" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Profile</span>
+        </a>
+    </nav>
+
+
+    <!-- Initialize Feather Icons and Tab Functionality -->
     <script>
-        // Display current date
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
-        
-        // Tab switching functionality
-        const tabs = document.querySelectorAll('.filter-tab');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                // In a real application, this would filter the transactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Feather Icons
+            feather.replace();
+            
+            // Tab functionality
+            const tabs = document.querySelectorAll('.section-tabs button');
+            const sections = [
+                document.getElementById('transactions-section'),
+                document.getElementById('payment-methods-section'),
+                document.getElementById('tax-info-section')
+            ];
+            
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    // Update active tab
+                    tabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.classList.add('text-gray-500');
+                    });
+                    tab.classList.add('active');
+                    tab.classList.remove('text-gray-500');
+                    
+                    // Show corresponding section
+                    sections.forEach(section => {
+                        section.classList.add('hidden');
+                    });
+                    sections[index].classList.remove('hidden');
+                });
+            });
+            
+            // Withdrawal Modal Functionality
+            const withdrawBtn = document.querySelector('.bg-white.text-teal-700');
+            const withdrawalModal = document.getElementById('withdrawal-modal');
+            const closeModal = document.getElementById('close-modal');
+            const cancelWithdrawal = document.getElementById('cancel-withdrawal');
+            
+            withdrawBtn.addEventListener('click', function() {
+                withdrawalModal.classList.remove('hidden');
+            });
+            
+            closeModal.addEventListener('click', function() {
+                withdrawalModal.classList.add('hidden');
+            });
+            
+            cancelWithdrawal.addEventListener('click', function() {
+                withdrawalModal.classList.add('hidden');
             });
         });
     </script>
