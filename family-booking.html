@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Family Bookings</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+    <style>
+        /* Custom CSS matching the dashboard style */
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .care-text {
+            color: #0D9488;
+        }
+        .hive-text {
+            color: #334155;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.75rem 0;
+            border-top: 1px solid #E5E7EB;
+            z-index: 10;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6B7280;
+            font-size: 0.75rem;
+            text-decoration: none;
+        }
+        .nav-item.active {
+            color: #0D9488;
+        }
+        .nav-item span {
+            margin-top: 0.25rem;
+        }
+        .action-button {
+            position: fixed;
+            bottom: 5rem;
+            right: 1.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 9999px;
+            background-color: #0D9488;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 10;
+        }
+        .booking-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 9999px;
+            background-color: #e2f5f3;
+            color: #0D9488;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        .booking-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        .booking-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .booking-info {
+            margin-left: 0.75rem;
+        }
+        .booking-name {
+            font-weight: 600;
+            font-size: 0.938rem;
+            color: #1F2937;
+        }
+        .booking-service {
+            color: #6B7280;
+            font-size: 0.75rem;
+        }
+        .booking-detail {
+            display: flex;
+            align-items: center;
+            color: #4B5563;
+            font-size: 0.813rem;
+            margin-bottom: 0.5rem;
+        }
+        .booking-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #F3F4F6;
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .status-badge.confirmed {
+            background-color: #DCFCE7;
+            color: #166534;
+        }
+        .status-badge.upcoming {
+            background-color: #E0F2FE;
+            color: #075985;
+        }
+        .status-badge.completed {
+            background-color: #F3F4F6;
+            color: #4B5563;
+        }
+        .status-badge.cancelled {
+            background-color: #FEE2E2;
+            color: #991B1B;
+        }
+        .status-badge.in-progress {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+        .status-badge.pending-approval {
+            background-color: #FFEDD5;
+            color: #9A3412;
+        }
+        .status-badge.pending-review {
+            background-color: #F0F9FF;
+            color: #0369A1;
+        }
+        .booking-action {
+            color: #0D9488;
+            font-size: 0.813rem;
+            font-weight: 500;
+        }
+        .booking-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .action-btn {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        .action-btn i {
+            margin-right: 4px;
+        }
+        .action-btn.approve {
+            background-color: #DCFCE7;
+            color: #166534;
+        }
+        .action-btn.review {
+            background-color: #E0F2FE;
+            color: #075985;
+        }
+        .action-btn.view {
+            background-color: #F3F4F6;
+            color: #4B5563;
+        }
+        .date-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .date-selector {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 0.5rem;
+        }
+        .date-selector::-webkit-scrollbar {
+            display: none;
+        }
+        .date-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem;
+            margin-right: 0.75rem;
+            border-radius: 0.5rem;
+            min-width: 3rem;
+        }
+        .date-item.active {
+            background-color: #0D9488;
+            color: white;
+        }
+        .date-day {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .date-weekday {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid #E5E7EB;
+            margin-bottom: 1rem;
+        }
+        .tab-item {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6B7280;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-item.active {
+            color: #0D9488;
+            border-bottom-color: #0D9488;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #EF4444;
+            color: white;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            height: 1.25rem;
+            min-width: 1.25rem;
+            padding: 0 0.35rem;
+            margin-left: 0.375rem;
+        }
+    </style>
+</head>
+<body class="pb-20 bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="logo">
+            <a href="index.html" class="logo-text">
+                <span class="care-text">Care</span><span class="hive-text">Hive</span>
+            </a>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <div class="h-10 w-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+                    <span class="font-semibold">RF</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-green-500 rounded-full h-3 w-3 border-2 border-white"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4 space-y-6">
+        <div class="flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">My Bookings</h1>
+            <button class="flex items-center text-teal-600 text-sm font-medium">
+                <i data-feather="filter" class="w-4 h-4 mr-1"></i>
+                Filter
+            </button>
+        </div>
+
+        <!-- Calendar Navigator -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <div class="date-nav">
+                <button class="p-1">
+                    <i data-feather="chevron-left" class="w-5 h-5 text-gray-500"></i>
+                </button>
+                <h2 class="text-base font-semibold">March 2025</h2>
+                <button class="p-1">
+                    <i data-feather="chevron-right" class="w-5 h-5 text-gray-500"></i>
+                </button>
+            </div>
+            <div class="date-selector">
+                <div class="date-item">
+                    <span class="date-day">24</span>
+                    <span class="date-weekday">Mon</span>
+                </div>
+                <div class="date-item active">
+                    <span class="date-day">25</span>
+                    <span class="date-weekday">Tue</span>
+                </div>
+                <div class="date-item">
+                    <span class="date-day">26</span>
+                    <span class="date-weekday">Wed</span>
+                </div>
+                <div class="date-item">
+                    <span class="date-day">27</span>
+                    <span class="date-weekday">Thu</span>
+                </div>
+                <div class="date-item">
+                    <span class="date-day">28</span>
+                    <span class="date-weekday">Fri</span>
+                </div>
+                <div class="date-item">
+                    <span class="date-day">29</span>
+                    <span class="date-weekday">Sat</span>
+                </div>
+                <div class="date-item">
+                    <span class="date-day">30</span>
+                    <span class="date-weekday">Sun</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tab-nav">
+            <button class="tab-item active">Upcoming</button>
+            <button class="tab-item">In Progress</button>
+            <button class="tab-item">Completed</button>
+            <button class="tab-item">
+                Pending Action
+                <span class="badge">3</span>
+            </button>
+        </div>
+
+        <!-- Bookings List -->
+        <div class="space-y-3">
+            <!-- Pending Approval Booking -->
+            <div class="booking-card">
+                <div class="booking-header">
+                    <div class="booking-avatar">MS</div>
+                    <div class="booking-info">
+                        <div class="booking-name">Maria Santos</div>
+                        <div class="booking-service">Child Care</div>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                    <span>Tue, Mar 25</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                    <span>09:00 AM - 01:00 PM</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="map-pin" class="w-4 h-4 mr-2"></i>
+                    <span>123 Rizal Ave, Manila</span>
+                </div>
+                <div class="booking-status">
+                    <span class="status-badge pending-approval">Pending Approval</span>
+                    <div class="booking-actions">
+                        <a href="family-hours-approval.html" class="action-btn approve">
+                            <i data-feather="check-circle" class="w-3 h-3"></i>
+                            Approve Hours
+                        </a>
+                        <a href="booking-details.html" class="action-btn view">
+                            <i data-feather="eye" class="w-3 h-3"></i>
+                            View
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Review Booking -->
+            <div class="booking-card">
+                <div class="booking-header">
+                    <div class="booking-avatar">JR</div>
+                    <div class="booking-info">
+                        <div class="booking-name">Juan Reyes</div>
+                        <div class="booking-service">Housekeeping</div>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                    <span>Sat, Mar 22</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                    <span>10:00 AM - 02:00 PM</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="map-pin" class="w-4 h-4 mr-2"></i>
+                    <span>123 Rizal Ave, Manila</span>
+                </div>
+                <div class="booking-status">
+                    <span class="status-badge pending-review">Pending Review</span>
+                    <div class="booking-actions">
+                        <a href="family-rate-provider.html" class="action-btn review">
+                            <i data-feather="star" class="w-3 h-3"></i>
+                            Leave Review
+                        </a>
+                        <a href="booking-details.html" class="action-btn view">
+                            <i data-feather="eye" class="w-3 h-3"></i>
+                            View
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirmed Booking -->
+            <div class="booking-card">
+                <div class="booking-header">
+                    <div class="booking-avatar">SL</div>
+                    <div class="booking-info">
+                        <div class="booking-name">Sofia Lopez</div>
+                        <div class="booking-service">Tutoring</div>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                    <span>Wed, Mar 26</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                    <span>04:00 PM - 06:00 PM</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="map-pin" class="w-4 h-4 mr-2"></i>
+                    <span>123 Rizal Ave, Manila</span>
+                </div>
+                <div class="booking-status">
+                    <span class="status-badge confirmed">Confirmed</span>
+                    <div class="booking-actions">
+                        <a href="booking-details.html" class="action-btn view">
+                            <i data-feather="eye" class="w-3 h-3"></i>
+                            View
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Booking -->
+            <div class="booking-card">
+                <div class="booking-header">
+                    <div class="booking-avatar">DS</div>
+                    <div class="booking-info">
+                        <div class="booking-name">Diego Santos</div>
+                        <div class="booking-service">Housekeeping</div>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                    <span>Mon, Mar 19</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                    <span>10:00 AM - 02:00 PM</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="map-pin" class="w-4 h-4 mr-2"></i>
+                    <span>123 Rizal Ave, Manila</span>
+                </div>
+                <div class="booking-status">
+                    <span class="status-badge completed">Completed</span>
+                    <div class="booking-actions">
+                        <a href="family-rate-provider.html" class="action-btn review">
+                            <i data-feather="star" class="w-3 h-3"></i>
+                            Leave Review
+                        </a>
+                        <a href="booking-details.html" class="action-btn view">
+                            <i data-feather="eye" class="w-3 h-3"></i>
+                            View
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State (hidden when there are bookings) -->
+        <div class="hidden flex flex-col items-center justify-center py-10">
+            <div class="bg-gray-100 p-4 rounded-full mb-4">
+                <i data-feather="calendar" class="w-8 h-8 text-gray-400"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-800 mb-1">No Bookings Yet</h3>
+            <p class="text-sm text-gray-500 text-center mb-4">You don't have any upcoming bookings. Start by searching for care providers.</p>
+            <button class="px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium">
+                Find Care Providers
+            </button>
+        </div>
+    </main>
+
+    <!-- Action Button -->
+    <div class="action-button">
+        <i data-feather="plus" class="w-6 h-6"></i>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="family-dashboard.html" class="nav-item">
+            <i data-feather="home" class="w-5 h-5"></i>
+            <span>Home</span>
+        </a>
+        <a href="family-booking.html" class="nav-item active">
+            <i data-feather="calendar" class="w-5 h-5"></i>
+            <span>Bookings</span>
+        </a>
+        <a href="family-messages.html" class="nav-item">
+            <i data-feather="message-square" class="w-5 h-5"></i>
+            <span>Messages</span>
+        </a>
+        <a href="family-profile.html" class="nav-item">
+            <i data-feather="user" class="w-5 h-5"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+        });
+    </script>
+</body>
+</html>

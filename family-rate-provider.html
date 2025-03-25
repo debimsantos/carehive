@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Rate Your Care Provider</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+    <style>
+        /* Custom CSS matching the dashboard style */
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .care-text {
+            color: #0D9488;
+        }
+        .hive-text {
+            color: #334155;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.75rem 0;
+            border-top: 1px solid #E5E7EB;
+            z-index: 10;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6B7280;
+            font-size: 0.75rem;
+            text-decoration: none;
+        }
+        .nav-item.active {
+            color: #0D9488;
+        }
+        .nav-item span {
+            margin-top: 0.25rem;
+        }
+        .provider-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 9999px;
+            background-color: #e2f5f3;
+            color: #0D9488;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .small-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 9999px;
+            background-color: #e2f5f3;
+            color: #0D9488;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        .star {
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+        .star svg {
+            width: 2rem;
+            height: 2rem;
+            transition: all 0.2s ease;
+        }
+        .star.selected svg, .star:hover svg, .star.selected ~ .star:hover svg {
+            fill: #FBBF24;
+            color: #FBBF24;
+        }
+        .star:hover ~ .star svg {
+            fill: none;
+        }
+        .rating-label {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6B7280;
+            margin-bottom: 1rem;
+        }
+        .rating-criteria {
+            margin-bottom: 1.5rem;
+        }
+        .rating-heading {
+            font-weight: 600;
+            font-size: 0.938rem;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+        .small-star-rating {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        .small-star {
+            padding: 0.25rem;
+            cursor: pointer;
+        }
+        .small-star svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            transition: all 0.2s ease;
+        }
+        .small-star.selected svg, .small-star:hover svg, .small-star.selected ~ .small-star:hover svg {
+            fill: #FBBF24;
+            color: #FBBF24;
+        }
+        .small-star:hover ~ .small-star svg {
+            fill: none;
+        }
+        .pending-review-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .card-info {
+            margin-left: 0.75rem;
+            flex: 1;
+        }
+        .card-name {
+            font-weight: 600;
+            font-size: 0.938rem;
+            color: #1F2937;
+        }
+        .card-service {
+            color: #6B7280;
+            font-size: 0.75rem;
+        }
+        .card-date {
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+        .card-button {
+            background-color: #0D9488;
+            color: white;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #E5E7EB;
+            margin-bottom: 1rem;
+        }
+        .tab {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6B7280;
+            border-bottom: 2px solid transparent;
+        }
+        .tab.active {
+            color: #0D9488;
+            border-bottom-color: #0D9488;
+        }
+    </style>
+</head>
+<body class="pb-20 bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="flex items-center">
+            <a href="bookings.html" class="mr-2">
+                <i data-feather="arrow-left" class="w-6 h-6 text-gray-600"></i>
+            </a>
+            <div class="logo">
+                <span class="logo-text">
+                    <span class="care-text">Care</span><span class="hive-text">Hive</span>
+                </span>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <div class="h-10 w-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+                    <span class="font-semibold">RF</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-green-500 rounded-full h-3 w-3 border-2 border-white"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4 space-y-6">
+        <h1 class="text-xl font-bold text-gray-800">Rate & Review</h1>
+        
+        <!-- Tabs -->
+        <div class="tabs bg-white rounded-t-lg shadow-md">
+            <button class="tab active" data-tab="current-review">Current Review</button>
+            <button class="tab" data-tab="pending-reviews">Pending Reviews (2)</button>
+        </div>
+
+        <!-- Current Review Tab -->
+        <div id="current-review" class="tab-content">
+            <div class="bg-white rounded-b-lg shadow-md p-4">
+                <!-- Provider Info -->
+                <div class="flex flex-col items-center mb-4">
+                    <div class="provider-avatar mb-2">MS</div>
+                    <h2 class="text-lg font-semibold text-gray-800">Maria Santos</h2>
+                    <p class="text-sm text-gray-500">Child Care • March 25, 2025</p>
+                </div>
+                
+                <!-- Overall Rating -->
+                <div class="mb-6">
+                    <h3 class="text-center font-medium text-gray-800 mb-2">How was your experience?</h3>
+                    <div class="star-rating" id="overall-rating">
+                        <div class="star" data-value="1">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </div>
+                        <div class="star" data-value="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </div>
+                        <div class="star" data-value="3">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </div>
+                        <div class="star" data-value="4">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </div>
+                        <div class="star" data-value="5">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="rating-label" id="rating-text">Tap to rate</div>
+                </div>
+                
+                <!-- Specific Criteria -->
+                <div class="mb-4">
+                    <div class="rating-criteria">
+                        <p class="rating-heading">Punctuality</p>
+                        <div class="small-star-rating" id="punctuality-rating">
+                            <div class="small-star" data-value="1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="3">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="4">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="5">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rating-criteria">
+                        <p class="rating-heading">Communication</p>
+                        <div class="small-star-rating" id="communication-rating">
+                            <div class="small-star" data-value="1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="3">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="4">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="5">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rating-criteria">
+                        <p class="rating-heading">Caregiving Quality</p>
+                        <div class="small-star-rating" id="quality-rating">
+                            <div class="small-star" data-value="1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="3">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="4">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="small-star" data-value="5">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Review Text -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Write a review (optional)</label>
+                    <textarea 
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" 
+                        rows="4"
+                        placeholder="Share your experience with this care provider..."
+                        id="review-text"
+                    ></textarea>
+                </div>
+                
+                <!-- Would Book Again -->
+                <div class="mb-6">
+                    <p class="text-sm font-medium text-gray-700 mb-2">Would you book this care provider again?</p>
+                    <div class="flex space-x-2">
+                        <button class="flex-1 bg-gray-100 py-2 rounded-md text-sm text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300" id="book-again-yes">Yes</button>
+                        <button class="flex-1 bg-gray-100 py-2 rounded-md text-sm text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300" id="book-again-no">No</button>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <button class="w-full py-3 bg-teal-600 text-white font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed" id="submit-review" disabled>
+                    Submit Review
+                </button>
+                
+                <!-- Skip for Now -->
+                <button class="w-full text-center py-3 text-gray-500 text-sm font-medium" id="skip-review">
+                    Skip for now
+                </button>
+            </div>
+        </div>
+
+        <!-- Pending Reviews Tab (Hidden by default) -->
+        <div id="pending-reviews" class="tab-content hidden">
+            <div class="space-y-3">
+                <div class="pending-review-card">
+                    <div class="card-header">
+                        <div class="small-avatar">JR</div>
+                        <div class="card-info">
+                            <div class="card-name">Juan Reyes</div>
+                            <div class="card-service">Housekeeping</div>
+                            <div class="card-date">Mar 22, 2025</div>
+                        </div>
+                        <button class="card-button">
+                            Review
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="pending-review-card">
+                    <div class="card-header">
+                        <div class="small-avatar">DS</div>
+                        <div class="card-info">
+                            <div class="card-name">Diego Santos</div>
+                            <div class="card-service">Housekeeping</div>
+                            <div class="card-date">Mar 19, 2025</div>
+                        </div>
+                        <button class="card-button">
+                            Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Modal (Hidden by default) -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg mx-4 max-w-md w-full">
+            <div class="p-6 text-center">
+                <div class="flex justify-center mb-4">
+                    <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+                        <i data-feather="check-circle" class="w-8 h-8 text-green-500"></i>
+                    </div>
+                </div>
+                <h3 class="text-lg font-medium text-gray-800 mb-2">Review Submitted!</h3>
+                <p class="text-sm text-gray-600 mb-4">
+                    Thank you for your feedback. Your review helps maintain quality services on our platform.
+                </p>
+                <button class="bg-teal-600 text-white rounded-md px-4 py-2 text-sm w-full" id="backToBookings">
+                    Back to Bookings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="family-dashboard.html" class="nav-item">
+            <i data-feather="home" class="w-5 h-5"></i>
+            <span>Home</span>
+        </a>
+        <a href="family-booking.html" class="nav-item active">
+            <i data-feather="calendar" class="w-5 h-5"></i>
+            <span>Bookings</span>
+        </a>
+        <a href="family-messages.html" class="nav-item">
+            <i data-feather="message-square" class="w-5 h-5"></i>
+            <span>Messages</span>
+        </a>
+        <a href="family-profile.html" class="nav-item">
+            <i data-feather="user" class="w-5 h-5"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            // Tab switching
+            const tabButtons = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Deactivate all tabs
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.add('hidden'));
+                    
+                    // Activate the selected tab
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.remove('hidden');
+                });
+            });
+            
+            // Star rating functionality
+            const ratingLabels = {
+                1: 'Poor',
+                2: 'Fair',
+                3: 'Good',
+                4: 'Very Good',
+                5: 'Excellent'
+            };
+            
+            function setupStarRating(containerId, starClass) {
+                const container = document.getElementById(containerId);
+                const stars = container.querySelectorAll(`.${starClass}`);
+                let selectedRating = 0;
+                
+                stars.forEach(star => {
+                    star.addEventListener('click', function() {
+                        const value = parseInt(this.getAttribute('data-value'));
+                        selectedRating = value;
+                        
+                        // Update selected state
+                        stars.forEach(s => {
+                            const starValue = parseInt(s.getAttribute('data-value'));
+                            if (starValue <= selectedRating) {
+                                s.classList.add('selected');
+                            } else {
+                                s.classList.remove('selected');
+                            }
+                        });
+                        
+                        // Update rating text if this is the overall rating
+                        if (containerId === 'overall-rating') {
+                            document.getElementById('rating-text').textContent = ratingLabels[selectedRating];
+                        }
+                        
+                        // Check if submit button should be enabled
+                        checkFormValidity();
+                    });
+                });
+                
+                return {
+                    getSelectedRating: () => selectedRating
+                };
+            }
+            
+            // Setup all star ratings
+            const overallRating = setupStarRating('overall-rating', 'star');
+            const punctualityRating = setupStarRating('punctuality-rating', 'small-star');
+            const communicationRating = setupStarRating('communication-rating', 'small-star');
+            const qualityRating = setupStarRating('quality-rating', 'small-star');
+            
+            // Book again buttons
+            const bookAgainYesBtn = document.getElementById('book-again-yes');
+            const bookAgainNoBtn = document.getElementById('book-again-no');
+            let wouldBookAgain = null;
+            
+            bookAgainYesBtn.addEventListener('click', function() {
+                wouldBookAgain = true;
+                bookAgainYesBtn.classList.add('bg-teal-600', 'text-white');
+                bookAgainYesBtn.classList.remove('bg-gray-100', 'text-gray-800');
+                bookAgainNoBtn.classList.add('bg-gray-100', 'text-gray-800');
+                bookAgainNoBtn.classList.remove('bg-teal-600', 'text-white');
+                checkFormValidity();
+            });
+            
+            bookAgainNoBtn.addEventListener('click', function() {
+                wouldBookAgain = false;
+                bookAgainNoBtn.classList.add('bg-teal-600', 'text-white');
+                bookAgainNoBtn.classList.remove('bg-gray-100', 'text-gray-800');
+                bookAgainYesBtn.classList.add('bg-gray-100', 'text-gray-800');
+                bookAgainYesBtn.classList.remove('bg-teal-600', 'text-white');
+                checkFormValidity();
+            });
+            
+            // Check if form is valid to enable submit button
+            function checkFormValidity() {
+                const submitButton = document.getElementById('submit-review');
+                
+                // Require overall rating and book again selection
+                if (overallRating.getSelectedRating() > 0 && wouldBookAgain !== null) {
+                    submitButton.disabled = false;
+                } else {
+                    submitButton.disabled = true;
+                }
+            }
+            
+            // Handle form submission
+            document.getElementById('submit-review').addEventListener('click', function() {
+                // Get all review data
+                const reviewData = {
+                    overallRating: overallRating.getSelectedRating(),
+                    punctualityRating: punctualityRating.getSelectedRating(),
+                    communicationRating: communicationRating.getSelectedRating(),
+                    qualityRating: qualityRating.getSelectedRating(),
+                    reviewText: document.getElementById('review-text').value,
+                    wouldBookAgain: wouldBookAgain
+                };
+                
+                // In a real app, send this data to the server
+                console.log('Review data:', reviewData);
+                
+                // Show success modal
+                document.getElementById('successModal').classList.remove('hidden');
+                
+                // Refresh Feather icons to ensure they appear in the modal
+                feather.replace();
+            });
+            
+            // Handle "Back to Bookings" button in success modal
+            document.getElementById('backToBookings').addEventListener('click', function() {
+                // In a real app, navigate back to bookings
+                window.location.href = 'bookings.html';
+            });
+            
+            // Handle "Skip for now" button
+            document.getElementById('skip-review').addEventListener('click', function() {
+                // In a real app, navigate back to bookings
+                window.location.href = 'bookings.html';
+            });
+            
+            // Handle pending review card buttons
+            const pendingReviewButtons = document.querySelectorAll('.pending-review-card .card-button');
+            pendingReviewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Switch to Current Review tab and populate with the selected provider
+                    const nameElement = this.closest('.card-header').querySelector('.card-name');
+                    const serviceElement = this.closest('.card-header').querySelector('.card-service');
+                    const dateElement = this.closest('.card-header').querySelector('.card-date');
+                    const avatarElement = this.closest('.card-header').querySelector('.small-avatar');
+                    
+                    if (nameElement && serviceElement && dateElement && avatarElement) {
+                        const name = nameElement.textContent;
+                        const service = serviceElement.textContent;
+                        const date = dateElement.textContent;
+                        const initials = avatarElement.textContent;
+                        
+                        // Switch to Current Review tab
+                        document.querySelector('.tab[data-tab="current-review"]').click();
+                        
+                        // Update provider info
+                        document.querySelector('.provider-avatar').textContent = initials;
+                        document.querySelector('h2.text-lg').textContent = name;
+                        document.querySelector('p.text-sm.text-gray-500').textContent = service + ' • ' + date;
+                        
+                        // Reset the form
+                        resetReviewForm();
+                    }
+                });
+            });
+            
+            // Function to reset the review form
+            function resetReviewForm() {
+                // Reset all star ratings
+                document.querySelectorAll('.star, .small-star').forEach(star => {
+                    star.classList.remove('selected');
+                });
+                
+                // Reset text input
+                document.getElementById('review-text').value = '';
+                
+                // Reset book again buttons
+                bookAgainYesBtn.classList.remove('bg-teal-600', 'text-white');
+                bookAgainNoBtn.classList.remove('bg-teal-600', 'text-white');
+                bookAgainYesBtn.classList.add('bg-gray-100', 'text-gray-800');
+                bookAgainNoBtn.classList.add('bg-gray-100', 'text-gray-800');
+                wouldBookAgain = null;
+                
+                // Reset rating text
+                document.getElementById('rating-text').textContent = 'Tap to rate';
+                
+                // Disable submit button
+                document.getElementById('submit-review').disabled = true;
+            }
+        });
+    </script>
+</body>
+</html>
