@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Create Job Offer</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+</head>
+<body class="pb-20">
+    <!-- Header -->
+    <header class="bg-white p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="flex items-center">
+            <button onclick="history.back()" class="mr-2">
+                <i data-feather="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <h1 class="text-lg font-semibold">Create Job Offer</h1>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <div class="h-10 w-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+                    <span class="font-semibold">RF</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-green-500 rounded-full h-3 w-3 border-2 border-white"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4 space-y-5">
+        <!-- Provider Info Card -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <div class="flex items-center">
+                <div class="h-16 w-16 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center mr-4">
+                    <span class="font-semibold text-xl">MS</span>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">Maria Santos</h2>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span class="flex items-center mr-3">
+                            <i data-feather="star" class="w-4 h-4 text-yellow-400 mr-1"></i>
+                            4.8 (27)
+                        </span>
+                        <span>Child Care, Tutoring</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Offer Form -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h3 class="font-medium text-gray-800 mb-4">Job Details</h3>
+            
+            <!-- Service Type -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Service Type</label>
+                <select class="w-full p-2 border border-gray-300 rounded-md text-sm">
+                    <option>Child Care</option>
+                    <option>Senior Care</option>
+                    <option>Housekeeping</option>
+                    <option>Tutoring</option>
+                    <option>Pet Sitting</option>
+                </select>
+            </div>
+            
+            <!-- Date Range -->
+            <div class="mb-4 grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                    <div class="relative">
+                        <input type="date" class="w-full p-2 border border-gray-300 rounded-md text-sm" value="2025-03-25">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">End Date (Optional)</label>
+                    <div class="relative">
+                        <input type="date" class="w-full p-2 border border-gray-300 rounded-md text-sm">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Work Schedule -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Work Schedule</label>
+                
+                <div class="grid grid-cols-7 gap-1 mb-3">
+                    <div class="text-center">
+                        <button class="h-8 w-8 rounded-full bg-teal-600 text-white text-xs font-medium">M</button>
+                        <span class="block text-xs mt-1">Mon</span>
+                    </div>
+                    <div class="text-center">
+                        <button class="h-8 w-8 rounded-full bg-gray-200 text-gray-800 text-xs font-medium">T</button>
+                        <span class="block text-xs mt-1">Tue</span>
+                    </div>
+                    <div class="text-center">
+                        <button class="h-8 w-8 rounded-full bg-teal-600 text-white text-xs font-medium">W</button>
+                        <span class="block text-xs mt-1">Wed</span>
+                    </div>
+                    <div class="text-center">
+                        <button class="h-8 w-8 rounded-full bg-gray-200 text-gray-800 text-xs font-medium">T</button>
+                        <span class="block text-xs mt-1">Thu</span>
+                    </div>
+                    <div class="text-center">
+                        <button class="h-8 w-8 rounded-full bg-teal-600 text-white text-xs font-medium">F</button>
+                        <span class="block text-xs mt-1">Fri</span>
+                    </div>
+                    <div class="text-center">
+                        <button class="h-8 w-8 rounded-full bg-gray-200 text-gray-800 text-xs font-medium">S</button>
+                        <span class="block text-xs mt-1">Sat</span>
+                    </div>
+                    <div class="text-center">
+                        <button class="h-8 w-8 rounded-full bg-gray-200 text-gray-800 text-xs font-medium">S</button>
+                        <span class="block text-xs mt-1">Sun</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">Start Time</label>
+                        <select class="w-full p-2 border border-gray-300 rounded-md text-sm">
+                            <option>09:00 AM</option>
+                            <option>10:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>12:00 PM</option>
+                            <option>01:00 PM</option>
+                            <option>02:00 PM</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1">End Time</label>
+                        <select class="w-full p-2 border border-gray-300 rounded-md text-sm">
+                            <option>01:00 PM</option>
+                            <option>02:00 PM</option>
+                            <option>03:00 PM</option>
+                            <option>04:00 PM</option>
+                            <option>05:00 PM</option>
+                            <option>06:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hourly Rate -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Hourly Rate (₱)</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">₱</span>
+                    <input type="number" class="w-full pl-8 p-2 border border-gray-300 rounded-md text-sm" placeholder="65" value="65">
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Recommended rate: ₱60-₱80 per hour</p>
+            </div>
+            
+            <!-- Special Requirements -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Special Requirements (Optional)</label>
+                <textarea class="w-full p-2 border border-gray-300 rounded-md text-sm" rows="3" placeholder="Add any specific duties or requirements"></textarea>
+            </div>
+        </div>
+        
+        <!-- Cost Estimate -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h3 class="font-medium text-gray-800 mb-3">Cost Estimate</h3>
+            
+            <div class="bg-gray-50 p-3 rounded-md space-y-2">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">4 hours × ₱65</span>
+                    <span class="font-medium">₱260</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Frequency</span>
+                    <span class="font-medium">3 days per week</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Weekly estimate</span>
+                    <span class="font-medium">₱780</span>
+                </div>
+                
+                <div class="border-t border-gray-200 pt-2 mt-2">
+                    <div class="flex justify-between font-medium">
+                        <span>First booking payment</span>
+                        <span class="text-teal-700">₱260</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 bg-blue-50 p-3 rounded-md flex items-start">
+                <i data-feather="info" class="w-5 h-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5"></i>
+                <p class="text-xs text-blue-800">This amount will be held in your CareHive wallet until the first service is completed and approved.</p>
+            </div>
+        </div>
+        
+        <!-- Wallet Check -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-medium text-gray-800">Your Wallet</h3>
+                <span class="text-lg font-bold text-teal-700">₱1,250.00</span>
+            </div>
+            
+            <div class="bg-green-50 p-3 rounded-md flex items-start">
+                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5"></i>
+                <p class="text-xs text-green-800">You have sufficient funds in your wallet for this booking.</p>
+            </div>
+        </div>
+        
+        <!-- Buttons -->
+        <div class="space-y-3">
+            <button class="bg-teal-600 text-white py-3 w-full rounded-lg text-sm font-medium hover:bg-teal-700 transition">
+                Review and Send Offer
+            </button>
+            <button class="border border-teal-600 text-teal-600 py-3 w-full rounded-lg text-sm font-medium hover:bg-teal-50 transition">
+                Save as Draft
+            </button>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="family-dashboard.html" class="nav-item">
+            <i data-feather="home" class="w-5 h-5"></i>
+            <span>Home</span>
+        </a>
+        <a href="family-booking.html" class="nav-item active">
+            <i data-feather="calendar" class="w-5 h-5"></i>
+            <span>Bookings</span>
+        </a>
+        <a href="family-messages.html" class="nav-item">
+            <i data-feather="message-square" class="w-5 h-5"></i>
+            <span>Messages</span>
+        </a>
+        <a href="family-profile.html" class="nav-item">
+            <i data-feather="user" class="w-5 h-5"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+        });
+    </script>
+</body>
+</html>

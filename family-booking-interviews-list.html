@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CareHive - Family Engagements</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>CareHive - Family Interviews</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Feather Icons -->
@@ -153,14 +152,6 @@
             background-color: #E0E7FF;
             color: #4338CA;
         }
-        .status-badge.offer-sent {
-            background-color: #F5D0FE;
-            color: #A21CAF;
-        }
-        .status-badge.offer-pending {
-            background-color: #FDE68A;
-            color: #B45309;
-        }
         .booking-action {
             color: #0D9488;
             font-size: 0.813rem;
@@ -198,9 +189,13 @@
             background-color: #E0E7FF;
             color: #4338CA;
         }
-        .action-btn.offer {
-            background-color: #F5D0FE;
-            color: #A21CAF;
+        .action-btn.reschedule {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+        .action-btn.start {
+            background-color: #10B981;
+            color: white;
         }
         .date-nav {
             display: flex;
@@ -310,6 +305,21 @@
             padding: 0.5rem 0.75rem;
             border-radius: 0.375rem;
         }
+        .section-divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+        .section-divider-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: #E5E7EB;
+        }
+        .section-divider-text {
+            padding: 0 0.75rem;
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
     </style>
 </head>
 <body class="pb-20 bg-gray-50">
@@ -399,8 +409,8 @@
 
         <!-- Tabs -->
         <div class="tab-nav">
-            <button class="tab-item"><a href="family-booking-interviews-list.html">Interviews</a></button>
-            <button class="tab-item active">Job Offers</button>
+            <button class="tab-item active">Interviews</button>
+            <button class="tab-item">Job Offers</button>
             <button class="tab-item">Bookings</button>
             <button class="tab-item">
                 Need Action
@@ -409,49 +419,40 @@
             <button class="tab-item">Completed</button>
         </div>
 
-        <!-- Job Offers List -->
+        <!-- Interview List -->
         <div class="space-y-3">
-            <!-- Job Offer section header -->
-            <div class="flex justify-between items-center mb-2">
-                <h2 class="text-lg font-semibold text-gray-800">Active Job Offers</h2>
-                <a href="family-create-offer.html" class="text-teal-600 text-sm font-medium flex items-center">
-                    <i data-feather="plus-circle" class="w-4 h-4 mr-1"></i> New Offer
-                </a>
-            </div>
+            <!-- Today's Interviews -->
+            <h2 class="text-lg font-semibold text-gray-800 mb-2">Today's Interviews</h2>
             
-            <!-- Sent Job Offer - Pending Response -->
-            <div class="booking-card border-l-4 border-amber-400">
+            <!-- Upcoming Interview Ready to Start -->
+            <div class="booking-card border-l-4 border-teal-500">
                 <div class="booking-header">
-                    <div class="booking-avatar">JM</div>
+                    <div class="booking-avatar">ML</div>
                     <div class="booking-info">
-                        <div class="booking-name">Javier Mendoza</div>
-                        <div class="booking-service">Pet Sitting</div>
+                        <div class="booking-name">Maria Lopez</div>
+                        <div class="booking-service">Child Care</div>
                     </div>
                 </div>
                 <div class="booking-detail">
-                    <i data-feather="file-text" class="w-4 h-4 mr-2"></i>
-                    <span>Job Offer #JO-1029</span>
-                </div>
-                <div class="booking-detail">
                     <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
-                    <span>Sat, Mar 29 - Sun, Mar 30</span>
+                    <span>Today, Mar 25</span>
                 </div>
                 <div class="booking-detail">
                     <i data-feather="clock" class="w-4 h-4 mr-2"></i>
-                    <span>08:00 AM - 06:00 PM (10 hours/day)</span>
+                    <span>10:00 AM - 10:30 AM (Starting in 15 min)</span>
                 </div>
                 <div class="booking-detail">
-                    <i data-feather="dollar-sign" class="w-4 h-4 mr-2"></i>
-                    <span>₱80/hour (Total: ₱1,600)</span>
+                    <i data-feather="info" class="w-4 h-4 mr-2"></i>
+                    <span>First interview for childcare position</span>
                 </div>
                 <div class="booking-status">
-                    <span class="status-badge offer-pending">Awaiting Response (3 days left)</span>
+                    <span class="status-badge upcoming">Ready to Start</span>
                     <div class="booking-actions">
-                        <a href="family-offer-details.html" class="action-btn view">
-                            <i data-feather="file-text" class="w-3 h-3"></i>
-                            View Details
+                        <a href="family-interview-screen.html" class="action-btn start">
+                            <i data-feather="video" class="w-3 h-3"></i>
+                            Start Interview
                         </a>
-                        <a href="booking-details.html" class="action-btn message">
+                        <a href="family-message.html" class="action-btn message">
                             <i data-feather="message-square" class="w-3 h-3"></i>
                             Message
                         </a>
@@ -459,130 +460,122 @@
                 </div>
             </div>
 
-            <!-- Offer with counter-proposal -->
-            <div class="booking-card border-l-4 border-purple-400">
-                <div class="booking-header">
-                    <div class="booking-avatar">ML</div>
-                    <div class="booking-info">
-                        <div class="booking-name">Maya Lim</div>
-                        <div class="booking-service">Child Care, Tutoring</div>
-                    </div>
-                </div>
-                <div class="booking-detail">
-                    <i data-feather="file-text" class="w-4 h-4 mr-2"></i>
-                    <span>Job Offer #JO-1025 (Counter-offered)</span>
-                </div>
-                <div class="booking-detail">
-                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
-                    <span>Mon-Fri, Apr 1-5</span>
-                </div>
-                <div class="booking-detail">
-                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
-                    <span>03:00 PM - 07:00 PM (4 hours/day)</span>
-                </div>
-                <div class="booking-detail text-red-600">
-                    <i data-feather="alert-circle" class="w-4 h-4 mr-2"></i>
-                    <span>Counter-offered at ₱100/hour (was ₱85/hour)</span>
-                </div>
-                <div class="booking-status">
-                    <span class="status-badge offer-pending">Counter Offer Received</span>
-                    <div class="booking-actions">
-                        <a href="family-counter-offer.html" class="action-btn approve">
-                            <i data-feather="check-circle" class="w-3 h-3"></i>
-                            Accept
-                        </a>
-                        <a href="family-counter-offer.html" class="action-btn review">
-                            <i data-feather="edit" class="w-3 h-3"></i>
-                            Negotiate
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Offer Accepted -->
-            <div class="booking-card border-l-4 border-green-400">
-                <div class="booking-header">
-                    <div class="booking-avatar">AL</div>
-                    <div class="booking-info">
-                        <div class="booking-name">Ana Lim</div>
-                        <div class="booking-service">Child Care</div>
-                    </div>
-                </div>
-                <div class="booking-detail">
-                    <i data-feather="file-text" class="w-4 h-4 mr-2"></i>
-                    <span>Job Offer #JO-1023 (Accepted)</span>
-                </div>
-                <div class="booking-detail">
-                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
-                    <span>Tue, Mar 26</span>
-                </div>
-                <div class="booking-detail">
-                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
-                    <span>09:00 AM - 05:00 PM (8 hours)</span>
-                </div>
-                <div class="booking-detail">
-                    <i data-feather="dollar-sign" class="w-4 h-4 mr-2"></i>
-                    <span>₱90/hour (Total: ₱720)</span>
-                </div>
-                <div class="booking-status">
-                    <span class="status-badge confirmed">Accepted & Scheduled</span>
-                    <div class="booking-actions">
-                        <a href="booking-details.html" class="action-btn view">
-                            <i data-feather="calendar" class="w-3 h-3"></i>
-                            View Booking
-                        </a>
-                        <a href="family-offer-details.html" class="action-btn view">
-                            <i data-feather="file-text" class="w-3 h-3"></i>
-                            View Contract
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Divider -->
-            <div class="relative flex py-5 items-center">
-                <div class="flex-grow border-t border-gray-200"></div>
-                <span class="flex-shrink mx-4 text-gray-400 text-sm">Available Care Providers</span>
-                <div class="flex-grow border-t border-gray-200"></div>
-            </div>
-
-            <!-- Post-Interview Provider for Offer -->
+            <!-- Scheduled for Later Today -->
             <div class="booking-card border-l-4 border-blue-400">
                 <div class="booking-header">
-                    <div class="booking-avatar">RC</div>
+                    <div class="booking-avatar">JS</div>
                     <div class="booking-info">
-                        <div class="booking-name">Rico Cruz</div>
-                        <div class="booking-service">Senior Care</div>
+                        <div class="booking-name">James Santos</div>
+                        <div class="booking-service">Senior Care, Housekeeping</div>
                     </div>
                 </div>
                 <div class="booking-detail">
-                    <i data-feather="check-circle" class="w-4 h-4 mr-2"></i>
-                    <span>Interview Completed on Mar 18</span>
+                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                    <span>Today, Mar 25</span>
                 </div>
                 <div class="booking-detail">
-                    <i data-feather="tag" class="w-4 h-4 mr-2"></i>
-                    <span>Tagged as "Hire"</span>
+                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                    <span>03:00 PM - 03:30 PM (5 hours from now)</span>
                 </div>
                 <div class="booking-detail">
-                    <i data-feather="star" class="w-4 h-4 mr-2"></i>
-                    <span>Your Interview Rating: 4.5/5</span>
+                    <i data-feather="info" class="w-4 h-4 mr-2"></i>
+                    <span>Senior care for my father</span>
                 </div>
                 <div class="booking-status">
-                    <span class="status-badge interview">Ready to Hire</span>
+                    <span class="status-badge interview">Scheduled</span>
                     <div class="booking-actions">
-                        <a href="family-send-offer.html" class="action-btn offer">
-                            <i data-feather="file-plus" class="w-3 h-3"></i>
-                            Send Offer
-                        </a>
                         <a href="provider-profile.html" class="action-btn view">
                             <i data-feather="user" class="w-3 h-3"></i>
                             View Profile
                         </a>
+                        <a href="family-reschedule.html" class="action-btn reschedule">
+                            <i data-feather="calendar" class="w-3 h-3"></i>
+                            Reschedule
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Shortlisted Provider for Offer -->
+            <!-- Scheduled for Later Today -->
+            <div class="booking-card border-l-4 border-blue-400">
+                <div class="booking-header">
+                    <div class="booking-avatar">AT</div>
+                    <div class="booking-info">
+                        <div class="booking-name">Alicia Tan</div>
+                        <div class="booking-service">Child Care, Tutoring</div>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                    <span>Today, Mar 25</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                    <span>05:30 PM - 06:00 PM (7.5 hours from now)</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="info" class="w-4 h-4 mr-2"></i>
+                    <span>Looking for regular after-school care</span>
+                </div>
+                <div class="booking-status">
+                    <span class="status-badge interview">Scheduled</span>
+                    <div class="booking-actions">
+                        <a href="provider-profile.html" class="action-btn view">
+                            <i data-feather="user" class="w-3 h-3"></i>
+                            View Profile
+                        </a>
+                        <a href="family-reschedule.html" class="action-btn reschedule">
+                            <i data-feather="calendar" class="w-3 h-3"></i>
+                            Reschedule
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Divider for Upcoming Interviews -->
+            <div class="section-divider">
+                <div class="section-divider-line"></div>
+                <span class="section-divider-text">Upcoming Interviews</span>
+                <div class="section-divider-line"></div>
+            </div>
+
+            <!-- Upcoming Interview -->
+            <div class="booking-card border-l-4 border-indigo-400">
+                <div class="booking-header">
+                    <div class="booking-avatar">RC</div>
+                    <div class="booking-info">
+                        <div class="booking-name">Rosario Cruz</div>
+                        <div class="booking-service">Senior Care</div>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                    <span>Tomorrow, Mar 26</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                    <span>09:00 AM - 09:30 AM</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="award" class="w-4 h-4 mr-2"></i>
+                    <span>7 years of experience, 4.9/5 rating</span>
+                </div>
+                <div class="booking-status">
+                    <span class="status-badge interview">Confirmed</span>
+                    <div class="booking-actions">
+                        <a href="provider-profile.html" class="action-btn view">
+                            <i data-feather="user" class="w-3 h-3"></i>
+                            View Profile
+                        </a>
+                        <a href="family-reschedule.html" class="action-btn reschedule">
+                            <i data-feather="calendar" class="w-3 h-3"></i>
+                            Reschedule
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Interview -->
             <div class="booking-card border-l-4 border-indigo-400">
                 <div class="booking-header">
                     <div class="booking-avatar">MR</div>
@@ -592,21 +585,100 @@
                     </div>
                 </div>
                 <div class="booking-detail">
-                    <i data-feather="check-circle" class="w-4 h-4 mr-2"></i>
-                    <span>Interview Completed on Mar 15</span>
+                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                    <span>Thursday, Mar 27</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                    <span>04:30 PM - 05:00 PM</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="award" class="w-4 h-4 mr-2"></i>
+                    <span>Former teacher, 4.8/5 rating</span>
+                </div>
+                <div class="booking-status">
+                    <span class="status-badge interview">Confirmed</span>
+                    <div class="booking-actions">
+                        <a href="provider-profile.html" class="action-btn view">
+                            <i data-feather="user" class="w-3 h-3"></i>
+                            View Profile
+                        </a>
+                        <a href="family-reschedule.html" class="action-btn reschedule">
+                            <i data-feather="calendar" class="w-3 h-3"></i>
+                            Reschedule
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interview Request -->
+            <div class="booking-card border-l-4 border-amber-400">
+                <div class="booking-header">
+                    <div class="booking-avatar">LG</div>
+                    <div class="booking-info">
+                        <div class="booking-name">Lisa Garcia</div>
+                        <div class="booking-service">Housekeeping</div>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="message-circle" class="w-4 h-4 mr-2"></i>
+                    <span>Waiting for provider to confirm time</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                    <span>Proposed: Friday, Mar 28, 10:00 AM</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="info" class="w-4 h-4 mr-2"></i>
+                    <span>Request sent 2 hours ago</span>
+                </div>
+                <div class="booking-status">
+                    <span class="status-badge pending-approval">Awaiting Confirmation</span>
+                    <div class="booking-actions">
+                        <a href="provider-profile.html" class="action-btn view">
+                            <i data-feather="user" class="w-3 h-3"></i>
+                            View Profile
+                        </a>
+                        <a href="family-message.html" class="action-btn message">
+                            <i data-feather="message-square" class="w-3 h-3"></i>
+                            Message
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Divider for Completed Interviews -->
+            <div class="section-divider">
+                <div class="section-divider-line"></div>
+                <span class="section-divider-text">Recently Completed</span>
+                <div class="section-divider-line"></div>
+            </div>
+
+            <!-- Completed Interview -->
+            <div class="booking-card border-l-4 border-gray-400">
+                <div class="booking-header">
+                    <div class="booking-avatar">RC</div>
+                    <div class="booking-info">
+                        <div class="booking-name">Rico Cruz</div>
+                        <div class="booking-service">Senior Care</div>
+                    </div>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                    <span>Mar 18, 2025</span>
                 </div>
                 <div class="booking-detail">
                     <i data-feather="tag" class="w-4 h-4 mr-2"></i>
-                    <span>Tagged as "Shortlisted"</span>
+                    <span>Tagged as "Hire"</span>
                 </div>
                 <div class="booking-detail">
                     <i data-feather="star" class="w-4 h-4 mr-2"></i>
-                    <span>Your Interview Rating: 4/5</span>
+                    <span>Your Rating: 4.5/5</span>
                 </div>
                 <div class="booking-status">
-                    <span class="status-badge interview">Shortlisted</span>
+                    <span class="status-badge completed">Completed</span>
                     <div class="booking-actions">
-                        <a href="family-send-offer.html" class="action-btn offer">
+                        <a href="family-send-offer.html" class="action-btn approve">
                             <i data-feather="file-plus" class="w-3 h-3"></i>
                             Send Offer
                         </a>
@@ -618,33 +690,33 @@
                 </div>
             </div>
 
-            <!-- Declined Offer -->
-            <div class="booking-card border-l-4 border-red-400">
+            <!-- Completed Interview -->
+            <div class="booking-card border-l-4 border-gray-400">
                 <div class="booking-header">
-                    <div class="booking-avatar">DS</div>
+                    <div class="booking-avatar">MR</div>
                     <div class="booking-info">
-                        <div class="booking-name">David Sy</div>
-                        <div class="booking-service">Housekeeping</div>
+                        <div class="booking-name">Marco Rodriguez</div>
+                        <div class="booking-service">Child Care, Tutoring</div>
                     </div>
                 </div>
                 <div class="booking-detail">
-                    <i data-feather="file-text" class="w-4 h-4 mr-2"></i>
-                    <span>Job Offer #JO-1018 (Declined)</span>
-                </div>
-                <div class="booking-detail">
                     <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
-                    <span>Offered for Mar 15</span>
+                    <span>Mar 15, 2025</span>
                 </div>
                 <div class="booking-detail">
-                    <i data-feather="x-circle" class="w-4 h-4 mr-2 text-red-500"></i>
-                    <span>Declined on Mar 12 - Scheduling conflict</span>
+                    <i data-feather="tag" class="w-4 h-4 mr-2"></i>
+                    <span>Tagged as "Shortlisted"</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="star" class="w-4 h-4 mr-2"></i>
+                    <span>Your Rating: 4/5</span>
                 </div>
                 <div class="booking-status">
-                    <span class="status-badge cancelled">Declined</span>
+                    <span class="status-badge completed">Completed</span>
                     <div class="booking-actions">
-                        <a href="family-send-offer.html" class="action-btn offer">
-                            <i data-feather="refresh-cw" class="w-3 h-3"></i>
-                            New Offer
+                        <a href="family-send-offer.html" class="action-btn approve">
+                            <i data-feather="file-plus" class="w-3 h-3"></i>
+                            Send Offer
                         </a>
                         <a href="provider-profile.html" class="action-btn view">
                             <i data-feather="user" class="w-3 h-3"></i>
@@ -655,20 +727,20 @@
             </div>
         </div>
 
-        <!-- Empty State (hidden when there are bookings) -->
+        <!-- Empty State (hidden when there are interviews) -->
         <div class="hidden flex flex-col items-center justify-center py-10">
             <div class="bg-gray-100 p-4 rounded-full mb-4">
-                <i data-feather="calendar" class="w-8 h-8 text-gray-400"></i>
+                <i data-feather="video" class="w-8 h-8 text-gray-400"></i>
             </div>
-            <h3 class="text-lg font-medium text-gray-800 mb-1">No Bookings Yet</h3>
-            <p class="text-sm text-gray-500 text-center mb-4">You don't have any interviews or bookings. Start by searching for care providers.</p>
+            <h3 class="text-lg font-medium text-gray-800 mb-1">No Scheduled Interviews</h3>
+            <p class="text-sm text-gray-500 text-center mb-4">You don't have any upcoming interviews. Find care providers and schedule interviews.</p>
             <button class="px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium">
                 Find Care Providers
             </button>
         </div>
     </main>
 
-    <!-- Action Button - Changed to add booking -->
+    <!-- Action Button - Changed to add engagement -->
     <a href="find-providers.html" class="action-button">
         <i data-feather="plus" class="w-6 h-6"></i>
     </a>
