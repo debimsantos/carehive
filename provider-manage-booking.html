@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Manage Booking</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+</head>
+<body class="pb-20">
+    <!-- Header -->
+    <header class="bg-white p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="flex items-center">
+            <button onclick="history.back()" class="mr-2">
+                <i data-feather="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <h1 class="text-lg font-semibold">Booking Details</h1>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <div class="h-10 w-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+                    <span class="font-semibold">MD</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-green-500 rounded-full h-3 w-3 border-2 border-white"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4 space-y-5">
+        <!-- Booking Status Card -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <div class="flex items-center mb-4">
+                <div class="h-16 w-16 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center mr-4">
+                    <span class="font-semibold text-xl">RF</span>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">Reyes Family</h2>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span class="flex items-center mr-3">
+                            <i data-feather="star" class="w-4 h-4 text-yellow-400 mr-1"></i>
+                            4.7 (12)
+                        </span>
+                        <span>Child Care</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center">
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded-full">Confirmed</span>
+                </div>
+                <button class="text-teal-600 text-sm font-medium flex items-center">
+                    <i data-feather="message-square" class="w-4 h-4 mr-1"></i>
+                    Message
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i data-feather="calendar" class="w-4 h-4 mr-2 text-teal-600"></i>
+                    <span>Mon, Mar 25, 2025</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-600">
+                    <i data-feather="clock" class="w-4 h-4 mr-2 text-teal-600"></i>
+                    <span>09:00 AM - 01:00 PM</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Check-In Controls (Only shown when the booking is confirmed and it's booking day) -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h3 class="font-medium text-gray-800 mb-3">Service Tracking</h3>
+            
+            <div class="space-y-4">
+                <!-- Check-In Button (visible when not checked in) -->
+                <button class="bg-teal-600 text-white py-3 w-full rounded-lg text-sm font-medium hover:bg-teal-700 transition flex items-center justify-center">
+                    <i data-feather="log-in" class="w-4 h-4 mr-2"></i>
+                    Start Shift
+                </button>
+                
+                <!-- Check-In Status (visible after check-in, currently hidden) -->
+                <div class="bg-green-50 p-3 rounded-md flex items-start" style="display: none;">
+                    <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5"></i>
+                    <div>
+                        <p class="text-sm font-medium text-green-800">Shift in Progress</p>
+                        <p class="text-xs text-green-600">09:05 AM • Mar 25, 2025</p>
+                    </div>
+                </div>
+                
+                <!-- Check-Out Button (visible after check-in, currently hidden) -->
+                <button class="bg-red-600 text-white py-3 w-full rounded-lg text-sm font-medium hover:bg-red-700 transition flex items-center justify-center" style="display: none;">
+                    <i data-feather="log-out" class="w-4 h-4 mr-2"></i>
+                    End Shift
+                </button>
+                
+                <!-- Service Completion (visible after both check-in and check-out, currently hidden) -->
+                <div class="bg-blue-50 p-3 rounded-md" style="display: none;">
+                    <div class="flex items-start mb-2">
+                        <i data-feather="info" class="w-5 h-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5"></i>
+                        <div>
+                            <p class="text-sm font-medium text-blue-800">Service Completed</p>
+                            <p class="text-xs text-blue-600">
+                                <span>Start: 09:05 AM</span>
+                                <span class="mx-1">•</span>
+                                <span>End: 01:10 PM</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-blue-700">The family will review and approve your hours. Payment will be released after approval.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Timeline -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h3 class="font-medium text-gray-800 mb-4">Booking Timeline</h3>
+            
+            <div class="relative ml-6 pb-2">
+                <!-- Timeline line -->
+                <div class="absolute top-0 bottom-0 left-0 w-px bg-gray-200"></div>
+                
+                <!-- Offer Received -->
+                <div class="relative flex items-start mb-6">
+                    <div class="h-6 w-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center absolute -left-3 text-xs border-2 border-white">
+                        <i data-feather="check" class="w-3 h-3"></i>
+                    </div>
+                    <div class="ml-6">
+                        <h4 class="text-sm font-medium">Offer Received</h4>
+                        <p class="text-xs text-gray-500">Mar 20, 2025 • 2:15 PM</p>
+                    </div>
+                </div>
+                
+                <!-- Offer Accepted -->
+                <div class="relative flex items-start mb-6">
+                    <div class="h-6 w-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center absolute -left-3 text-xs border-2 border-white">
+                        <i data-feather="check" class="w-3 h-3"></i>
+                    </div>
+                    <div class="ml-6">
+                        <h4 class="text-sm font-medium">Offer Accepted</h4>
+                        <p class="text-xs text-gray-500">Mar 21, 2025 • 9:30 AM</p>
+                    </div>
+                </div>
+                
+                <!-- Booking Confirmed -->
+                <div class="relative flex items-start mb-6">
+                    <div class="h-6 w-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center absolute -left-3 text-xs border-2 border-white">
+                        <i data-feather="check" class="w-3 h-3"></i>
+                    </div>
+                    <div class="ml-6">
+                        <h4 class="text-sm font-medium">Booking Confirmed</h4>
+                        <p class="text-xs text-gray-500">Mar 21, 2025 • 9:30 AM</p>
+                    </div>
+                </div>
+                
+                <!-- Service Scheduled -->
+                <div class="relative flex items-start mb-6">
+                    <div class="h-6 w-6 rounded-full bg-teal-600 text-white flex items-center justify-center absolute -left-3 text-xs border-2 border-white">
+                        <i data-feather="clock" class="w-3 h-3"></i>
+                    </div>
+                    <div class="ml-6">
+                        <h4 class="text-sm font-medium">Service Scheduled</h4>
+                        <p class="text-xs text-gray-500">Mon, Mar 25, 2025 • 09:00 AM - 01:00 PM</p>
+                    </div>
+                </div>
+                
+                <!-- Service Completion (Coming up) -->
+                <div class="relative flex items-start mb-6">
+                    <div class="h-6 w-6 rounded-full bg-gray-300 text-white flex items-center justify-center absolute -left-3 text-xs border-2 border-white">
+                        <i data-feather="check" class="w-3 h-3"></i>
+                    </div>
+                    <div class="ml-6">
+                        <h4 class="text-sm font-medium text-gray-400">Service Completion</h4>
+                        <p class="text-xs text-gray-400">Pending</p>
+                    </div>
+                </div>
+                
+                <!-- Payment Release (Coming up) -->
+                <div class="relative flex items-start">
+                    <div class="h-6 w-6 rounded-full bg-gray-300 text-white flex items-center justify-center absolute -left-3 text-xs border-2 border-white">
+                        <i data-feather="credit-card" class="w-3 h-3"></i>
+                    </div>
+                    <div class="ml-6">
+                        <h4 class="text-sm font-medium text-gray-400">Payment Release</h4>
+                        <p class="text-xs text-gray-400">Pending</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Details -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h3 class="font-medium text-gray-800 mb-3">Service Details</h3>
+            
+            <div class="space-y-3">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Service Type</span>
+                    <span class="font-medium">Child Care</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Date</span>
+                    <span class="font-medium">Mon, Mar 25, 2025</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Time</span>
+                    <span class="font-medium">09:00 AM - 01:00 PM</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Duration</span>
+                    <span class="font-medium">4 hours</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Hourly Rate</span>
+                    <span class="font-medium">₱65</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Service Fee (10%)</span>
+                    <span class="font-medium text-gray-600">-₱6.50/hr</span>
+                </div>
+                
+                <div class="border-t border-gray-200 pt-2 mt-2">
+                    <div class="flex justify-between font-medium">
+                        <span>Your Earnings</span>
+                        <span class="text-teal-700">₱234</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">4 hours × ₱58.50 after service fee</p>
+                </div>
+            </div>
+            
+            <div class="mt-4 bg-blue-50 p-3 rounded-md flex items-start">
+                <i data-feather="info" class="w-5 h-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5"></i>
+                <p class="text-xs text-blue-800">Payment will be automatically added to your wallet once the family approves the completed service hours.</p>
+            </div>
+        </div>
+        
+        <!-- Service Location -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h3 class="font-medium text-gray-800 mb-3">Service Location</h3>
+            
+            <div class="flex items-start">
+                <i data-feather="map-pin" class="w-5 h-5 text-teal-600 mr-2 flex-shrink-0 mt-0.5"></i>
+                <div>
+                    <p class="text-sm font-medium">123 Rizal Ave, Manila</p>
+                    <p class="text-xs text-gray-500">Makati City, Metro Manila</p>
+                    <button class="text-teal-600 text-xs font-medium flex items-center mt-1">
+                        <i data-feather="map" class="w-3 h-3 mr-1"></i>
+                        View Map
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Special Requirements -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h3 class="font-medium text-gray-800 mb-3">Special Requirements</h3>
+            
+            <p class="text-sm text-gray-600">Two children aged 3 and 5. The older child has homework that needs assistance. Both children have had lunch but will need an afternoon snack around 11:30 AM.</p>
+        </div>
+        
+        <!-- Actions -->
+        <div class="space-y-3">
+            <button class="border border-red-600 text-red-600 py-3 w-full rounded-lg text-sm font-medium hover:bg-red-50 transition">
+                Request Cancellation
+            </button>
+            <button class="border border-teal-600 text-teal-600 py-3 w-full rounded-lg text-sm font-medium hover:bg-teal-50 transition">
+                Request Schedule Change
+            </button>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="provider-dashboard.html" class="nav-item">
+            <i data-feather="home" class="w-5 h-5"></i>
+            <span>Home</span>
+        </a>
+        <a href="provider-booking.html" class="nav-item active">
+            <i data-feather="calendar" class="w-5 h-5"></i>
+            <span>Bookings</span>
+        </a>
+        <a href="provider-messages.html" class="nav-item">
+            <i data-feather="message-square" class="w-5 h-5"></i>
+            <span>Messages</span>
+        </a>
+        <a href="provider-profile.html" class="nav-item">
+            <i data-feather="user" class="w-5 h-5"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            // Demo functionality for check-in/check-out process
+            const checkInBtn = document.querySelector('.bg-teal-600.text-white.py-3.w-full');
+            const checkedInStatus = document.querySelector('.bg-green-50.p-3.rounded-md.flex');
+            const checkOutBtn = document.querySelector('.bg-red-600.text-white.py-3.w-full');
+            const serviceCompletedStatus = document.querySelector('.bg-blue-50.p-3.rounded-md');
+            
+            if (checkInBtn && checkedInStatus && checkOutBtn && serviceCompletedStatus) {
+                checkInBtn.addEventListener('click', function() {
+                    // Hide check-in button
+                    checkInBtn.style.display = 'none';
+                    // Show checked-in status
+                    checkedInStatus.style.display = 'flex';
+                    // Show check-out button
+                    checkOutBtn.style.display = 'flex';
+                });
+                
+                checkOutBtn.addEventListener('click', function() {
+                    // Hide check-out button
+                    checkOutBtn.style.display = 'none';
+                    // Hide checked-in status
+                    checkedInStatus.style.display = 'none';
+                    // Show service completed status
+                    serviceCompletedStatus.style.display = 'block';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

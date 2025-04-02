@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Provider Profile</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+    <style>
+        /* Custom CSS matching the dashboard style */
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .care-text {
+            color: #0D9488;
+        }
+        .hive-text {
+            color: #334155;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.75rem 0;
+            border-top: 1px solid #E5E7EB;
+            z-index: 10;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6B7280;
+            font-size: 0.75rem;
+            text-decoration: none;
+        }
+        .nav-item.active {
+            color: #0D9488;
+        }
+        .nav-item span {
+            margin-top: 0.25rem;
+        }
+        .provider-avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 9999px;
+            background-color: #e2f5f3;
+            color: #0D9488;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 0.5rem 0.5rem 0 0;
+            text-align: center;
+            position: relative;
+        }
+        .profile-section {
+            background-color: white;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        .profile-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .rating-stars {
+            display: flex;
+            align-items: center;
+        }
+        .star-filled {
+            color: #FBBF24;
+        }
+        .cta-button {
+            position: fixed;
+            bottom: 5rem;
+            width: calc(100% - 2rem);
+            max-width: 100%;
+            left: 1rem;
+            right: 1rem;
+            padding: 0.875rem;
+            border-radius: 0.5rem;
+            background-color: #0D9488;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            z-index: 10;
+        }
+        .service-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #F3F4F6;
+            color: #4B5563;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .service-badge i {
+            margin-right: 0.25rem;
+        }
+        .availability-day {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .availability-hours {
+            font-size: 0.875rem;
+            color: #4B5563;
+        }
+        .verification-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        .verification-badge {
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            margin-top: 0.125rem;
+        }
+        .verification-badge.verified {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+        .verification-badge.pending {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+        .verification-text {
+            flex: 1;
+        }
+        .verification-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 0.125rem;
+        }
+        .verification-status {
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+        .review-item {
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .review-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .review-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: #F3F4F6;
+            color: #4B5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-right: 0.75rem;
+        }
+        .review-name {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #111827;
+        }
+        .review-date {
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+        .skill-group {
+            margin-bottom: 1rem;
+        }
+        .skill-title {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        .skill-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #F3F4F6;
+            color: #4B5563;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            margin-right: 0.375rem;
+            margin-bottom: 0.375rem;
+        }
+        .tab-nav {
+            display: flex;
+            background-color: white;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+        .tab-item {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6B7280;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+        .tab-item.active {
+            color: #0D9488;
+            border-bottom-color: #0D9488;
+        }
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #D1FAE5;
+            color: #065F46;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.125rem 0.5rem;
+            margin-left: 0.5rem;
+        }
+        .verified-badge i {
+            width: 0.75rem;
+            height: 0.75rem;
+            margin-right: 0.25rem;
+        }
+        .experience-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .experience-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .experience-date {
+            font-size: 0.75rem;
+            color: #6B7280;
+            margin-bottom: 0.25rem;
+        }
+        .experience-title {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+        .experience-company {
+            font-size: 0.8125rem;
+            color: #4B5563;
+            margin-bottom: 0.5rem;
+        }
+        .experience-description {
+            font-size: 0.8125rem;
+            color: #6B7280;
+            line-height: 1.25rem;
+        }
+        .rating-summary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .rating-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-right: 0.75rem;
+        }
+        .rating-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .rating-label {
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+        .avg-response {
+            display: flex;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #4B5563;
+            margin-top: 0.25rem;
+        }
+        .avg-response i {
+            margin-right: 0.25rem;
+            color: #10B981;
+        }
+    </style>
+</head>
+<body class="pb-24 bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="flex items-center">
+            <a href="javascript:history.back()" class="mr-2">
+                <i data-feather="arrow-left" class="w-5 h-5 text-gray-500"></i>
+            </a>
+            <div class="logo">
+                <a href="index.html" class="logo-text">
+                    <span class="care-text">Care</span><span class="hive-text">Hive</span>
+                </a>
+            </div>
+        </div>
+        <div class="flex">
+            <button class="mr-4">
+                <i data-feather="share-2" class="w-5 h-5 text-gray-500"></i>
+            </button>
+            <div class="relative">
+                <div class="h-10 w-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+                    <span class="font-semibold">RF</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-green-500 rounded-full h-3 w-3 border-2 border-white"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Provider Profile Header -->
+    <div class="profile-header">
+        <div class="provider-avatar mb-4">ML</div>
+        <h1 class="text-xl font-bold text-gray-800 mb-1">Maria Santos</h1>
+        <div class="flex items-center mb-1">
+            <div class="rating-stars">
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+            </div>
+            <span class="ml-1 text-sm font-semibold text-gray-700">4.95</span>
+            <span class="ml-1 text-sm text-gray-500">(24 reviews)</span>
+        </div>
+        <p class="text-gray-500 text-sm mb-3">Child Care Provider</p>
+        <div class="flex flex-wrap justify-center mb-2">
+            <span class="service-badge"><i data-feather="users" class="w-3 h-3"></i>Child Care</span>
+            <span class="service-badge"><i data-feather="book" class="w-3 h-3"></i>Tutoring</span>
+        </div>
+        <div class="text-sm text-gray-500">
+            <i data-feather="map-pin" class="w-3 h-3 inline"></i>
+            <span>Manila, Philippines</span>
+        </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tab-nav">
+        <button class="tab-item active">About</button>
+        <button class="tab-item">Experience</button>
+        <button class="tab-item">Availability</button>
+        <button class="tab-item">Reviews</button>
+        <button class="tab-item">Verification</button>
+    </div>
+
+    <!-- About Section -->
+    <div class="profile-section">
+        <div class="profile-section-header">
+            <h2 class="text-lg font-semibold text-gray-800">About Maria</h2>
+        </div>
+        <p class="text-sm text-gray-600 mb-4">
+            I'm a certified childcare provider with over 5 years of experience working with children of all ages. 
+            I was a preschool teacher for 3 years before becoming a full-time caregiver. I'm patient, energetic, 
+            and love creating educational activities that make learning fun. I'm also trained in first aid and CPR.
+        </p>
+        <p class="text-sm text-gray-600">
+            I speak English, Filipino, and basic Spanish. I enjoy reading, arts and crafts, and outdoor activities. 
+            I believe in creating a nurturing environment where children can thrive and develop their potential.
+        </p>
+    </div>
+
+    <!-- Skills Section -->
+    <div class="profile-section">
+        <div class="profile-section-header">
+            <h2 class="text-lg font-semibold text-gray-800">Skills & Expertise</h2>
+        </div>
+        <div class="skill-group">
+            <h3 class="skill-title">Child Care</h3>
+            <div>
+                <span class="skill-badge">Infant Care</span>
+                <span class="skill-badge">Toddler Care</span>
+                <span class="skill-badge">Preschool Activities</span>
+                <span class="skill-badge">Meal Preparation</span>
+                <span class="skill-badge">Potty Training</span>
+            </div>
+        </div>
+        <div class="skill-group">
+            <h3 class="skill-title">Education</h3>
+            <div>
+                <span class="skill-badge">Early Childhood Education</span>
+                <span class="skill-badge">Reading Assistance</span>
+                <span class="skill-badge">Arts and Crafts</span>
+                <span class="skill-badge">Basic Math</span>
+            </div>
+        </div>
+        <div class="skill-group">
+            <h3 class="skill-title">Languages</h3>
+            <div>
+                <span class="skill-badge">English (Fluent)</span>
+                <span class="skill-badge">Filipino (Native)</span>
+                <span class="skill-badge">Spanish (Basic)</span>
+            </div>
+        </div>
+        <div class="skill-group">
+            <h3 class="skill-title">Certifications</h3>
+            <div>
+                <span class="skill-badge">First Aid & CPR</span>
+                <span class="skill-badge">Early Childhood Development</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Experience Tab Content (hidden by default) -->
+    <div class="profile-section" style="display: none;">
+        <div class="profile-section-header">
+            <h2 class="text-lg font-semibold text-gray-800">Work Experience</h2>
+        </div>
+        <div class="experience-item">
+            <div class="experience-date">2022 - Present</div>
+            <div class="experience-title">Full-time Child Care Provider</div>
+            <div class="experience-company">Multiple Families</div>
+            <div class="experience-description">
+                Provide personalized care for children aged 0-10 years. Plan and implement age-appropriate 
+                educational activities, prepare nutritious meals, and ensure children's safety and well-being.
+            </div>
+        </div>
+        <div class="experience-item">
+            <div class="experience-date">2019 - 2022</div>
+            <div class="experience-title">Preschool Teacher</div>
+            <div class="experience-company">Sunshine Learning Center, Manila</div>
+            <div class="experience-description">
+                Developed and implemented curriculum for 3-5 year olds. Monitored child development, 
+                communicated with parents, and maintained classroom safety and cleanliness standards.
+            </div>
+        </div>
+        <div class="experience-item">
+            <div class="experience-date">2017 - 2019</div>
+            <div class="experience-title">Teacher's Assistant</div>
+            <div class="experience-company">Little Stars Daycare, Quezon City</div>
+            <div class="experience-description">
+                Assisted lead teachers with classroom management, activity preparation, and supervision 
+                of children. Helped with daily routines and parent communications.
+            </div>
+        </div>
+    </div>
+
+    <!-- Availability Tab Content (hidden by default) -->
+    <div class="profile-section" style="display: none;">
+        <div class="profile-section-header">
+            <h2 class="text-lg font-semibold text-gray-800">Weekly Availability</h2>
+        </div>
+        <div class="availability-day">
+            <div class="day-name">Monday</div>
+            <div class="availability-hours">7:00 AM - 7:00 PM</div>
+        </div>
+        <div class="availability-day">
+            <div class="day-name">Tuesday</div>
+            <div class="availability-hours">7:00 AM - 7:00 PM</div>
+        </div>
+        <div class="availability-day">
+            <div class="day-name">Wednesday</div>
+            <div class="availability-hours">7:00 AM - 7:00 PM</div>
+        </div>
+        <div class="availability-day">
+            <div class="day-name">Thursday</div>
+            <div class="availability-hours">7:00 AM - 7:00 PM</div>
+        </div>
+        <div class="availability-day">
+            <div class="day-name">Friday</div>
+            <div class="availability-hours">7:00 AM - 7:00 PM</div>
+        </div>
+        <div class="availability-day">
+            <div class="day-name">Saturday</div>
+            <div class="availability-hours">By arrangement</div>
+        </div>
+        <div class="availability-day">
+            <div class="day-name">Sunday</div>
+            <div class="availability-hours">Not available</div>
+        </div>
+    </div>
+
+    <!-- Reviews Tab Content (hidden by default) -->
+    <div class="profile-section" style="display: none;">
+        <div class="profile-section-header">
+            <h2 class="text-lg font-semibold text-gray-800">Reviews (24)</h2>
+        </div>
+        <div class="rating-summary">
+            <div class="rating-number">4.95</div>
+            <div class="rating-details">
+                <div class="rating-stars">
+                    <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                    <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                    <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                    <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                    <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                </div>
+                <div class="rating-label">based on 24 reviews</div>
+                <div class="avg-response">
+                    <i data-feather="check-circle" class="w-3 h-3"></i>
+                    <span>100% response rate</span>
+                </div>
+            </div>
+        </div>
+        <div class="review-item">
+            <div class="review-header">
+                <div class="review-avatar">SF</div>
+                <div>
+                    <div class="review-name">Santos Family</div>
+                    <div class="review-date">March 15, 2025</div>
+                </div>
+            </div>
+            <div class="rating-stars mb-2">
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+            </div>
+            <p class="text-sm text-gray-600">
+                Maria was amazing with our 3-year-old twins! She was punctual, prepared with activities, 
+                and the kids absolutely loved her. She kept them engaged and happy the entire time. 
+                We've already booked her again for next week.
+            </p>
+        </div>
+        <div class="review-item">
+            <div class="review-header">
+                <div class="review-avatar">RF</div>
+                <div>
+                    <div class="review-name">Reyes Family</div>
+                    <div class="review-date">March 10, 2025</div>
+                </div>
+            </div>
+            <div class="rating-stars mb-2">
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+            </div>
+            <p class="text-sm text-gray-600">
+                We hired Maria for after-school care for our 7-year-old. She helped with homework, 
+                prepared healthy snacks, and even taught him some basic Spanish words. She's patient, 
+                kind, and very professional. Highly recommend!
+            </p>
+        </div>
+        <div class="review-item">
+            <div class="review-header">
+                <div class="review-avatar">LF</div>
+                <div>
+                    <div class="review-name">Lim Family</div>
+                    <div class="review-date">March 5, 2025</div>
+                </div>
+            </div>
+            <div class="rating-stars mb-2">
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+                <i data-feather="star" class="w-4 h-4 star-filled"></i>
+            </div>
+            <p class="text-sm text-gray-600">
+                Maria has been watching our infant daughter twice a week for the past month. 
+                She's gentle, attentive, and always sends us updates throughout the day. 
+                Our daughter smiles as soon as she sees Maria. We feel so lucky to have found her!
+            </p>
+        </div>
+        <button class="w-full py-2 text-teal-600 text-sm font-medium">
+            View All Reviews
+        </button>
+    </div>
+
+    <!-- Verification Tab Content (hidden by default) -->
+    <div class="profile-section" style="display: none;">
+        <div class="profile-section-header">
+            <h2 class="text-lg font-semibold text-gray-800">Verified Information</h2>
+        </div>
+        <div class="verification-item">
+            <div class="verification-badge verified">
+                <i data-feather="check" class="w-3 h-3"></i>
+            </div>
+            <div class="verification-text">
+                <div class="verification-label">Government ID</div>
+                <div class="verification-status">Verified on Jan 15, 2025</div>
+            </div>
+        </div>
+        <div class="verification-item">
+            <div class="verification-badge verified">
+                <i data-feather="check" class="w-3 h-3"></i>
+            </div>
+            <div class="verification-text">
+                <div class="verification-label">NBI Clearance</div>
+                <div class="verification-status">Verified on Jan 15, 2025</div>
+            </div>
+        </div>
+        <div class="verification-item">
+            <div class="verification-badge verified">
+                <i data-feather="check" class="w-3 h-3"></i>
+            </div>
+            <div class="verification-text">
+                <div class="verification-label">Phone Number</div>
+                <div class="verification-status">Verified on Jan 15, 2025</div>
+            </div>
+        </div>
+        <div class="verification-item">
+            <div class="verification-badge verified">
+                <i data-feather="check" class="w-3 h-3"></i>
+            </div>
+            <div class="verification-text">
+                <div class="verification-label">Email Address</div>
+                <div class="verification-status">Verified on Jan 15, 2025</div>
+            </div>
+        </div>
+        <div class="verification-item">
+            <div class="verification-badge verified">
+                <i data-feather="check" class="w-3 h-3"></i>
+            </div>
+            <div class="verification-text">
+                <div class="verification-label">Medical Certificate</div>
+                <div class="verification-status">Verified on Jan 15, 2025</div>
+            </div>
+        </div>
+        <div class="verification-item">
+            <div class="verification-badge verified">
+                <i data-feather="check" class="w-3 h-3"></i>
+            </div>
+            <div class="verification-text">
+                <div class="verification-label">First Aid & CPR Certification</div>
+                <div class="verification-status">Verified on Jan 15, 2025</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rate & Services Section -->
+    <div class="profile-section">
+        <div class="profile-section-header">
+            <h2 class="text-lg font-semibold text-gray-800">Rates & Services</h2>
+        </div>
+        <div class="mb-4">
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Hourly Rates:</h3>
+            <div class="flex justify-between mb-1">
+                <div class="text-sm text-gray-600">Child Care</div>
+                <div class="text-sm font-medium text-gray-800">₱80/hour</div>
+            </div>
+            <div class="flex justify-between mb-1">
+                <div class="text-sm text-gray-600">Child Care (2+ children)</div>
+                <div class="text-sm font-medium text-gray-800">₱100/hour</div>
+            </div>
+            <div class="flex justify-between">
+                <div class="text-sm text-gray-600">Tutoring</div>
+                <div class="text-sm font-medium text-gray-800">₱120/hour</div>
+            </div>
+        </div>
+        <div>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Additional Information:</h3>
+            <ul class="text-sm text-gray-600 space-y-1 ml-5 list-disc">
+                <li>Minimum booking: 4 hours</li>
+                <li>24-hour cancellation policy</li>
+                <li>Comfortable with pets in the home</li>
+                <li>Non-smoker</li>
+                <li>Has own transportation</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Call to Action Button -->
+    <a href="family-schedule-interview.html" class="cta-button">
+        Schedule Interview (1 Credit)
+    </a>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="family-dashboard.html" class="nav-item">
+            <i data-feather="home" class="w-5 h-5"></i>
+            <span>Home</span>
+        </a>
+        <a href="family-booking.html" class="nav-item active">
+            <i data-feather="calendar" class="w-5 h-5"></i>
+            <span>Bookings</span>
+        </a>
+        <a href="family-messages.html" class="nav-item">
+            <i data-feather="message-square" class="w-5 h-5"></i>
+            <span>Messages</span>
+        </a>
+        <a href="family-profile.html" class="nav-item">
+            <i data-feather="user" class="w-5 h-5"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            // Tab Navigation
+            const tabItems = document.querySelectorAll('.tab-item');
+            const tabContents = document.querySelectorAll('.profile-section');
+            
+            // Only the first tab content (About) is visible by default
+            tabContents[0].style.display = 'block';
+            
+            // Add click event listeners to tabs
+            tabItems.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    tabItems.forEach(item => item.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Hide all tab contents
+                    tabContents.forEach(content => content.style.display = 'none');
+                    
+                    // Show the corresponding tab content
+                    // The first tab (About) shows multiple sections, others show just one
+                    if (index === 0) {
+                        // Show About, Skills & Rates sections
+                        tabContents[0].style.display = 'block';
+                        tabContents[1].style.display = 'block';
+                        tabContents[5].style.display = 'block';
+                    } else if (index === 1) {
+                        // Show Experience section
+                        tabContents[2].style.display = 'block';
+                    } else if (index === 2) {
+                        // Show Availability section
+                        tabContents[3].style.display = 'block';
+                    } else if (index === 3) {
+                        // Show Reviews section
+                        tabContents[4].style.display = 'block';
+                    } else if (index === 4) {
+                        // Show Verification section
+                        tabContents[6].style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
