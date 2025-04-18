@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Fund Your Account</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #10B981;
+            --color-primary-light: rgba(16, 185, 129, 0.1);
+            --color-warning: #F59E0B;
+            --color-warning-light: rgba(245, 158, 11, 0.2);
+            --color-success: #10B981;
+            --color-error: #EF4444;
+            --color-text-primary: #1F2937;
+            --color-text-secondary: #6B7280;
+            --color-border: #E5E7EB;
+            --color-background-secondary: #F9FAFB;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--color-text-primary);
+            background-color: #F3F4F6;
+        }
+        
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0EA271;
+        }
+        
+        .btn-outline {
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            background-color: transparent;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--color-primary-light);
+        }
+        
+        .btn-disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .amount-btn {
+            flex: 1;
+            padding: 0.75rem;
+            background-color: var(--color-background-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .amount-btn:hover {
+            border-color: var(--color-primary);
+            background-color: var(--color-primary-light);
+        }
+        
+        .amount-btn.selected {
+            border-color: var(--color-primary);
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+        
+        .timeline-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #E5E7EB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .timeline-icon.completed {
+            background-color: var(--color-success);
+            color: white;
+        }
+        
+        .timeline-icon.active {
+            background-color: var(--color-warning);
+            color: white;
+        }
+        
+        .timeline-connector {
+            width: 2px;
+            height: 20px;
+            background-color: #E5E7EB;
+            margin-left: 14px;
+        }
+        
+        .timeline-connector.active {
+            background-color: var(--color-warning);
+        }
+        
+        .upload-container {
+            border: 2px dashed var(--color-border);
+            border-radius: 0.5rem;
+            background-color: var(--color-background-secondary);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .upload-container:hover {
+            border-color: var(--color-primary);
+            background-color: var(--color-primary-light);
+        }
+        
+        .gcash-btn {
+            background-color: #007EF2;
+            color: white;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        
+        .gcash-btn:hover {
+            background-color: #0068C9;
+        }
+        
+        .proof-preview {
+            width: 100%;
+            height: 200px;
+            border-radius: 0.5rem;
+            object-fit: cover;
+            position: relative;
+        }
+        
+        .change-btn {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- First Screen: Fund Account -->
+    <div class="max-w-lg mx-auto pb-10" id="fund-account-screen">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold mb-1">Fund Your Account</h1>
+            <p class="text-gray-500 mb-6">
+                To send a job offer, your account must be funded with at least ₱1,500.
+            </p>
+            
+            <!-- Balance Card -->
+            <div class="card p-5 mb-6 text-center">
+                <div class="flex items-center justify-center mb-3">
+                    <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                    </svg>
+                    <span class="font-medium text-gray-700">Current Balance</span>
+                </div>
+                
+                <div class="text-3xl font-bold mb-3">₱800.00</div>
+                
+                <div class="bg-yellow-50 text-yellow-700 py-2 px-3 rounded-md inline-block">
+                    You need at least ₱700.00 more to send a job offer
+                </div>
+            </div>
+            
+            <!-- Amount Selection -->
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold mb-3">Select Amount to Add</h2>
+                
+                <div class="flex space-x-2 mb-4">
+                    <button class="amount-btn">₱1,500</button>
+                    <button class="amount-btn selected">₱3,000</button>
+                    <button class="amount-btn">₱5,000</button>
+                </div>
+                
+                <div>
+                    <label class="block font-medium mb-2">Or enter custom amount:</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="text-gray-500">₱</span>
+                        </div>
+                        <input type="number" value="3000" class="pl-8 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Instructions Card -->
+            <div class="card p-5 mb-6">
+                <h3 class="text-lg font-semibold mb-4">How to Fund Your Account</h3>
+                
+                <!-- Step 1 -->
+                <div class="flex mb-5">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-7 h-7 bg-green-500 text-white rounded-full flex items-center justify-center font-bold">
+                            1
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mb-3 text-gray-600">
+                            Open your GCash app and send the amount to the following account:
+                        </p>
+                        <div class="mb-1">
+                            <span class="font-medium">Name:</span>
+                            <span class="ml-2">CareHive Philippines, Inc.</span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="font-medium">Number:</span>
+                            <span class="ml-2">0917 123 4567</span>
+                        </div>
+                        <button class="gcash-btn">
+                            <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="24" height="24" rx="6" fill="#0076e3"/>
+                                <path d="M6.5 11.5C6.5 9.01472 8.51472 7 11 7H12.5C14.9853 7 17 9.01472 17 11.5V11.5C17 13.9853 14.9853 16 12.5 16H11C8.51472 16 6.5 13.9853 6.5 11.5V11.5Z" fill="white"/>
+                                <path d="M11.5 18C15.6421 18 19 14.6421 19 10.5C19 6.35786 15.6421 3 11.5 3C7.35786 3 4 6.35786 4 10.5C4 14.6421 7.35786 18 11.5 18Z" stroke="white" stroke-width="2"/>
+                            </svg>
+                            Open GCash
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="flex mb-5">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-7 h-7 bg-green-500 text-white rounded-full flex items-center justify-center font-bold">
+                            2
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <p class="mb-3 text-gray-600">
+                            Take a screenshot of your payment confirmation and upload it below:
+                        </p>
+                        <div class="relative">
+                            <!-- If image not yet uploaded -->
+                            <div class="upload-container">
+                                <svg class="w-10 h-10 mx-auto mb-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                                <p class="text-green-500 font-medium">Upload Payment Proof</p>
+                            </div>
+                            
+                            <!-- If image is uploaded (initially hidden) -->
+                            <div class="hidden relative">
+                                <img src="/api/placeholder/400/300" alt="Payment proof" class="proof-preview">
+                                <button class="change-btn">Change</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="flex">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-7 h-7 bg-green-500 text-white rounded-full flex items-center justify-center font-bold">
+                            3
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">
+                            Our admin team will verify your payment and update your wallet balance within 30 minutes during business hours (9AM-6PM, Monday to Friday).
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Buttons -->
+            <button onclick="window.location.href='family-payment-processing-confirmation.html'" class="btn-primary w-full mb-3">Submit Payment Proof</button>
+            <button class="btn-outline w-full">Cancel</button>
+        </div>
+    </div>
+    
+    <!-- Second Screen: Confirmation -->
+    <div class="max-w-lg mx-auto pb-10 hidden" id="confirmation-screen">
+        <div class="p-6 text-center">
+            <div class="mb-5 mt-6">
+                <svg class="w-20 h-20 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            
+            <h1 class="text-2xl font-bold mb-2">Payment Submitted</h1>
+            
+            <p class="text-gray-500 mb-6 max-w-md mx-auto">
+                Your payment proof for ₱3,000 has been successfully submitted and is pending verification by our admin team.
+            </p>
+            
+            <!-- Info Card -->
+            <div class="card p-5 mb-6 text-left">
+                <div class="flex items-start mb-3">
+                    <svg class="w-5 h-5 text-green-500 mt-0.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h3 class="text-lg font-medium">What happens next?</h3>
+                </div>
+                
+                <div class="ml-7">
+                    <p class="text-gray-600 mb-3">
+                        Our admin team will verify your payment and update your wallet balance within 30 minutes during business hours (9AM-6PM, Monday to Friday).
+                    </p>
+                    <p class="text-gray-600">
+                        You'll receive a notification once your payment is verified, and then you can proceed with sending your job offer.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Timeline -->
+            <div class="text-left mb-10">
+                <!-- Step 1 -->
+                <div class="flex">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="timeline-icon completed">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        <h4 class="text-base font-medium">Payment Submitted</h4>
+                        <p class="text-sm text-gray-500">Your payment proof has been received</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-connector active ml-5 mb-1"></div>
+                
+                <!-- Step 2 -->
+                <div class="flex">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="timeline-icon active">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        <h4 class="text-base font-medium">Admin Verification</h4>
+                        <p class="text-sm text-gray-500">Our admin team is verifying your payment</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-connector ml-5 mb-1"></div>
+                
+                <!-- Step 3 -->
+                <div class="flex">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="timeline-icon">
+                            <span class="text-sm font-semibold">3</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-base font-medium">Wallet Updated</h4>
+                        <p class="text-sm text-gray-500">Your wallet will be updated once verified</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Buttons -->
+            <button class="btn-primary w-full mb-3">Retry Job Offer Later</button>
+            <button class="btn-outline w-full">Go to Dashboard</button>
+        </div>
+    </div>
+    
+    <!-- Third Screen: Insufficient Funds Modal -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden" id="insufficient-funds-modal">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4 overflow-hidden">
+            <div class="p-5">
+                <div class="text-center mb-4">
+                    <svg class="w-16 h-16 mx-auto text-yellow-500 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    
+                    <h3 class="text-xl font-bold mb-1">Insufficient Funds</h3>
+                    
+                    <p class="text-gray-600 mb-4">
+                        To send a job offer, your account must be funded with at least ₱1,500. Please top up to proceed.
+                    </p>
+                </div>
+                
+                <div class="card bg-gray-50 p-4 mb-5">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-600">Current Balance:</span>
+                        <span class="font-medium">₱800.00</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-600">Required Balance:</span>
+                        <span class="font-medium">₱1,500.00</span>
+                    </div>
+                    <div class="border-t border-gray-200 my-2"></div>
+                    <div class="flex justify-between items-center text-yellow-600">
+                        <span class="font-medium">Amount Needed:</span>
+                        <span class="font-medium">₱700.00</span>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col space-y-3">
+                    <button class="btn-primary w-full">Fund My Account</button>
+                    <button class="btn-outline w-full">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Fourth Screen: Admin Interface for Approval -->
+    <div class="max-w-4xl mx-auto pb-10 hidden" id="admin-approval-screen">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold mb-1">Payment Verification</h1>
+            <p class="text-gray-500 mb-6">
+                Review and verify family payment submissions
+            </p>
+            
+            <div class="card p-6 mb-6">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <div class="flex items-center">
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">
+                                Pending Verification
+                            </span>
+                            <span class="ml-3 text-sm text-gray-500">Submitted 12 minutes ago</span>
+                        </div>
+                        <h2 class="text-xl font-medium mt-2">Payment from Reyes Family</h2>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold">₱3,000.00</div>
+                        <div class="text-sm text-gray-500">via GCash</div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h3 class="text-sm uppercase text-gray-500 font-medium mb-3">Payment Details</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Family ID:</span>
+                                <span class="font-medium">F1023</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Family Name:</span>
+                                <span class="font-medium">Reyes Family</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Email:</span>
+                                <span class="font-medium">reyes@email.com</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Current Balance:</span>
+                                <span class="font-medium">₱800.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">New Balance After Approval:</span>
+                                <span class="font-medium text-green-600">₱3,800.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-sm uppercase text-gray-500 font-medium mb-3">Payment Proof</h3>
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <img src="/api/placeholder/500/300" alt="Payment proof" class="w-full">
+                            <div class="p-3 bg-gray-50 flex justify-between items-center">
+                                <span class="text-sm text-gray-600">GCash_receipt_20250318.jpg</span>
+                                <div>
+                                    <button class="text-blue-600 text-sm font-medium">View Full Size</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-end space-x-3 mt-6">
+                    <button class="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50">
+                        Reject Payment
+                    </button>
+                    <button class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+                        Approve Payment
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="text-md font-medium mb-3">Pending Verification Queue (3)</h3>
+                <div class="space-y-2">
+                    <div class="card p-3 flex justify-between items-center">
+                        <div>
+                            <span class="text-sm font-medium">Santos Family</span>
+                            <div class="text-xs text-gray-500">₱1,500.00 • 25 minutes ago</div>
+                        </div>
+                        <button class="text-blue-600 text-sm font-medium">Review</button>
+                    </div>
+                    <div class="card p-3 flex justify-between items-center">
+                        <div>
+                            <span class="text-sm font-medium">Lim Family</span>
+                            <div class="text-xs text-gray-500">₱5,000.00 • 42 minutes ago</div>
+                        </div>
+                        <button class="text-blue-600 text-sm font-medium">Review</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // For demonstration purposes
+        // In a real app, this would be properly connected to a framework like React
+        document.addEventListener('DOMContentLoaded', function() {
+            // You could add interaction logic here
+            // e.g., switching between screens, showing/hiding elements
+        });
+    </script>
+</body>
+</html>

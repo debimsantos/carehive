@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Payment Processing</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #10B981;
+            --color-primary-light: rgba(16, 185, 129, 0.1);
+            --color-warning: #F59E0B;
+            --color-warning-light: rgba(245, 158, 11, 0.2);
+            --color-success: #10B981;
+            --color-error: #EF4444;
+            --color-text-primary: #1F2937;
+            --color-text-secondary: #6B7280;
+            --color-border: #E5E7EB;
+            --color-background-secondary: #F9FAFB;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--color-text-primary);
+            background-color: #F3F4F6;
+        }
+        
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0EA271;
+        }
+        
+        .btn-outline {
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            background-color: transparent;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--color-primary-light);
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #E5E7EB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .timeline-icon.completed {
+            background-color: var(--color-success);
+            color: white;
+        }
+        
+        .timeline-icon.active {
+            background-color: var(--color-warning);
+            color: white;
+        }
+        
+        .timeline-connector {
+            width: 2px;
+            height: 30px;
+            background-color: #E5E7EB;
+            margin-left: 14px;
+        }
+        
+        .timeline-connector.active {
+            background-color: var(--color-warning);
+        }
+        
+        .timeline-connector.completed {
+            background-color: var(--color-success);
+        }
+    </style>
+</head>
+<body>
+    <div class="max-w-lg mx-auto pb-10">
+        <div class="p-6 text-center">
+            <div class="mb-6 mt-8">
+                <img src="/api/placeholder/150/50" alt="CareHive Logo" class="mx-auto">
+            </div>
+            
+            <div class="mb-8 mt-8">
+                <svg class="w-20 h-20 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            
+            <h1 class="text-2xl font-bold mb-3">Payment Submitted Successfully</h1>
+            
+            <p class="text-gray-600 mb-8 max-w-md mx-auto">
+                Your payment proof for <span class="font-semibold">₱3,000</span> has been uploaded and is now pending verification by our admin team.
+            </p>
+            
+            <!-- Status Card -->
+            <div class="card p-5 mb-6">
+                <div class="flex items-start text-left mb-4">
+                    <div class="p-2 bg-yellow-100 rounded-full mr-3">
+                        <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg">Verification in Progress</h3>
+                        <p class="text-gray-600 text-sm">
+                            Reference ID: CHPAY-2325486
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between mb-3 text-left">
+                    <div class="text-gray-600 text-sm">Payment Amount:</div>
+                    <div class="font-semibold">₱3,000.00</div>
+                </div>
+                
+                <div class="flex justify-between mb-4 text-left">
+                    <div class="text-gray-600 text-sm">Submitted On:</div>
+                    <div>Apr 18, 2025 at 10:47 AM</div>
+                </div>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 text-left">
+                    <p class="text-yellow-800 text-sm">
+                        <span class="font-semibold">Estimated Processing Time:</span> 30 minutes during business hours (9AM-6PM, Monday to Friday)
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Email Notification -->
+            <div class="card p-5 mb-8 text-left">
+                <div class="flex items-center mb-4">
+                    <svg class="w-5 h-5 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <h3 class="font-semibold">Email Notifications</h3>
+                </div>
+                
+                <p class="text-gray-600 text-sm mb-4">
+                    We've sent a confirmation email to <span class="font-semibold">reyes.family@email.com</span>. You'll also receive an email notification once your payment is verified and your wallet is updated.
+                </p>
+                
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-500 text-xs">Didn't receive an email?</span>
+                    <button class="text-green-600 text-sm font-medium">Resend Email</button>
+                </div>
+            </div>
+            
+            <!-- Timeline -->
+            <div class="card p-5 mb-6">
+                <h3 class="font-semibold text-left mb-4">Payment Verification Process</h3>
+                
+                <div class="text-left">
+                    <!-- Step 1 -->
+                    <div class="flex">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="timeline-icon completed">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="pb-1">
+                            <div class="flex justify-between">
+                                <h4 class="text-base font-medium">Payment Submitted</h4>
+                                <span class="text-xs text-gray-500">10:47 AM</span>
+                            </div>
+                            <p class="text-sm text-gray-500">Your payment proof has been uploaded</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-connector active ml-5"></div>
+                    
+                    <!-- Step 2 (Current) -->
+                    <div class="flex">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="timeline-icon active">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="pb-1">
+                            <h4 class="text-base font-medium">Admin Verification</h4>
+                            <p class="text-sm text-gray-500">Our admin team is reviewing your payment</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-connector ml-5"></div>
+                    
+                    <!-- Step 3 -->
+                    <div class="flex">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="timeline-icon">
+                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="pb-1">
+                            <h4 class="text-base font-medium">Wallet Updated</h4>
+                            <p class="text-sm text-gray-500">Your wallet balance will be updated</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-connector ml-5"></div>
+                    
+                    <!-- Step 4 -->
+                    <div class="flex">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="timeline-icon">
+                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-base font-medium">Job Offer Enabled</h4>
+                            <p class="text-sm text-gray-500">You can proceed with sending job offers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Business Hours Info -->
+            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-8 text-left">
+                <div class="flex">
+                    <svg class="w-5 h-5 text-blue-500 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div>
+                        <h4 class="font-medium text-blue-800 mb-1">Business Hours</h4>
+                        <p class="text-sm text-blue-700">
+                            Our admin team processes payments during the following hours:
+                        </p>
+                        <ul class="text-sm text-blue-700 mt-2 ml-4 list-disc">
+                            <li>Monday to Friday: 9:00 AM - 6:00 PM (PHT)</li>
+                            <li>Weekend and Holiday: Limited processing</li>
+                        </ul>
+                        <p class="text-sm text-blue-700 mt-2">
+                            Payments submitted outside business hours will be processed the next business day.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Buttons -->
+            <button class="btn-primary w-full mb-3">Check Wallet Status</button>
+            <button class="btn-outline w-full">Return to Dashboard</button>
+            
+            <!-- Contact Support -->
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-500">
+                    Need help? <a href="#" class="text-green-600 font-medium">Contact Support</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
