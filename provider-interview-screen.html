@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Family Interview</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+    <style>
+        /* Custom CSS matching the dashboard style */
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .care-text {
+            color: #0D9488;
+        }
+        .hive-text {
+            color: #334155;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.75rem 0;
+            border-top: 1px solid #E5E7EB;
+            z-index: 10;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6B7280;
+            font-size: 0.75rem;
+            text-decoration: none;
+        }
+        .nav-item.active {
+            color: #0D9488;
+        }
+        .nav-item span {
+            margin-top: 0.25rem;
+        }
+        .family-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 9999px;
+            background-color: #e2f5f3;
+            color: #0D9488;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .booking-detail {
+            display: flex;
+            align-items: center;
+            color: #4B5563;
+            font-size: 0.813rem;
+            margin-bottom: 0.5rem;
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .status-badge.scheduled {
+            background-color: #E0F2FE;
+            color: #075985;
+        }
+        .status-badge.in-progress {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+        .status-badge.completed {
+            background-color: #DCFCE7;
+            color: #166534;
+        }
+        .video-container {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            background-color: #1F2937;
+        }
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .video-controls {
+            display: flex;
+            justify-content: space-around;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        .control-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            color: #4B5563;
+        }
+        .control-button.call-end {
+            color: white;
+            background-color: #EF4444;
+        }
+        .control-button.call-start {
+            color: white;
+            background-color: #10B981;
+        }
+        .interview-timer {
+            font-family: monospace;
+            font-size: 0.875rem;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+        .earnings-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #F9FAFB;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+        .modal-content {
+            background-color: white;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .modal-body {
+            padding: 1rem;
+        }
+        .modal-footer {
+            padding: 1rem;
+            border-top: 1px solid #E5E7EB;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .live-badge {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background-color: #EF4444;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        .live-badge .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            background-color: white;
+            border-radius: 9999px;
+            margin-right: 0.25rem;
+            animation: pulse 1.5s infinite;
+        }
+        .call-notice {
+            background-color: #FEF3C7;
+            border: 1px solid #F59E0B;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        .call-join-btn {
+            background-color: #10B981;
+            color: white;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .profile-preview {
+            border: 1px solid #E5E7EB;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .service-tag {
+            background-color: #E0F2FE;
+            color: #075985;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        .tip-card {
+            border-left: 4px solid #0D9488;
+            background-color: #F0FDFA;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="pb-20 bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="flex items-center">
+            <a href="provider-bookings.html" class="mr-2">
+                <i data-feather="arrow-left" class="w-5 h-5 text-gray-500"></i>
+            </a>
+            <div class="logo">
+                <a href="index.html" class="logo-text">
+                    <span class="care-text">Care</span><span class="hive-text">Hive</span>
+                </a>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <div class="h-10 w-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center">
+                    <span class="font-semibold">ML</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-green-500 rounded-full h-3 w-3 border-2 border-white"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4 space-y-6">
+        <div class="earnings-note text-sm">
+            <span class="text-gray-700">This interview can lead to <span class="font-semibold text-teal-600">new job opportunities</span> with families</span>
+        </div>
+        
+        <div id="call-notice" class="call-notice">
+            <div class="flex-1 mr-4">
+                <div class="font-medium mb-1">The Reyes Family is ready to interview you</div>
+                <div class="text-sm">Join now to start your interview</div>
+            </div>
+            <button id="join-call-btn" class="call-join-btn">
+                <i data-feather="video" class="w-4 h-4 mr-2"></i>
+                Join Now
+            </button>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <div class="flex items-start mb-4">
+                <div class="family-avatar mr-4">RF</div>
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800">Interview with Reyes Family</h1>
+                    <div class="text-sm text-gray-500 mb-2">Child Care Services</div>
+                    <span class="status-badge scheduled" id="interview-status">Scheduled</span>
+                </div>
+            </div>
+            
+            <div class="space-y-2 mb-4">
+                <div class="booking-detail">
+                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                    <span>Today, Mar 25, 2025</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="clock" class="w-4 h-4 mr-2"></i>
+                    <span>10:00 AM - 10:30 AM (Scheduled for 30 mins)</span>
+                </div>
+                <div class="booking-detail">
+                    <i data-feather="map-pin" class="w-4 h-4 mr-2"></i>
+                    <span>Location: Virtual Interview</span>
+                </div>
+            </div>
+            
+            <div class="video-container" id="video-area">
+                <div class="video-placeholder" id="video-placeholder">
+                    <div class="mb-3">
+                        <i data-feather="video" class="w-12 h-12"></i>
+                    </div>
+                    <div class="text-xl font-semibold mb-1">Video Interview</div>
+                    <div class="text-sm text-gray-300 max-w-md text-center mb-6">
+                        The Reyes Family is waiting to interview you. Join the call when you're ready.
+                    </div>
+                    <button class="control-button call-start px-6 py-3" id="start-call-btn">
+                        <i data-feather="phone" class="w-6 h-6 mb-1"></i>
+                        Join Interview
+                    </button>
+                </div>
+                
+                <!-- This will be shown when call is active -->
+                <div class="hidden" id="active-call">
+                    <div class="live-badge">
+                        <div class="dot"></div>
+                        LIVE
+                    </div>
+                    <div class="interview-timer" id="call-timer">00:00</div>
+                </div>
+            </div>
+            
+            <div class="video-controls" id="call-controls" style="display: none;">
+                <button class="control-button">
+                    <i data-feather="mic" class="w-6 h-6 mb-1"></i>
+                    Mute
+                </button>
+                <button class="control-button">
+                    <i data-feather="video-off" class="w-6 h-6 mb-1"></i>
+                    Video
+                </button>
+                <button class="control-button">
+                    <i data-feather="maximize" class="w-6 h-6 mb-1"></i>
+                    Expand
+                </button>
+                <button class="control-button call-end" id="end-call-btn">
+                    <i data-feather="phone-off" class="w-6 h-6 mb-1"></i>
+                    End
+                </button>
+            </div>
+        </div>
+        
+        <!-- Family Profile Preview -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h2 class="text-lg font-semibold text-gray-800 mb-3">About the Family</h2>
+            <div class="profile-preview">
+                <h3 class="font-medium text-gray-800 mb-2">Reyes Family</h3>
+                <div class="text-sm text-gray-600 mb-3">Family Type: Dual-Income Household</div>
+                
+                <div class="mb-3">
+                    <div class="text-sm font-medium text-gray-600 mb-1">Children:</div>
+                    <div class="text-sm">
+                        <span class="text-gray-800">Boy (5 years old)</span>
+                        <span class="text-gray-800 ml-2">Girl (3 years old)</span>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="text-sm font-medium text-gray-600 mb-1">Location:</div>
+                    <div class="text-sm text-gray-800">Makati City, Metro Manila</div>
+                </div>
+                
+                <div>
+                    <div class="text-sm font-medium text-gray-600 mb-1">Care Needs:</div>
+                    <div>
+                        <span class="service-tag">Child Care</span>
+                        <span class="service-tag">Light Meal Preparation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Interview Preparation Section -->
+        <div class="bg-white rounded-lg shadow-md p-4" id="preparation-section">
+            <h2 class="text-lg font-semibold text-gray-800 mb-3">Interview Preparation</h2>
+            
+            <div class="tip-card mb-3">
+                <h3 class="font-medium text-gray-800 mb-2">Common Questions to Prepare For</h3>
+                <ul class="space-y-2 text-sm text-gray-700">
+                    <li>• Tell us about your experience with children aged 3-5</li>
+                    <li>• How do you handle tantrums or difficult behavior?</li>
+                    <li>• What activities do you plan for children of different ages?</li>
+                    <li>• Do you have any certifications in childcare or first aid?</li>
+                    <li>• What is your availability for regular childcare sessions?</li>
+                </ul>
+            </div>
+            
+            <div class="tip-card mb-3">
+                <h3 class="font-medium text-gray-800 mb-2">Interview Tips</h3>
+                <ul class="space-y-2 text-sm text-gray-700">
+                    <li>• Choose a quiet location with good lighting</li>
+                    <li>• Dress professionally as you would for an in-person interview</li>
+                    <li>• Have examples ready of your past childcare experience</li>
+                    <li>• Be prepared to discuss your approach to childcare</li>
+                    <li>• Ask questions about the family's routine and expectations</li>
+                </ul>
+            </div>
+            
+            <div class="tip-card">
+                <h3 class="font-medium text-gray-800 mb-2">What to Highlight</h3>
+                <ul class="space-y-2 text-sm text-gray-700">
+                    <li>• Your relevant experience with similar age groups</li>
+                    <li>• Your certifications and training</li>
+                    <li>• Your approach to child development and learning</li>
+                    <li>• Your reliability and flexibility</li>
+                    <li>• Any special skills (languages, arts, educational activities)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Post-Interview Section (Hidden until interview ends) -->
+        <div class="bg-white rounded-lg shadow-md p-4" id="post-interview-section" style="display: none;">
+            <h2 class="text-lg font-semibold text-gray-800 mb-3">Interview Completed</h2>
+            
+            <div class="bg-blue-50 border border-blue-200 rounded-md p-4 mb-4">
+                <div class="flex items-start">
+                    <div class="mr-3 mt-0.5">
+                        <i data-feather="info" class="w-5 h-5 text-blue-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800 mb-1">What Happens Next?</h3>
+                        <p class="text-sm text-gray-600">
+                            The family will review their interview with you and decide whether to send you a job offer, 
+                            shortlist you for future consideration, or continue their search. You'll be notified of their decision.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">How did the interview go? (Optional)</label>
+                <textarea
+                    class="w-full rounded-md border-gray-300 shadow-sm p-2 text-sm"
+                    rows="3"
+                    placeholder="Share your thoughts about this interview..."
+                ></textarea>
+            </div>
+            
+            <div class="flex justify-end">
+                <button class="px-4 py-2 bg-teal-600 text-white rounded-md text-sm font-medium" id="submit-feedback-btn">
+                    Submit Feedback
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for Interview Complete -->
+    <div class="modal-overlay" id="interview-complete-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-semibold text-gray-900">Interview Complete</h3>
+                <button id="close-modal">
+                    <i data-feather="x" class="w-5 h-5 text-gray-500"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="flex items-center justify-center mb-4">
+                    <div class="h-16 w-16 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                        <i data-feather="check-circle" class="w-8 h-8"></i>
+                    </div>
+                </div>
+                <h4 class="text-center text-lg font-medium text-gray-900 mb-2">Interview Successfully Completed</h4>
+                <p class="text-center text-gray-500 mb-4">
+                    You've completed your interview with the Reyes Family.
+                    They will review and get back to you shortly.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="px-4 py-2 bg-teal-600 text-white rounded-md text-sm font-medium" id="continue-btn">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="provider-dashboard.html" class="nav-item">
+            <i data-feather="home" class="w-5 h-5"></i>
+            <span>Home</span>
+        </a>
+        <a href="provider-bookings.html" class="nav-item active">
+            <i data-feather="calendar" class="w-5 h-5"></i>
+            <span>Bookings</span>
+        </a>
+        <a href="provider-messages.html" class="nav-item">
+            <i data-feather="message-square" class="w-5 h-5"></i>
+            <span>Messages</span>
+        </a>
+        <a href="provider-profile.html" class="nav-item">
+            <i data-feather="user" class="w-5 h-5"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            // Elements
+            const joinCallBtn = document.getElementById('join-call-btn');
+            const startCallBtn = document.getElementById('start-call-btn');
+            const endCallBtn = document.getElementById('end-call-btn');
+            const callControls = document.getElementById('call-controls');
+            const callNotice = document.getElementById('call-notice');
+            const videoPlaceholder = document.getElementById('video-placeholder');
+            const activeCall = document.getElementById('active-call');
+            const callTimer = document.getElementById('call-timer');
+            const interviewStatus = document.getElementById('interview-status');
+            const interviewCompleteModal = document.getElementById('interview-complete-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const continueBtn = document.getElementById('continue-btn');
+            const prepSection = document.getElementById('preparation-section');
+            const postInterviewSection = document.getElementById('post-interview-section');
+            const submitFeedbackBtn = document.getElementById('submit-feedback-btn');
+            
+            let timer;
+            let seconds = 0;
+            
+            // Join call from notification
+            joinCallBtn.addEventListener('click', function() {
+                startInterview();
+                callNotice.style.display = 'none';
+            });
+            
+            // Start call
+            startCallBtn.addEventListener('click', function() {
+                startInterview();
+                callNotice.style.display = 'none';
+            });
+            
+            function startInterview() {
+                videoPlaceholder.style.display = 'none';
+                activeCall.style.display = 'block';
+                callControls.style.display = 'flex';
+                interviewStatus.textContent = 'In Progress';
+                interviewStatus.className = 'status-badge in-progress';
+                
+                // Start timer
+                timer = setInterval(updateTimer, 1000);
+                
+                // Simulate a video call with background color change
+                document.getElementById('video-area').style.backgroundColor = '#111827';
+            }
+            
+            // End call
+            endCallBtn.addEventListener('click', function() {
+                clearInterval(timer);
+                callControls.style.display = 'none';
+                interviewStatus.textContent = 'Completed';
+                interviewStatus.className = 'status-badge completed';
+                
+                // Show completion modal
+                interviewCompleteModal.style.display = 'flex';
+            });
+            
+            // Close modal
+            closeModalBtn.addEventListener('click', function() {
+                interviewCompleteModal.style.display = 'none';
+                showPostInterviewSection();
+            });
+            
+            // Continue button
+            continueBtn.addEventListener('click', function() {
+                interviewCompleteModal.style.display = 'none';
+                showPostInterviewSection();
+            });
+            
+            // Show post interview section
+            function showPostInterviewSection() {
+                prepSection.style.display = 'none';
+                postInterviewSection.style.display = 'block';
+                activeCall.style.display = 'none';
+                videoPlaceholder.style.display = 'flex';
+                videoPlaceholder.innerHTML = '<div class="text-xl font-semibold">Interview Completed</div>';
+            }
+            
+            // Update timer
+            function updateTimer() {
+                seconds++;
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                callTimer.textContent = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }
+            
+            // Submit feedback
+            submitFeedbackBtn.addEventListener('click', function() {
+                // In a real app, would submit to server
+                // For demo, show success message
+                alert('Feedback submitted successfully!');
+                
+                // Redirect to bookings page
+                // window.location.href = 'provider-bookings.html';
+                
+                // For demo, just show a different message on the button
+                submitFeedbackBtn.textContent = "Feedback Submitted ✓";
+                submitFeedbackBtn.disabled = true;
+                submitFeedbackBtn.classList.add('bg-gray-400');
+                submitFeedbackBtn.classList.remove('bg-teal-600');
+            });
+        });
+    </script>
+</body>
+</html>
