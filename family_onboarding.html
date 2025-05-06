@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Family Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7f9;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .signup-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .signup-header h1 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .signup-header h1 span {
+            color: #00a896;
+        }
+        
+        .signup-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .progress-indicator::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            background-color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .progress-step.active {
+            border-color: #00a896;
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .progress-step-label {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .progress-step.active .progress-step-label {
+            color: #00a896;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #00a896;
+            box-shadow: 0 0 0 2px rgba(0, 168, 150, 0.2);
+        }
+        
+        .input-hint {
+            display: block;
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+        
+        .checkbox-input {
+            margin-right: 0.5rem;
+        }
+        
+        .checkbox-label {
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        .checkbox-label a {
+            color: #00a896;
+            text-decoration: none;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-primary {
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #008080;
+        }
+        
+        .btn-social {
+            background-color: white;
+            color: #333;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-social img, .btn-social svg {
+            margin-right: 0.5rem;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        .login-link a {
+            color: #00a896;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: #ddd;
+        }
+        
+        .divider-text {
+            padding: 0 1rem;
+            color: #666;
+            font-size: 0.875rem;
+        }
+        
+        .security-note {
+            display: flex;
+            align-items: center;
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 2rem;
+        }
+        
+        .security-note svg {
+            flex-shrink: 0;
+            margin-right: 1rem;
+        }
+        
+        .security-note p {
+            font-size: 0.875rem;
+            color: #666;
+            margin: 0;
+        }
+        
+        #verification-success {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .success-icon {
+            color: #00a896;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container" id="signup-page">
+        <div class="signup-header">
+            <h1>Create Your <span>Family</span> Account</h1>
+            <p>Start your journey to finding reliable care for your loved ones</p>
+        </div>
+        
+        <form id="signup-form" onsubmit="showEmailNotice(); return false;">
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="yourname@example.com" required>
+                <span class="input-hint">We'll send a verification link to this address</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Create Password</label>
+                <input type="password" id="password" name="password" class="form-input" placeholder="Create a secure password" required>
+                <span class="input-hint">Use at least 8 characters with a mix of letters, numbers & symbols</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm-password" class="form-label">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" class="form-input" placeholder="Re-enter your password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="fullname" class="form-label">Full Name</label>
+                <input type="text" id="fullname" name="fullname" class="form-input" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" name="terms" class="checkbox-input" required>
+                <label for="terms" class="checkbox-label">
+                    I agree to CareHive's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                </label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+        
+        <div class="login-link">
+            Already have an account? <a href="#">Log In</a>
+        </div>
+        
+        <div class="security-note">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00a896" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <p>Your information is secure and encrypted. We prioritize your privacy and never share your data without permission.</p>
+        </div>
+    </div>
+    
+    <div class="signup-container" id="verification-notice" style="display: none;">
+        <div class="signup-header">
+            <h1>Check Your <span>Email</span></h1>
+            <p>We've sent a verification link to your email address</p>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <p>Please check your inbox and click the verification link to continue.</p>
+            <p>If you don't see the email, check your spam folder.</p>
+        </div>
+        
+        <button type="button" class="btn btn-primary" onclick="window.location.href='#'">Resend Verification Email</button>
+        
+        <div class="login-link">
+            <a href="#" onclick="document.getElementById('verification-notice').style.display = 'none'; document.getElementById('signup-page').style.display = 'block';">Back to Sign Up</a>
+        </div>
+    </div>
+    
+    <script>
+        function showEmailNotice() {
+            document.getElementById('signup-page').style.display = 'none';
+            document.getElementById('verification-notice').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

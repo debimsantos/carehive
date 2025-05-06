@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareHive - Complete Your Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .care-text {
+            color: #00a896;
+        }
+        
+        .hive-text {
+            color: #333;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #00a896;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .main-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .welcome-banner {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .welcome-text h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+        
+        .welcome-text p {
+            margin: 0;
+            color: #666;
+            font-size: 0.875rem;
+        }
+        
+        .progress-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #333;
+            margin: 0;
+        }
+        
+        .progress-percentage {
+            font-weight: 600;
+            color: #00a896;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #00a896;
+            border-radius: 4px;
+            width: 20%;
+        }
+        
+        .module-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .module-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .module-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .module-card.active {
+            border-left-color: #00a896;
+        }
+        
+        .module-card.completed {
+            border-left-color: #4caf50;
+        }
+        
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .module-title {
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .module-title .step {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            color: #666;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+        }
+        
+        .module-card.active .module-title .step {
+            background-color: #00a896;
+            color: white;
+        }
+        
+        .module-card.completed .module-title .step {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .module-status {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .status-required {
+            background-color: #ffebee;
+            color: #e53935;
+        }
+        
+        .status-optional {
+            background-color: #e8f5e9;
+            color: #43a047;
+        }
+        
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #43a047;
+        }
+        
+        .module-description {
+            color: #666;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .module-action {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: #00a896;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #008080;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: #00a896;
+            border: 1px solid #00a896;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(0, 168, 150, 0.1);
+        }
+        
+        .info-banner {
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-banner svg {
+            margin-right: 1rem;
+            flex-shrink: 0;
+            color: #2196f3;
+        }
+        
+        .info-banner p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #333;
+        }
+        
+        @media (max-width: 768px) {
+            .welcome-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .welcome-text {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-text"><span class="care-text">Care</span><span class="hive-text">Hive</span></span>
+            </div>
+            <div class="user-menu">
+                <div class="user-avatar">J</div>
+                <span>John Doe</span>
+            </div>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <div class="info-banner">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <p>You can browse caregivers with your current profile, but you'll need to complete all required steps before you can schedule interviews or make bookings.</p>
+        </div>
+        <div class="welcome-banner">
+            <div class="welcome-text">
+                <h1>Welcome to CareHive, John!</h1>
+                <p>Let's set up your profile to find the perfect care providers for your family.</p>
+            </div>
+            <div>
+                <a href="#" class="btn btn-outline">Browse Caregivers</a>
+            </div>
+        </div>
+        
+        <div class="progress-section">
+            <div class="progress-header">
+                <h2 class="progress-title">Complete Your Profile</h2>
+                <span class="progress-percentage">20% Complete</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 20%"></div>
+            </div>
+            <p>Complete all required steps to gain full access to CareHive's services.</p>
+        </div>
+        
+        
+        <div class="module-container">
+            <!-- Module 1: Basic Profile -->
+            <div class="module-card active">
+                <div class="module-header">
+                    <h3 class="module-title">
+                        <span class="step">1</span>
+                        Personal Details
+                    </h3>
+                    <span class="module-status status-required">Required</span>
+                </div>
+                <p class="module-description">
+                    Add your contact information and family type to help us match you with the right caregivers.
+                </p>
+                <div class="module-action">
+                    <a href="personal-details.html" class="btn btn-primary">Complete Now</a>
+                </div>
+            </div>
+            
+            <!-- Module 2: Address -->
+            <div class="module-card">
+                <div class="module-header">
+                    <h3 class="module-title">
+                        <span class="step">2</span>
+                        Address Information
+                    </h3>
+                    <span class="module-status status-required">Required</span>
+                </div>
+                <p class="module-description">
+                    Provide your address to find caregivers in your area.
+                </p>
+                <div class="module-action">
+                    <a href="address-info.html" class="btn btn-outline">Add Address</a>
+                </div>
+            </div>
+            
+            <!-- Module 3: Household -->
+            <div class="module-card">
+                <div class="module-header">
+                    <h3 class="module-title">
+                        <span class="step">3</span>
+                        Household Information
+                    </h3>
+                    <span class="module-status status-required">Required</span>
+                </div>
+                <p class="module-description">
+                    Tell us about your family members, children, and any special care needs.
+                </p>
+                <div class="module-action">
+                    <a href="household-info.html" class="btn btn-outline">Add Details</a>
+                </div>
+            </div>
+            
+            <!-- Module 4: Document Verification -->
+            <div class="module-card">
+                <div class="module-header">
+                    <h3 class="module-title">
+                        <span class="step">4</span>
+                        Document Verification
+                    </h3>
+                    <span class="module-status status-required">Required</span>
+                </div>
+                <p class="module-description">
+                    Upload your ID and proof of residence for security verification.
+                </p>
+                <div class="module-action">
+                    <a href="document-verification.html" class="btn btn-outline">Upload Documents</a>
+                </div>
+            </div>
+            
+            <!-- Module 5: Wallet Setup -->
+            <div class="module-card">
+                <div class="module-header">
+                    <h3 class="module-title">
+                        <span class="step">5</span>
+                        Wallet Setup
+                    </h3>
+                    <span class="module-status status-optional">Optional</span>
+                </div>
+                <p class="module-description">
+                    Set up your payment method and purchase interview credits to connect with caregivers.
+                </p>
+                <div class="module-action">
+                    <a href="wallet-setup.html" class="btn btn-outline">Set Up Later</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script>
+        // This script would handle the logic for marking modules as complete and updating progress
+        document.addEventListener('DOMContentLoaded', function() {
+            // Example of logic to update progress when a module is completed
+            // In a real implementation, this would be connected to form submissions and API calls
+            
+            // Sample function to mark a module as complete (would be triggered after form submission)
+            function markModuleAsComplete(moduleIndex) {
+                const modules = document.querySelectorAll('.module-card');
+                if (modules[moduleIndex]) {
+                    modules[moduleIndex].classList.add('completed');
+                    modules[moduleIndex].classList.remove('active');
+                    
+                    // Update module status
+                    const statusBadge = modules[moduleIndex].querySelector('.module-status');
+                    statusBadge.textContent = 'Completed';
+                    statusBadge.className = 'module-status status-completed';
+                    
+                    // Change button style
+                    const button = modules[moduleIndex].querySelector('.btn');
+                    button.textContent = 'Edit';
+                    
+                    // Make next module active
+                    if (modules[moduleIndex + 1]) {
+                        modules[moduleIndex + 1].classList.add('active');
+                    }
+                    
+                    // Update progress
+                    updateProfileProgress();
+                }
+            }
+            
+            function updateProfileProgress() {
+                const modules = document.querySelectorAll('.module-card');
+                const requiredModules = document.querySelectorAll('.module-card .status-required, .module-card .status-completed');
+                const completedModules = document.querySelectorAll('.module-card.completed');
+                
+                const totalRequired = requiredModules.length;
+                const totalCompleted = completedModules.length;
+                
+                const progressPercentage = Math.round((totalCompleted / totalRequired) * 100);
+                
+                document.querySelector('.progress-percentage').textContent = `${progressPercentage}% Complete`;
+                document.querySelector('.progress-fill').style.width = `${progressPercentage}%`;
+            }
+            
+            // This function would be called when navigating back to this page after completing a module
+            // For demo purposes, uncomment to see how it works
+            // markModuleAsComplete(0);
+        });
+    </script>
+</body>
+</html>
