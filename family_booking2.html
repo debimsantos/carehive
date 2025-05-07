@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Care Provider Bookings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F9FAFB;
+            margin: 0;
+            padding: 0;
+            color: #1F2937;
+        }
+        
+        .container {
+            max-width: 768px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        
+        /* Header section */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .filter-button {
+            display: flex;
+            align-items: center;
+            background: transparent;
+            border: none;
+            color: #0D9488;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        
+        .filter-button:hover {
+            background-color: #E6FFFA;
+        }
+        
+        /* Date display */
+        .date-display {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .current-date {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .date-value {
+            color: #0D9488;
+        }
+        
+        /* Credits indicator */
+        .credits-indicator {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .credits-icon {
+            background-color: #E0F2FE;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            color: #0369A1;
+        }
+        
+        .credits-info {
+            flex: 1;
+        }
+        
+        .credits-amount {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .credits-text {
+            color: #6B7280;
+            font-size: 14px;
+        }
+        
+        .buy-credits-btn {
+            background-color: #0D9488;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        /* Accordion sections */
+        .accordion-section {
+            margin-bottom: 16px;
+        }
+        
+        .accordion-header {
+            background-color: white;
+            border-radius: 8px 8px 0 0;
+            padding: 16px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #0D9488;
+        }
+        
+        .accordion-header.active {
+            border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        
+        .accordion-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-badge {
+            background-color: #EF4444;
+            color: white;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .accordion-content {
+            background-color: white;
+            border-radius: 0 0 8px 8px;
+            padding: 16px;
+            display: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .accordion-content.active {
+            display: block;
+        }
+        
+        /* Booking card styles */
+        .booking-card {
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid;
+            background-color: #F9FAFB;
+        }
+        
+        .booking-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            background-color: #E2F5F3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0D9488;
+            font-weight: 600;
+            font-size: 18px;
+            margin-right: 12px;
+        }
+        
+        .booking-info {
+            flex: 1;
+        }
+        
+        .provider-name {
+            font-weight: 600;
+            margin: 0 0 4px 0;
+        }
+        
+        .service-type {
+            color: #6B7280;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .booking-detail {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .detail-icon {
+            margin-right: 8px;
+            color: #4B5563;
+            margin-top: 3px;
+        }
+        
+        .detail-text {
+            color: #4B5563;
+            font-size: 14px;
+        }
+        
+        .booking-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #F3F4F6;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-confirmed {
+            background-color: #DCFCE7;
+            color: #166534;
+        }
+        
+        .status-pending {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .status-interview {
+            background-color: #E0E7FF;
+            color: #4338CA;
+        }
+        
+        .booking-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .action-start {
+            background-color: #10B981;
+            color: white;
+        }
+        
+        .action-message {
+            background-color: #E0E7FF;
+            color: #4338CA;
+        }
+        
+        .action-view {
+            background-color: #F3F4F6;
+            color: #4B5563;
+        }
+        
+        /* Floating action button */
+        .floating-action-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background-color: #0D9488;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            border: none;
+            font-size: 24px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 32px 16px;
+        }
+        
+        .empty-icon {
+            background-color: #F3F4F6;
+            width: 64px;
+            height: 64px;
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            color: #9CA3AF;
+            font-size: 24px;
+        }
+        
+        .empty-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .empty-text {
+            color: #6B7280;
+            margin-bottom: 16px;
+        }
+        
+        .empty-button {
+            background-color: #0D9488;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="page-title">My Bookings</h1>
+            <button class="filter-button">
+                <i class="fas fa-filter" style="margin-right: 8px;"></i>
+                Filter
+            </button>
+        </div>
+        
+        <!-- Today's Date -->
+        <div class="date-display">
+            <div class="current-date">
+                Today is <span class="date-value">Wednesday, May 7, 2025</span>
+            </div>
+        </div>
+        
+        <!-- Interview Credits -->
+        <div class="credits-indicator">
+            <div class="credits-icon">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="credits-info">
+                <div class="credits-amount">3 Credits</div>
+                <div class="credits-text">Available for interviews</div>
+            </div>
+            <button class="buy-credits-btn">Buy Credits</button>
+        </div>
+        
+        <!-- Need Action Accordion (First for visibility) -->
+        <div class="accordion-section">
+            <div class="accordion-header active">
+                <div class="accordion-title">
+                    <i class="fas fa-exclamation-circle" style="color: #EF4444;"></i>
+                    Need Action <span class="action-badge">5</span>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content active">
+                <!-- Sample booking card needing action -->
+                <div class="booking-card" style="border-left-color: #FCD34D;">
+                    <div class="booking-header">
+                        <div class="avatar">JM</div>
+                        <div class="booking-info">
+                            <p class="provider-name">Javier Mendoza</p>
+                            <p class="service-type">Pet Sitting</p>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-file-alt detail-icon"></i>
+                        <div class="detail-text">Job Offer #JO-1029</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-calendar detail-icon"></i>
+                        <div class="detail-text">Sat, Mar 29 - Sun, Mar 30</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-clock detail-icon"></i>
+                        <div class="detail-text">08:00 AM - 06:00 PM (10 hours/day)</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-money-bill detail-icon"></i>
+                        <div class="detail-text">₱80/hour (Total: ₱1,600)</div>
+                    </div>
+                    
+                    <div class="booking-status">
+                        <div class="status-badge status-pending">Awaiting Response (3 days left)</div>
+                        <div class="booking-actions">
+                            <div class="action-btn action-view">
+                                <i class="fas fa-file-alt" style="margin-right: 4px;"></i>
+                                View Details
+                            </div>
+                            <div class="action-btn action-message">
+                                <i class="fas fa-comment" style="margin-right: 4px;"></i>
+                                Message
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sample interview needing action -->
+                <div class="booking-card" style="border-left-color: #60A5FA;">
+                    <div class="booking-header">
+                        <div class="avatar">ML</div>
+                        <div class="booking-info">
+                            <p class="provider-name">Maya Lim</p>
+                            <p class="service-type">Child Care, Tutoring</p>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-calendar detail-icon"></i>
+                        <div class="detail-text">Today, May 7, 2025</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-clock detail-icon"></i>
+                        <div class="detail-text">01:00 PM - 01:30 PM (30 minutes)</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-info-circle detail-icon"></i>
+                        <div class="detail-text">Interview scheduled for child care position</div>
+                    </div>
+                    
+                    <div class="booking-status">
+                        <div class="status-badge status-interview">Ready for Interview</div>
+                        <div class="booking-actions">
+                            <div class="action-btn action-start">
+                                <i class="fas fa-video" style="margin-right: 4px;"></i>
+                                Start Interview
+                            </div>
+                            <div class="action-btn action-message">
+                                <i class="fas fa-comment" style="margin-right: 4px;"></i>
+                                Message
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Interviews Accordion -->
+        <div class="accordion-section">
+            <div class="accordion-header">
+                <div class="accordion-title">
+                    <i class="fas fa-video"></i>
+                    Interviews
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="accordion-content">
+                <!-- Today's Interviews section -->
+                <h3>Today's Interviews</h3>
+                
+                <div class="booking-card" style="border-left-color: #60A5FA;">
+                    <div class="booking-header">
+                        <div class="avatar">ML</div>
+                        <div class="booking-info">
+                            <p class="provider-name">Maya Lim</p>
+                            <p class="service-type">Child Care, Tutoring</p>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-calendar detail-icon"></i>
+                        <div class="detail-text">Today, May 7, 2025</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-clock detail-icon"></i>
+                        <div class="detail-text">01:00 PM - 01:30 PM (30 minutes)</div>
+                    </div>
+                    
+                    <div class="booking-status">
+                        <div class="status-badge status-interview">Ready for Interview</div>
+                        <div class="booking-actions">
+                            <div class="action-btn action-start">
+                                <i class="fas fa-video" style="margin-right: 4px;"></i>
+                                Start Interview
+                            </div>
+                            <div class="action-btn action-message">
+                                <i class="fas fa-comment" style="margin-right: 4px;"></i>
+                                Message
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Upcoming Interviews section -->
+                <h3>Upcoming Interviews</h3>
+                
+                <div class="booking-card" style="border-left-color: #60A5FA;">
+                    <div class="booking-header">
+                        <div class="avatar">RC</div>
+                        <div class="booking-info">
+                            <p class="provider-name">Rico Cruz</p>
+                            <p class="service-type">Senior Care</p>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-calendar detail-icon"></i>
+                        <div class="detail-text">Friday, May 9, 2025</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-clock detail-icon"></i>
+                        <div class="detail-text">11:00 AM - 11:30 AM (30 minutes)</div>
+                    </div>
+                    
+                    <div class="booking-status">
+                        <div class="status-badge status-interview">Scheduled</div>
+                        <div class="booking-actions">
+                            <div class="action-btn action-view">
+                                <i class="fas fa-user" style="margin-right: 4px;"></i>
+                                View Profile
+                            </div>
+                            <div class="action-btn action-view" style="background-color: #FEF3C7; color: #92400E;">
+                                <i class="fas fa-calendar" style="margin-right: 4px;"></i>
+                                Reschedule
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Completed Interviews section -->
+                <h3>Recently Completed</h3>
+                
+                <div class="booking-card" style="border-left-color: #818CF8;">
+                    <div class="booking-header">
+                        <div class="avatar">MR</div>
+                        <div class="booking-info">
+                            <p class="provider-name">Marco Rodriguez</p>
+                            <p class="service-type">Child Care, Tutoring</p>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-calendar-check detail-icon"></i>
+                        <div class="detail-text">Interview Completed on Mar 15</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-tag detail-icon"></i>
+                        <div class="detail-text">Tagged as "Shortlisted"</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-star detail-icon"></i>
+                        <div class="detail-text">Your Interview Rating: 4/5</div>
+                    </div>
+                    
+                    <div class="booking-status">
+                        <div class="status-badge status-interview">Shortlisted</div>
+                        <div class="booking-actions">
+                            <div class="action-btn" style="background-color: #F5D0FE; color: #A21CAF;">
+                                <i class="fas fa-file" style="margin-right: 4px;"></i>
+                                Send Offer
+                            </div>
+                            <div class="action-btn action-view">
+                                <i class="fas fa-user" style="margin-right: 4px;"></i>
+                                View Profile
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Job Offers Accordion -->
+        <div class="accordion-section">
+            <div class="accordion-header">
+                <div class="accordion-title">
+                    <i class="fas fa-file-contract"></i>
+                    Job Offers
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="accordion-content">
+                <!-- Active Job Offers -->
+                <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="margin: 0;">Active Job Offers</h3>
+                    <button style="display: flex; align-items: center; background: none; border: none; color: #0D9488; cursor: pointer;">
+                        <i class="fas fa-plus-circle" style="margin-right: 4px;"></i>
+                        New Offer
+                    </button>
+                </div>
+                
+                <div class="booking-card" style="border-left-color: #FCD34D;">
+                    <div class="booking-header">
+                        <div class="avatar">JM</div>
+                        <div class="booking-info">
+                            <p class="provider-name">Javier Mendoza</p>
+                            <p class="service-type">Pet Sitting</p>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-file-alt detail-icon"></i>
+                        <div class="detail-text">Job Offer #JO-1029</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-calendar detail-icon"></i>
+                        <div class="detail-text">Sat, Mar 29 - Sun, Mar 30</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-clock detail-icon"></i>
+                        <div class="detail-text">08:00 AM - 06:00 PM (10 hours/day)</div>
+                    </div>
+                    
+                    <div class="booking-detail">
+                        <i class="fas fa-money-bill detail-icon"></i>
+                        <div class="detail-text">₱80/hour (Total: ₱1,600)</div>
+                    </div>
+                    
+                    <div class="booking-status">
+                        <div class="status-badge status-pending">Awaiting Response (3 days left)</div>
+                        <div class="booking-actions">
+                            <div class="action-btn action-view">
+                                <i class="fas fa-file-alt" style="margin-right: 4px;"></i>
+                                View Details
+                            </div>
+                            <div class="action-btn action-message">
+                                <i class="fas fa-comment" style="margin-right: 4px;"></i>
+                                Message
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bookings Accordion -->
+        <div class="accordion-section">
+            <div class="accordion-header">
+                <div class="accordion-title">
+                    <i class="fas fa-calendar-check"></i>
+                    Bookings
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="accordion-content">
+                <!-- Empty state -->
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="empty-title">No Active Bookings</h3>
+                    <p class="empty-text">You don't have any active bookings at the moment. Start by finding care providers and scheduling interviews.</p>
+                    <button class="empty-button">Find Care Providers</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating Action Button -->
+        <button class="floating-action-btn">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <script>
+        // Simple accordion functionality
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isActive = header.classList.contains('active');
+                
+                // Close all accordions
+                document.querySelectorAll('.accordion-header').forEach(h => {
+                    h.classList.remove('active');
+                    h.querySelector('i:last-child').classList.replace('fa-chevron-down', 'fa-chevron-right');
+                });
+                
+                document.querySelectorAll('.accordion-content').forEach(c => {
+                    c.classList.remove('active');
+                });
+                
+                // Toggle clicked accordion
+                if (!isActive) {
+                    header.classList.add('active');
+                    content.classList.add('active');
+                    header.querySelector('i:last-child').classList.replace('fa-chevron-right', 'fa-chevron-down');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
