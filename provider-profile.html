@@ -80,7 +80,7 @@
             <div class="flex">
                 <button class="active flex-1 py-3 text-sm font-medium">Personal Info</button>
                 <button class="flex-1 py-3 text-sm font-medium text-gray-500">Documents</button>
-                <button class="flex-1 py-3 text-sm font-medium text-gray-500">Availability</button>
+                <button class="flex-1 py-3 text-sm font-medium text-gray-500">Services</button>
             </div>
         </div>
         
@@ -118,32 +118,6 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">About Me</label>
                     <textarea rows="4" class="w-full p-2 border border-gray-300 rounded-md text-sm">I'm a certified caregiver with 5 years of experience working with children and seniors. I'm passionate about providing quality care and creating a positive environment.</textarea>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Services Offered</label>
-                    <div class="flex flex-wrap gap-2">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="childcare" checked class="mr-1">
-                            <label for="childcare" class="text-sm">Child Care</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="seniorcare" checked class="mr-1">
-                            <label for="seniorcare" class="text-sm">Senior Care</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="housekeeping" class="mr-1">
-                            <label for="housekeeping" class="text-sm">Housekeeping</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="tutoring" class="mr-1">
-                            <label for="tutoring" class="text-sm">Tutoring</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="petsitting" class="mr-1">
-                            <label for="petsitting" class="text-sm">Pet Sitting</label>
-                        </div>
-                    </div>
                 </div>
                 
                 <button class="bg-teal-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-teal-700 transition">
@@ -238,277 +212,505 @@
             </div>
         </div>
         
-        <!-- Availability Section (Hidden by default) -->
-        <div id="availability-section" class="hidden bg-white rounded-lg shadow-md p-4">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-semibold text-gray-800">Schedule & Availability</h3>
+        <!-- Services Section (Hidden by default) -->
+    <div id="services-section" class="hidden bg-white rounded-lg shadow-md p-4">
+    <h3 class="font-semibold text-gray-800 mb-4">Manage Your Services</h3>
+    
+    <!-- Step 1: Select Main Category -->
+    <div class="mb-5">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Step 1: Select Main Category</label>
+        <select id="main-category" class="w-full p-2 border border-gray-300 rounded-md text-sm">
+            <option value="" disabled selected>Select a category</option>
+            <option value="child_care">Child Care</option>
+            <option value="pet_sitter">Pet Sitter</option>
+            <option value="senior_care">Senior Care</option>
+            <option value="housekeeper">Housekeeper</option>
+            <option value="tutor">Tutor</option>
+            <option value="health_services">Health Services</option>
+        </select>
+    </div>
+    
+    <!-- Step 2: Select or Add Subcategory -->
+    <div class="mb-5">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Step 2: Select or Add Subcategory</label>
+        <div class="flex space-x-2">
+            <select id="subcategory" class="flex-1 p-2 border border-gray-300 rounded-md text-sm">
+                <option value="" disabled selected>Select a subcategory</option>
+                <!-- Child Care subcategories -->
+                <optgroup label="Child Care" class="subcategory-group" data-category="child_care">
+                    <option value="infant_care">Infant Care (0–12 months)</option>
+                    <option value="toddler_care">Toddler Care (1–3 years)</option>
+                    <option value="after_school_care">After-School Care</option>
+                    <option value="special_needs_child_care">Special Needs Child Care</option>
+                    <option value="overnight_childcare">Overnight or Weekend Childcare</option>
+                    <option value="nanny_services">Nanny or Au Pair Services</option>
+                    <option value="babysitting">Babysitting</option>
+                </optgroup>
+                
+                <!-- Pet Sitter subcategories -->
+                <optgroup label="Pet Sitter" class="subcategory-group" data-category="pet_sitter">
+                    <option value="dog_walking">Dog Walking</option>
+                    <option value="cat_sitting">Cat Sitting</option>
+                    <option value="overnight_pet_care">Overnight Pet Care</option>
+                    <option value="exotic_pet_care">Exotic Pet Care (birds, reptiles, etc.)</option>
+                    <option value="pet_grooming">Pet Grooming</option>
+                    <option value="puppy_kitten_care">Puppy or Kitten Care</option>
+                    <option value="pet_medication">Administering Medication</option>
+                    <option value="pet_taxi">Pet Taxi (to vet or groomer)</option>
+                </optgroup>
+                
+                <!-- Senior Care subcategories -->
+                <optgroup label="Senior Care" class="subcategory-group" data-category="senior_care">
+                    <option value="companion_care">Companion Care</option>
+                    <option value="dementia_support">Dementia/Alzheimer's Support</option>
+                    <option value="medication_reminders">Medication Reminders</option>
+                    <option value="mobility_assistance">Mobility Assistance</option>
+                    <option value="meal_preparation">Meal Preparation</option>
+                    <option value="personal_hygiene">Personal Hygiene Assistance</option>
+                    <option value="transportation">Transportation to Appointments</option>
+                    <option value="light_housekeeping">Light Housekeeping for Seniors</option>
+                </optgroup>
+                
+                <!-- Housekeeper subcategories -->
+                <optgroup label="Housekeeper" class="subcategory-group" data-category="housekeeper">
+                    <option value="deep_cleaning">Deep Cleaning</option>
+                    <option value="regular_cleaning">Regular/Recurring Cleaning</option>
+                    <option value="move_cleaning">Move-in / Move-out Cleaning</option>
+                    <option value="eco_friendly_cleaning">Eco-Friendly Cleaning</option>
+                    <option value="laundry_ironing">Laundry & Ironing</option>
+                    <option value="organization">Organization Services (closets, pantry)</option>
+                    <option value="post_event_cleanup">Post-Event Clean-up</option>
+                    <option value="airbnb_turnover">Airbnb Turnover Services</option>
+                </optgroup>
+                
+                <!-- Tutor subcategories -->
+                <optgroup label="Tutor" class="subcategory-group" data-category="tutor">
+                    <option value="k12_tutoring">K-12 Academic Tutoring (Math, Reading, Science, etc.)</option>
+                    <option value="college_prep">College Prep (UPCAT, Entrance Exams)</option>
+                    <option value="esl">ESL (English as a Second Language)</option>
+                    <option value="homework_help">Homework Help</option>
+                    <option value="special_needs_learning">Special Needs Learning Support</option>
+                    <option value="music_art_tutoring">Music or Art Tutoring</option>
+                    <option value="coding_tech">Coding/Tech Tutoring</option>
+                    <option value="language_tutoring">Foreign Language Tutoring</option>
+                </optgroup>
+                
+                <!-- Health Services subcategories -->
+                <optgroup label="Health Services" class="subcategory-group" data-category="health_services">
+                    <option value="nursing_care">In-Home Nursing Care</option>
+                    <option value="midwife">Midwife Services (prenatal, labor, postnatal care)</option>
+                    <option value="illness_consultation">Common Illness Consultation</option>
+                    <option value="physical_therapy">Physical Therapy</option>
+                    <option value="occupational_therapy">Occupational Therapy</option>
+                    <option value="speech_therapy">Speech Therapy</option>
+                    <option value="medication_management">Medication Management</option>
+                    <option value="post_surgery">Post-Surgery Recovery Support</option>
+                    <option value="mental_health">Mental Health Support (licensed counselors)</option>
+                    <option value="wellness_coaching">Health & Wellness Coaching</option>
+                </optgroup>
+            </select>
+            <button class="bg-gray-100 text-gray-700 px-3 rounded-md text-sm hover:bg-gray-200 flex items-center">
+                <i data-feather="plus" class="h-4 w-4 mr-1"></i> Add New
+            </button>
+        </div>
+    
+    <!-- Base Rate for Selected Subcategory -->
+    <div class="mb-5 border-t border-gray-200 pt-4 mt-4">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Base Rate for Selected Subcategory</label>
+        <div class="flex items-center space-x-3">
+            <div class="flex-1">
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₱</span>
+                    <input type="number" placeholder="0.00" value="350" class="w-full p-2 pl-8 border border-gray-300 rounded-md text-sm">
+                </div>
+            </div>
+            <div class="flex-1">
+                <select class="w-full p-2 border border-gray-300 rounded-md text-sm">
+                    <option value="per_hour" selected>Per Hour</option>
+                    <option value="flat_fee">Flat Fee</option>
+                    <option value="per_session">Per Session</option>
+                    <option value="per_day">Per Day</option>
+                </select>
+            </div>
+        </div>
+        <p class="text-xs text-gray-500 mt-1">This is your standard rate for this service type. You can add specialized services with different rates below (optional).</p>
+    </div>    
+
+    <!-- Step 3: Add Specialized Services (Optional) -->
+    <div class="mb-5">
+        <div class="flex justify-between items-center mb-2">
+            <label class="block text-sm font-medium text-gray-700">Step 3: Add Specialized Services (Optional)</label>
+            <div class="text-xs text-gray-500 italic">Not required</div>
+        </div>
+    
+        <div class="p-3 bg-blue-50 rounded-lg border border-blue-100 mb-4">
+            <div class="flex items-start">
+                <i data-feather="info" class="text-blue-600 mr-2 w-5 h-5"></i>
                 <div>
-                    <label class="text-xs text-gray-500 block text-right mb-1">Current Status</label>
-                    <div class="flex items-center">
-                        <div class="h-2 w-2 rounded-full bg-green-500 mr-1"></div>
-                        <span class="text-sm text-green-600 font-medium">Available</span>
+                    <p class="text-xs text-gray-600">If you don't add specialized services, your base rate will apply to the subcategory you selected. Adding specialized services lets you set different rates for specific offerings.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service Card -->
+    <div class="border border-gray-200 rounded-lg p-3 mb-3">
+        <div class="space-y-3">
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">Service Title</label>
+                <input type="text" placeholder="e.g., Initial Consultation" class="w-full p-2 border border-gray-300 rounded-md text-sm">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">Description</label>
+                <textarea placeholder="Briefly describe what this service includes" class="w-full p-2 border border-gray-300 rounded-md text-sm" rows="2"></textarea>
+            </div>
+            <div class="flex space-x-2">
+                <div class="flex-1">
+                    <label class="block text-xs text-gray-500 mb-1">Rate</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₱</span>
+                        <input type="number" placeholder="0.00" class="w-full p-2 pl-8 border border-gray-300 rounded-md text-sm">
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <label class="block text-xs text-gray-500 mb-1">Rate Type</label>
+                    <select class="w-full p-2 border border-gray-300 rounded-md text-sm">
+                        <option value="per_hour">Per Hour</option>
+                        <option value="flat_fee">Flat Fee</option>
+                        <option value="per_session">Per Session</option>
+                        <option value="per_day">Per Day</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-end mt-3">
+            <button class="text-red-600 text-xs font-medium">Remove</button>
+        </div>
+    </div>
+    
+    <!-- Add Another Service Button -->
+    <button class="w-full flex items-center justify-center py-2 border border-dashed border-teal-300 rounded-lg text-sm text-teal-600 hover:bg-teal-50">
+        <i data-feather="plus-circle" class="h-4 w-4 mr-1"></i> Add Another Service
+    </button>
+    </div>  
+    
+    <!-- Step 4: Review Your Services -->
+    <div class="mb-5">
+        <h4 class="text-sm font-medium text-gray-700 mb-3">Step 4: Review Your Services</h4>
+        
+        <!-- Example 1: Just subcategory with base rate -->
+        <div class="border border-gray-200 rounded-lg p-3 mb-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h5 class="text-sm font-semibold text-gray-800">Example 1: Basic Listing</h5>
+                    <p class="text-xs text-gray-500">Only subcategory with base rate</p>
+                </div>
+                <button class="text-red-600 text-xs font-medium">
+                    <i data-feather="trash-2" class="h-4 w-4"></i>
+                </button>
+            </div>
+            
+            <div class="mt-3 border-t border-gray-100 pt-3">
+                <div class="bg-gray-50 rounded-md p-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h6 class="text-sm font-medium text-gray-800">Child Care</h6>
+                            <p class="text-xs text-gray-600">Toddler Care (1-3 years)</p>
+                        </div>
+                        <p class="text-sm font-medium text-teal-700">₱350 / hour</p>
                     </div>
                 </div>
             </div>
-            
-            <div class="mb-5">
-                <h4 class="text-sm font-medium text-gray-700 mb-2">General Availability</h4>
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="monday" checked class="mr-2">
-                            <label for="monday" class="text-sm text-gray-800">Monday</label>
-                        </div>
-                        <div class="flex space-x-2">
-                            <select class="border border-gray-300 rounded p-1 text-xs">
-                                <option>8:00 AM</option>
-                                <option>9:00 AM</option>
-                                <option selected>10:00 AM</option>
-                                <option>11:00 AM</option>
-                                <option>12:00 PM</option>
-                            </select>
-                            <span class="text-xs self-center">to</span>
-                            <select class="border border-gray-300 rounded p-1 text-xs">
-                                <option>2:00 PM</option>
-                                <option>3:00 PM</option>
-                                <option>4:00 PM</option>
-                                <option>5:00 PM</option>
-                                <option selected>6:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="tuesday" checked class="mr-2">
-                            <label for="tuesday" class="text-sm text-gray-800">Tuesday</label>
-                        </div>
-                        <div class="flex space-x-2">
-                            <select class="border border-gray-300 rounded p-1 text-xs">
-                                <option>8:00 AM</option>
-                                <option selected>9:00 AM</option>
-                                <option>10:00 AM</option>
-                                <option>11:00 AM</option>
-                                <option>12:00 PM</option>
-                            </select>
-                            <span class="text-xs self-center">to</span>
-                            <select class="border border-gray-300 rounded p-1 text-xs">
-                                <option>2:00 PM</option>
-                                <option>3:00 PM</option>
-                                <option>4:00 PM</option>
-                                <option selected>5:00 PM</option>
-                                <option>6:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="wednesday" checked class="mr-2">
-                            <label for="wednesday" class="text-sm text-gray-800">Wednesday</label>
-                        </div>
-                        <div class="flex space-x-2">
-                            <select class="border border-gray-300 rounded p-1 text-xs">
-                                <option>8:00 AM</option>
-                                <option>9:00 AM</option>
-                                <option selected>10:00 AM</option>
-                                <option>11:00 AM</option>
-                                <option>12:00 PM</option>
-                            </select>
-                            <span class="text-xs self-center">to</span>
-                            <select class="border border-gray-300 rounded p-1 text-xs">
-                                <option>2:00 PM</option>
-                                <option>3:00 PM</option>
-                                <option>4:00 PM</option>
-                                <option>5:00 PM</option>
-                                <option selected>6:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="thursday" checked class="mr-2">
-                            <label for="thursday" class="text-sm text-gray-800">Thursday</label>
-                        </div>
-                        <div class="flex space-x-2">
-                            <select class="border border-gray-300 rounded p-1 text-xs">
-                                <option>8:00 AM</option>
-                                <option selected>9:00 AM</option>
-                                <option>10:00 AM</option>
-                                <option>11:00 AM</option>
-                                <option>12:00 PM</option>
-                            </select>
-                            <span class="text-xs self-center">to</span>
-                            <select class="border border-gray-300 rounded p-1 text-xs">
-                                <option>2:00 PM</option>
-                                <option>3:00 PM</option>
-                                <option selected>4:00 PM</option>
-                                <option>5:00 PM</option>
-                                <option>6:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="friday" checked class="mr-2">
-                            <label for="friday" class="text-sm text-gray-800">Friday</label>
-                        </div>
-                        <div class="flex space-x-2">
-                            <select class="border border-gray-300 rounded p-1 text-xs">
-                                <option>8:00 AM</option>
-                                <option>9:00 AM</option>
-                                <option selected>10:00 AM</option>
-                                <option>11:00 AM</option>
-                                <option>12:00 PM</option>
-                            </select>
-                            <span class="text-xs self-center">to</span>
-                            <select class="border border-gray-300 rounded p-1 text-xs">
-                                <option>2:00 PM</option>
-                                <option selected>3:00 PM</option>
-                                <option>4:00 PM</option>
-                                <option>5:00 PM</option>
-                                <option>6:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="saturday" class="mr-2">
-                            <label for="saturday" class="text-sm text-gray-800">Saturday</label>
-                        </div>
-                        <div class="flex space-x-2">
-                            <select class="border border-gray-300 rounded p-1 text-xs" disabled>
-                                <option>8:00 AM</option>
-                                <option>9:00 AM</option>
-                                <option>10:00 AM</option>
-                                <option>11:00 AM</option>
-                                <option>12:00 PM</option>
-                            </select>
-                            <span class="text-xs self-center text-gray-400">to</span>
-                            <select class="border border-gray-300 rounded p-1 text-xs" disabled>
-                                <option>2:00 PM</option>
-                                <option>3:00 PM</option>
-                                <option>4:00 PM</option>
-                                <option>5:00 PM</option>
-                                <option>6:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="sunday" class="mr-2">
-                            <label for="sunday" class="text-sm text-gray-800">Sunday</label>
-                        </div>
-                        <div class="flex space-x-2">
-                            <select class="border border-gray-300 rounded p-1 text-xs" disabled>
-                                <option>8:00 AM</option>
-                                <option>9:00 AM</option>
-                                <option>10:00 AM</option>
-                                <option>11:00 AM</option>
-                                <option>12:00 PM</option>
-                            </select>
-                            <span class="text-xs self-center text-gray-400">to</span>
-                            <select class="border border-gray-300 rounded p-1 text-xs" disabled>
-                                <option>2:00 PM</option>
-                                <option>3:00 PM</option>
-                                <option>4:00 PM</option>
-                                <option>5:00 PM</option>
-                                <option>6:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
+        </div>
+        
+        <!-- Example 2: Subcategory with specialized services -->
+        <div class="border border-gray-200 rounded-lg p-3">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h5 class="text-sm font-semibold text-gray-800">Example 2: Detailed Listing</h5>
+                    <p class="text-xs text-gray-500">Subcategory with specialized services</p>
                 </div>
+                <button class="text-red-600 text-xs font-medium">
+                    <i data-feather="trash-2" class="h-4 w-4"></i>
+                </button>
             </div>
             
-            <div class="mb-5">
-                <h4 class="text-sm font-medium text-gray-700 mb-2">Time Off & Unavailable Dates</h4>
-                <div class="border border-gray-200 rounded-lg p-3 mb-3">
-                    <div class="flex justify-between items-center mb-2">
+            <div class="mt-3 border-t border-gray-100 pt-3">
+                <div class="mb-2 flex justify-between items-center">
+                    <h6 class="text-xs font-medium text-gray-800">Health Services → Occupational Therapy</h6>
+                    <button class="text-red-600 text-xs font-medium hover:text-red-800">
+                        <i data-feather="edit-2" class="h-3 w-3 mr-1"></i>
+                        Edit
+                    </button>
+                </div>
+                
+                <div class="bg-gray-50 rounded-md p-3 mb-2">
+                    <div class="flex justify-between items-start">
                         <div>
-                            <h5 class="text-sm font-medium text-gray-800">Upcoming Week</h5>
-                            <p class="text-xs text-gray-500">March 24 - March 30, 2025</p>
+                            <p class="text-sm font-medium text-gray-800">Initial Consultation</p>
+                            <p class="text-xs text-gray-500">Comprehensive assessment of client needs</p>
                         </div>
-                        <button class="text-teal-600 text-xs font-medium">Add Time Off</button>
-                    </div>
-                    <div class="bg-orange-50 border border-orange-100 rounded-lg p-2 flex justify-between items-center">
-                        <div>
-                            <p class="text-sm font-medium text-gray-800">March 26, 2025</p>
-                            <p class="text-xs text-gray-500">All day</p>
+                        <div class="flex items-center">
+                            <p class="text-sm font-medium text-teal-700 mr-2">₱800 / session</p>
+                            <button class="text-red-600 hover:text-red-800">
+                                <i data-feather="x" class="h-4 w-4"></i>
+                            </button>
                         </div>
-                        <button class="text-red-600 text-xs font-medium">Remove</button>
                     </div>
                 </div>
                 
-                <div class="border border-gray-200 rounded-lg p-3">
-                    <div class="flex justify-between items-center mb-2">
+                <div class="bg-gray-50 rounded-md p-3">
+                    <div class="flex justify-between items-start">
                         <div>
-                            <h5 class="text-sm font-medium text-gray-800">Upcoming Month</h5>
-                            <p class="text-xs text-gray-500">March - April 2025</p>
+                            <p class="text-sm font-medium text-gray-800">Follow-up Session</p>
+                            <p class="text-xs text-gray-500">Regular therapy session based on treatment plan</p>
                         </div>
-                        <button class="text-teal-600 text-xs font-medium">View Calendar</button>
-                    </div>
-                    <div class="bg-orange-50 border border-orange-100 rounded-lg p-2 flex justify-between items-center mb-2">
-                        <div>
-                            <p class="text-sm font-medium text-gray-800">April 10-15, 2025</p>
-                            <p class="text-xs text-gray-500">Vacation</p>
+                        <div class="flex items-center">
+                            <p class="text-sm font-medium text-teal-700 mr-2">₱650 / hour</p>
+                            <button class="text-red-600 hover:text-red-800">
+                                <i data-feather="x" class="h-4 w-4"></i>
+                            </button>
                         </div>
-                        <button class="text-red-600 text-xs font-medium">Remove</button>
                     </div>
                 </div>
             </div>
-            
-            <div class="mb-4">
-                <h4 class="text-sm font-medium text-gray-700 mb-2">Booking Preferences</h4>
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-gray-800">Minimum Hours per Booking</p>
-                            <p class="text-xs text-gray-500">Minimum duration you'll accept for a booking</p>
-                        </div>
-                        <select class="border border-gray-300 rounded p-1 text-sm">
-                            <option>2 hours</option>
-                            <option selected>4 hours</option>
-                            <option>6 hours</option>
-                            <option>8 hours</option>
-                        </select>
-                    </div>
-                    
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-gray-800">Notice Required</p>
-                            <p class="text-xs text-gray-500">Advance notice needed for bookings</p>
-                        </div>
-                        <select class="border border-gray-300 rounded p-1 text-sm">
-                            <option>Same day</option>
-                            <option selected>24 hours</option>
-                            <option>48 hours</option>
-                            <option>72 hours</option>
-                        </select>
-                    </div>
-                    
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-gray-800">Travel Distance</p>
-                            <p class="text-xs text-gray-500">Maximum distance you're willing to travel</p>
-                        </div>
-                        <select class="border border-gray-300 rounded p-1 text-sm">
-                            <option>5 km</option>
-                            <option selected>10 km</option>
-                            <option>15 km</option>
-                            <option>20 km</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            
-            <button class="bg-teal-600 text-white py-2 w-full rounded-lg text-sm font-medium hover:bg-teal-700 transition mt-4">
-                Save Changes
-            </button>
         </div>
+    </div>
+    
+    <!-- Availability Section -->
+    <div class="mt-8 border-t border-gray-200 pt-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-semibold text-gray-800">Schedule & Availability</h3>
+            <div>
+                <label class="text-xs text-gray-500 block text-right mb-1">Current Status</label>
+                <div class="flex items-center">
+                    <div class="h-2 w-2 rounded-full bg-green-500 mr-1"></div>
+                    <span class="text-sm text-green-600 font-medium">Available</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-5">
+            <h4 class="text-sm font-medium text-gray-700 mb-2">General Availability</h4>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="monday" checked class="mr-2">
+                        <label for="monday" class="text-sm text-gray-800">Monday</label>
+                    </div>
+                    <div class="flex space-x-2">
+                        <select class="border border-gray-300 rounded p-1 text-xs">
+                            <option>8:00 AM</option>
+                            <option>9:00 AM</option>
+                            <option selected>10:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>12:00 PM</option>
+                        </select>
+                        <span class="text-xs self-center">to</span>
+                        <select class="border border-gray-300 rounded p-1 text-xs">
+                            <option>2:00 PM</option>
+                            <option>3:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option>5:00 PM</option>
+                            <option selected>6:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="tuesday" checked class="mr-2">
+                        <label for="tuesday" class="text-sm text-gray-800">Tuesday</label>
+                    </div>
+                    <div class="flex space-x-2">
+                        <select class="border border-gray-300 rounded p-1 text-xs">
+                            <option>8:00 AM</option>
+                            <option selected>9:00 AM</option>
+                            <option>10:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>12:00 PM</option>
+                        </select>
+                        <span class="text-xs self-center">to</span>
+                        <select class="border border-gray-300 rounded p-1 text-xs">
+                            <option>2:00 PM</option>
+                            <option>3:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option selected>5:00 PM</option>
+                            <option>6:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="wednesday" checked class="mr-2">
+                        <label for="wednesday" class="text-sm text-gray-800">Wednesday</label>
+                    </div>
+                    <div class="flex space-x-2">
+                        <select class="border border-gray-300 rounded p-1 text-xs">
+                            <option>8:00 AM</option>
+                            <option>9:00 AM</option>
+                            <option selected>10:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>12:00 PM</option>
+                        </select>
+                        <span class="text-xs self-center">to</span>
+                        <select class="border border-gray-300 rounded p-1 text-xs">
+                            <option>2:00 PM</option>
+                            <option>3:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option>5:00 PM</option>
+                            <option selected>6:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="thursday" checked class="mr-2">
+                        <label for="thursday" class="text-sm text-gray-800">Thursday</label>
+                    </div>
+                    <div class="flex space-x-2">
+                        <select class="border border-gray-300 rounded p-1 text-xs">
+                            <option>8:00 AM</option>
+                            <option selected>9:00 AM</option>
+                            <option>10:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>12:00 PM</option>
+                        </select>
+                        <span class="text-xs self-center">to</span>
+                        <select class="border border-gray-300 rounded p-1 text-xs">
+                            <option>2:00 PM</option>
+                            <option>3:00 PM</option>
+                            <option selected>4:00 PM</option>
+                            <option>5:00 PM</option>
+                            <option>6:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="friday" checked class="mr-2">
+                        <label for="friday" class="text-sm text-gray-800">Friday</label>
+                    </div>
+                    <div class="flex space-x-2">
+                        <select class="border border-gray-300 rounded p-1 text-xs">
+                            <option>8:00 AM</option>
+                            <option>9:00 AM</option>
+                            <option selected>10:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>12:00 PM</option>
+                        </select>
+                        <span class="text-xs self-center">to</span>
+                        <select class="border border-gray-300 rounded p-1 text-xs">
+                            <option>2:00 PM</option>
+                            <option selected>3:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option>5:00 PM</option>
+                            <option>6:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="saturday" class="mr-2">
+                        <label for="saturday" class="text-sm text-gray-800">Saturday</label>
+                    </div>
+                    <div class="flex space-x-2">
+                        <select class="border border-gray-300 rounded p-1 text-xs" disabled>
+                            <option>8:00 AM</option>
+                            <option>9:00 AM</option>
+                            <option>10:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>12:00 PM</option>
+                        </select>
+                        <span class="text-xs self-center text-gray-400">to</span>
+                        <select class="border border-gray-300 rounded p-1 text-xs" disabled>
+                            <option>2:00 PM</option>
+                            <option>3:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option>5:00 PM</option>
+                            <option>6:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="sunday" class="mr-2">
+                        <label for="sunday" class="text-sm text-gray-800">Sunday</label>
+                    </div>
+                    <div class="flex space-x-2">
+                        <select class="border border-gray-300 rounded p-1 text-xs" disabled>
+                            <option>8:00 AM</option>
+                            <option>9:00 AM</option>
+                            <option>10:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>12:00 PM</option>
+                        </select>
+                        <span class="text-xs self-center text-gray-400">to</span>
+                        <select class="border border-gray-300 rounded p-1 text-xs" disabled>
+                            <option>2:00 PM</option>
+                            <option>3:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option>5:00 PM</option>
+                            <option>6:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-4">
+            <h4 class="text-sm font-medium text-gray-700 mb-2">Booking Preferences</h4>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-800">Minimum Hours per Booking</p>
+                        <p class="text-xs text-gray-500">Minimum duration you'll accept for a booking</p>
+                    </div>
+                    <select class="border border-gray-300 rounded p-1 text-sm">
+                        <option>2 hours</option>
+                        <option selected>4 hours</option>
+                        <option>6 hours</option>
+                        <option>8 hours</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-800">Notice Required</p>
+                        <p class="text-xs text-gray-500">Advance notice needed for bookings</p>
+                    </div>
+                    <select class="border border-gray-300 rounded p-1 text-sm">
+                        <option>Same day</option>
+                        <option selected>24 hours</option>
+                        <option>48 hours</option>
+                        <option>72 hours</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-800">Travel Distance</p>
+                        <p class="text-xs text-gray-500">Maximum distance you're willing to travel</p>
+                    </div>
+                    <select class="border border-gray-300 rounded p-1 text-sm">
+                        <option>5 km</option>
+                        <option selected>10 km</option>
+                        <option>15 km</option>
+                        <option>20 km</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button class="bg-teal-600 text-white py-2 w-full rounded-lg text-sm font-medium hover:bg-teal-700 transition mt-4">
+        Save Changes
+    </button>
+</div>
     </main>
 
     <!-- Bottom Navigation -->
@@ -559,10 +761,10 @@
             // Tab functionality
             const tabs = document.querySelectorAll('.section-tabs button');
             const sections = [
-                document.getElementById('personal-info-section'),
-                document.getElementById('documents-section'),
-                document.getElementById('availability-section')
-            ];
+            document.getElementById('personal-info-section'),
+            document.getElementById('documents-section'),
+            document.getElementById('services-section') // Changed from 'availability-section'
+        ];
             
             tabs.forEach((tab, index) => {
                 tab.addEventListener('click', () => {
