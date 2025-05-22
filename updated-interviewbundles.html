@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Interview Credits - CareHive</title>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #0d9488, #06b6d4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .wallet-info {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .wallet-balance {
+            font-size: 24px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .wallet-credits {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .bundles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .bundle-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .bundle-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .bundle-card.selected {
+            border-color: #0d9488;
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+        }
+
+        .bundle-card.popular {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        }
+
+        .bundle-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bundle-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .bundle-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, #0d9488, #06b6d4);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .bundle-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .bundle-description {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .bundle-price {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .price-main {
+            font-size: 48px;
+            font-weight: 700;
+            color: #0d9488;
+            margin-bottom: 4px;
+        }
+
+        .price-per {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .bundle-features {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .bundle-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #374151;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .calculator-section {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .calculator-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .calculator-input {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .input-label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .number-input {
+            width: 120px;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .number-input:focus {
+            outline: none;
+            border-color: #0d9488;
+        }
+
+        .input-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #0d9488;
+            color: white;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: #0f766e;
+        }
+
+        .control-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        .calculator-result {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .result-breakdown {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .result-breakdown:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            font-weight: 700;
+            font-size: 18px;
+            color: #0d9488;
+        }
+
+        .payment-section {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .payment-method {
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: #0d9488;
+            background: #f0fdfa;
+        }
+
+        .payment-method.selected {
+            border-color: #0d9488;
+            background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
+        }
+
+        .payment-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            background: #0d9488;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .payment-name {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .payment-desc {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .purchase-btn {
+            width: 100%;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #0d9488, #06b6d4);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .purchase-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .purchase-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .skip-link {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .skip-link a {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .skip-link a:hover {
+            color: #0d9488;
+        }
+
+        @media (max-width: 768px) {
+            .bundles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculator-input {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .result-breakdown {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">CH</div>
+                <div class="logo-text">CareHive</div>
+            </div>
+            <h1 class="title">Purchase Interview Credits</h1>
+            <p class="subtitle">
+                Choose the perfect credit bundle for your family's needs. Interview credits let you schedule calls with potential caregivers to find the perfect match.
+            </p>
+        </div>
+
+        <!-- Current Wallet -->
+        <div class="wallet-info">
+            <div class="wallet-balance">Current Balance: ₱0.00</div>
+            <div class="wallet-credits">0 Interview Credits Available</div>
+        </div>
+
+        <!-- Bundle Cards -->
+        <div class="bundles-grid">
+            <!-- Starter Bundle -->
+            <div class="bundle-card" onclick="selectBundle('starter')">
+                <div class="bundle-header">
+                    <div class="bundle-icon">
+                        <i data-feather="user" size="24"></i>
+                    </div>
+                    <h3 class="bundle-title">Starter Bundle</h3>
+                    <p class="bundle-description">Perfect for trying out the platform</p>
+                </div>
+                <div class="bundle-price">
+                    <div class="price-main">₱250</div>
+                    <div class="price-per">₱50 per interview</div>
+                </div>
+                <ul class="bundle-features">
+                    <li><span class="feature-icon">✓</span> 5 Interview Credits</li>
+                    <li><span class="feature-icon">✓</span> Access to all care providers</li>
+                    <li><span class="feature-icon">✓</span> Secure video interviews</li>
+                    <li><span class="feature-icon">✓</span> Profile verification</li>
+                    <li><span class="feature-icon">✓</span> 24/7 Platform support</li>
+                </ul>
+            </div>
+
+            <!-- Family Bundle -->
+            <div class="bundle-card popular" onclick="selectBundle('family')">
+                <div class="bundle-badge">
+                    <i data-feather="star" size="16"></i>
+                    Most Popular
+                </div>
+                <div class="bundle-header">
+                    <div class="bundle-icon">
+                        <i data-feather="users" size="24"></i>
+                    </div>
+                    <h3 class="bundle-title">Family Bundle</h3>
+                    <p class="bundle-description">Best value for most families</p>
+                </div>
+                <div class="bundle-price">
+                    <div class="price-main">₱450</div>
+                    <div class="price-per">₱45 per interview</div>
+                </div>
+                <ul class="bundle-features">
+                    <li><span class="feature-icon">✓</span> 10 Interview Credits</li>
+                    <li><span class="feature-icon">✓</span> Access to all care providers</li>
+                    <li><span class="feature-icon">✓</span> Secure video interviews</li>
+                    <li><span class="feature-icon">✓</span> Profile verification</li>
+                    <li><span class="feature-icon">✓</span> 24/7 Platform support</li>
+                </ul>
+            </div>
+
+            <!-- Plus Bundle -->
+            <div class="bundle-card" onclick="selectBundle('plus')">
+                <div class="bundle-header">
+                    <div class="bundle-icon">
+                        <i data-feather="zap" size="24"></i>
+                    </div>
+                    <h3 class="bundle-title">Plus Bundle</h3>
+                    <p class="bundle-description">For families with ongoing needs</p>
+                </div>
+                <div class="bundle-price">
+                    <div class="price-main">₱450</div>
+                    <div class="price-per">+ ₱50 each additional</div>
+                </div>
+                <ul class="bundle-features">
+                    <li><span class="feature-icon">✓</span> 10+ Interview Credits</li>
+                    <li><span class="feature-icon">✓</span> Access to all care providers</li>
+                    <li><span class="feature-icon">✓</span> Secure video interviews</li>
+                    <li><span class="feature-icon">✓</span> Profile verification</li>
+                    <li><span class="feature-icon">✓</span> 24/7 Platform support</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Dynamic Calculator - Only shows for Plus Bundle -->
+        <div class="calculator-section" id="calculatorSection" style="display: none;">
+            <h2 class="calculator-title">
+                <i data-feather="calculator" size="24" style="vertical-align: middle; margin-right: 8px;"></i>
+                Plus Bundle Calculator
+            </h2>
+            <p style="text-align: center; color: #64748b; margin-bottom: 24px;">
+                Add additional interview credits to your base 10 credits
+            </p>
+            <div class="calculator-input">
+                <div class="input-group">
+                    <label class="input-label">Additional credits needed:</label>
+                    <div class="input-controls">
+                        <button class="control-btn" onclick="changeAdditionalCredits(-1)">−</button>
+                        <input type="number" id="additionalCredits" class="number-input" value="0" min="0" max="40" onchange="calculatePlusPrice()">
+                        <button class="control-btn" onclick="changeAdditionalCredits(1)">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="calculator-result" id="calculatorResult">
+                <div class="result-breakdown">
+                    <span>Base Package (10 credits):</span>
+                    <span>₱450</span>
+                </div>
+                <div class="result-breakdown">
+                    <span>Additional Credits (0):</span>
+                    <span>₱0</span>
+                </div>
+                <div class="result-breakdown">
+                    <span><strong>Total Credits: 10</strong></span>
+                    <span><strong>Total Cost: ₱450</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="payment-section">
+            <h2 class="payment-title">Choose Payment Method</h2>
+            <div class="payment-methods">
+                <div class="payment-method selected" onclick="selectPayment('gcash')">
+                    <div class="payment-icon">
+                        <i data-feather="smartphone" size="20"></i>
+                    </div>
+                    <div class="payment-name">GCash</div>
+                    <div class="payment-desc">Quick and secure</div>
+                </div>
+                <div class="payment-method" onclick="selectPayment('card')">
+                    <div class="payment-icon">
+                        <i data-feather="credit-card" size="20"></i>
+                    </div>
+                    <div class="payment-name">Credit/Debit Card</div>
+                    <div class="payment-desc">Visa, Mastercard</div>
+                </div>
+                <div class="payment-method" onclick="selectPayment('bank')">
+                    <div class="payment-icon">
+                        <i data-feather="home" size="20"></i>
+                    </div>
+                    <div class="payment-name">Bank Transfer</div>
+                    <div class="payment-desc">Direct transfer</div>
+                </div>
+            </div>
+            
+            <button class="purchase-btn" onclick="purchaseCredits()">
+                Purchase Credits - ₱<span id="totalPrice">250</span>
+            </button>
+            
+            <div class="skip-link">
+                <a href="#" onclick="skipPurchase()">Skip for now</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedBundle = 'starter';
+        let selectedPayment = 'gcash';
+        let additionalCredits = 0;
+
+        function selectBundle(bundle) {
+            selectedBundle = bundle;
+            
+            // Remove selected class from all cards
+            document.querySelectorAll('.bundle-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked card
+            event.currentTarget.classList.add('selected');
+            
+            // Show/hide calculator based on bundle selection
+            const calculatorSection = document.getElementById('calculatorSection');
+            if (bundle === 'plus') {
+                calculatorSection.style.display = 'block';
+                calculatePlusPrice();
+            } else {
+                calculatorSection.style.display = 'none';
+                updateTotalPrice(bundle);
+            }
+        }
+
+        function selectPayment(method) {
+            selectedPayment = method;
+            
+            // Remove selected class from all payment methods
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked method
+            event.currentTarget.classList.add('selected');
+        }
+
+        function changeAdditionalCredits(delta) {
+            const input = document.getElementById('additionalCredits');
+            const newValue = parseInt(input.value) + delta;
+            
+            if (newValue >= 0 && newValue <= 40) {
+                input.value = newValue;
+                additionalCredits = newValue;
+                calculatePlusPrice();
+            }
+        }
+
+        function calculatePlusPrice() {
+            const additional = parseInt(document.getElementById('additionalCredits').value) || 0;
+            additionalCredits = additional;
+            
+            const basePackage = 450;
+            const baseCredits = 10;
+            const additionalCost = additional * 50;
+            const totalCredits = baseCredits + additional;
+            const total = basePackage + additionalCost;
+            
+            // Update result display
+            const resultHTML = `
+                <div class="result-breakdown">
+                    <span>Base Package (10 credits):</span>
+                    <span>₱${basePackage}</span>
+                </div>
+                <div class="result-breakdown">
+                    <span>Additional Credits (${additional}):</span>
+                    <span>₱${additionalCost}</span>
+                </div>
+                <div class="result-breakdown">
+                    <span><strong>Total Credits: ${totalCredits}</strong></span>
+                    <span><strong>Total Cost: ₱${total}</strong></span>
+                </div>
+            `;
+            
+            document.getElementById('calculatorResult').innerHTML = resultHTML;
+            document.getElementById('totalPrice').textContent = total;
+        }
+
+        function updateTotalPrice(bundle) {
+            let price = 250; // Default starter price
+            
+            if (bundle === 'family') {
+                price = 450;
+            } else if (bundle === 'plus') {
+                price = 450; // Base price for plus
+            }
+            
+            document.getElementById('totalPrice').textContent = price;
+        }
+
+        function purchaseCredits() {
+            const total = document.getElementById('totalPrice').textContent;
+            let creditsText = '';
+            
+            if (selectedBundle === 'starter') {
+                creditsText = '5 interview credits';
+            } else if (selectedBundle === 'family') {
+                creditsText = '10 interview credits';
+            } else if (selectedBundle === 'plus') {
+                const totalCredits = 10 + additionalCredits;
+                creditsText = `${totalCredits} interview credits (10 base + ${additionalCredits} additional)`;
+            }
+            
+            alert(`Processing purchase of ${creditsText} for ₱${total} via ${selectedPayment.toUpperCase()}`);
+            // In a real app, this would process the payment
+        }
+
+        function skipPurchase() {
+            if (confirm('Are you sure you want to skip purchasing credits? You can always buy them later.')) {
+                alert('Redirecting to dashboard...');
+                // In a real app, this would navigate to the main dashboard
+            }
+        }
+
+        // Initialize with starter bundle selected
+        updateTotalPrice('starter');
+        
+        // Initialize Feather icons
+        feather.replace();
+    </script>
+</body>
+</html>
